@@ -1,0 +1,308 @@
+/* ---------- Scroll mechanics ---------- */
+
+.scrollSection {
+  position: relative;
+  width: 100%;
+}
+
+.sticky {
+  position: sticky;
+  top: 2%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(160deg, #fffefa 0%, #fbf3ea 55%, #fdefde 100%);
+}
+
+.inner {
+  width: 100%;
+  max-width: 1350px;
+  max-height: 100vh;
+  margin: 0 auto;
+  padding: 20px 20px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  overflow: hidden;
+}
+
+/* ---------- Heading ---------- */
+
+.heading {
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.ornament {
+  width: 44px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.title {
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  font-size: clamp(1.6rem, 5vw, 3rem);
+  color: #1f2024;
+  margin: 0 0 20px 0;
+  letter-spacing: -0.01em;
+  line-height: 0.95;
+}
+
+.subtitle {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: clamp(0.85rem, 1.8vw, 1.1rem);
+}
+
+/* ---------- Content layout ---------- */
+
+.content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.left {
+  width: 100%;
+  max-width: 460px;
+}
+
+.right {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* ---------- Step list ---------- */
+
+.stepItem {
+  display: flex;
+  gap: 20px;
+}
+
+.stepIndicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stepCircle {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #ffffff;
+  background: #d1d5db;
+  transition:
+    background-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.stepCircleCompleted,
+.stepCircleActive {
+  background: #9c1c54;
+}
+
+.stepCircleActive {
+  box-shadow: 0 0 0 6px rgba(156, 28, 84, 0.18);
+}
+
+.stepCircleUpcoming {
+  background: #d1d5db;
+  color: #6b7280;
+}
+
+.stepLine {
+  width: 2px;
+  flex: 1;
+  min-height: 30px;
+  margin: 4px 0;
+  background-image: linear-gradient(to bottom, #c9c9c9 50%, transparent 50%);
+  background-size: 2px 10px;
+}
+
+.stepText {
+  flex: 1;
+  padding-bottom: 22px;
+}
+
+.stepItem:last-child .stepText {
+  padding-bottom: 0;
+}
+
+.stepTitle {
+  margin: 5px 0 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #6b7280;
+  transition:
+    color 0.4s ease,
+    font-size 0.4s ease;
+}
+
+.stepTitleActive {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 30px;
+  font-weight: 600;
+  color: #14151a;
+  margin-top: -10px;
+}
+
+.stepDescWrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.45s ease,
+    opacity 0.35s ease;
+}
+
+.stepDescWrapperOpen {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.stepDesc {
+  overflow: hidden;
+  margin: 8px 0 25px;
+  color: #4b5563;
+  font-size: 20px !important;
+  line-height: 1.75rem;
+}
+
+/* ---------- Right side image frame ---------- */
+/* .frame is the static outer circle. Only the children inside .frame move. */
+
+.frame {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fbf0b0, #f3e08e);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.visual {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  transition:
+    transform 0.6s cubic-bezier(0.65, 0, 0.35, 1),
+    opacity 0.5s ease;
+}
+
+.visualActive {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.visualAbove {
+  transform: translateY(-120%);
+  opacity: 0;
+}
+
+.visualBelow {
+  transform: translateY(120%);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .stepCircle,
+  .stepTitle,
+  .stepDescWrapper,
+  .visual {
+    transition: none !important;
+  }
+}
+
+/* ---------- Responsive breakpoints ---------- */
+
+@media (min-width: 576px) {
+  .frame {
+    width: 260px;
+    height: 260px;
+  }
+}
+
+@media (min-width: 768px) {
+  .inner {
+    padding: 28px 32px 36px;
+  }
+
+  .frame {
+    width: 320px;
+    height: 320px;
+  }
+
+  .stepDesc {
+    font-size: 1.02rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .inner {
+    padding: 32px 48px;
+  }
+
+  .content {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 56px;
+  }
+
+  .left {
+    max-width: 540px;
+  }
+
+  .frame {
+    width: 380px;
+    height: 380px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .frame {
+    /* width: 440px;
+    height: 440px; */
+  }
+}
+
+/* Keep everything fitting on short / landscape-mobile viewports */
+@media (max-height: 680px) {
+  .heading {
+    margin-bottom: -4px;
+  }
+
+  .subtitle {
+    display: none;
+  }
+
+  .frame {
+    width: 180px;
+    height: 180px;
+  }
+}
