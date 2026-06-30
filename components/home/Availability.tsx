@@ -7,72 +7,72 @@ import { useState, useMemo } from "react";
 type Status = "low" | "booked";
 
 function generateAvailability(year: number, month: number): Record<number, Status> {
-    // Deterministic but varied per month
-    const seed = year * 12 + month;
-    const booked = [2, 9, 12, 17, 24, 28, 1, 5, 8, 15, 22].map((d) => ((d + seed) % 28) + 1);
+  // Deterministic but varied per month
+  const seed = year * 12 + month;
+  const booked = [2, 9, 12, 17, 24, 28, 1, 5, 8, 15, 22].map((d) => ((d + seed) % 28) + 1);
 
-    const map: Record<number, Status> = {};
-    for (let d = 1; d <= 31; d++) {
-        if (booked.includes(d)) map[d] = "booked";
-        else map[d] = "low";
-    }
-    return map;
+  const map: Record<number, Status> = {};
+  for (let d = 1; d <= 31; d++) {
+    if (booked.includes(d)) map[d] = "booked";
+    else map[d] = "low";
+  }
+  return map;
 }
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const DAYS = ["M", "T", "W", "T", "F", "S", "S"];
 
 function ordinal(d: number) {
-    const s = ["th", "st", "nd", "rd"];
-    const v = d % 100;
-    return d + (s[(v - 20) % 10] || s[v] || s[0]);
+  const s = ["th", "st", "nd", "rd"];
+  const v = d % 100;
+  return d + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
 const STATUS_META: Record<Status, { label: string; emoji: string; color: string; msg: string; sub: string }> = {
-    booked: { label: "Fully Booked", emoji: "💍", color: "#E53E3E", msg: "Uh oh… this date is", sub: "Try another day to find your ideal spot." },
-    low: { label: "Available", emoji: "🕊️", color: "#48BB78", msg: "This date is fully", sub: "Plenty of venues available — book at your pace." },
+  booked: { label: "Fully Booked", emoji: "💍", color: "#E53E3E", msg: "Uh oh… this date is", sub: "Try another day to find your ideal spot." },
+  low: { label: "Available", emoji: "🕊️", color: "#48BB78", msg: "This date is fully", sub: "Plenty of venues available — book at your pace." },
 };
 
 export default function VenueAvailability() {
-    const today = new Date();
-    const [viewYear, setViewYear] = useState(today.getFullYear());
-    const [viewMonth, setViewMonth] = useState(today.getMonth());
-    const [selected, setSelected] = useState<number | null>(null);
+  const today = new Date();
+  const [viewYear, setViewYear] = useState(today.getFullYear());
+  const [viewMonth, setViewMonth] = useState(today.getMonth());
+  const [selected, setSelected] = useState<number | null>(null);
 
-    const availability = useMemo(() => generateAvailability(viewYear, viewMonth), [viewYear, viewMonth]);
+  const availability = useMemo(() => generateAvailability(viewYear, viewMonth), [viewYear, viewMonth]);
 
-    // Days in month, and what weekday the 1st falls on (0=Mon…6=Sun)
-    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
-    const firstDow = (new Date(viewYear, viewMonth, 1).getDay() + 6) % 7; // Mon-based
+  // Days in month, and what weekday the 1st falls on (0=Mon…6=Sun)
+  const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+  const firstDow = (new Date(viewYear, viewMonth, 1).getDay() + 6) % 7; // Mon-based
 
-    const prevMonth = () => {
-        if (viewMonth === 0) { setViewYear(y => y - 1); setViewMonth(11); }
-        else setViewMonth(m => m - 1);
-        setSelected(null);
-    };
-    const nextMonth = () => {
-        if (viewMonth === 11) { setViewYear(y => y + 1); setViewMonth(0); }
-        else setViewMonth(m => m + 1);
-        setSelected(null);
-    };
+  const prevMonth = () => {
+    if (viewMonth === 0) { setViewYear(y => y - 1); setViewMonth(11); }
+    else setViewMonth(m => m - 1);
+    setSelected(null);
+  };
+  const nextMonth = () => {
+    if (viewMonth === 11) { setViewYear(y => y + 1); setViewMonth(0); }
+    else setViewMonth(m => m + 1);
+    setSelected(null);
+  };
 
-    const selStatus = selected ? availability[selected] : null;
-    const selMeta = selStatus ? STATUS_META[selStatus] : null;
-    const selDateStr = selected
-        ? `${ordinal(selected)} ${MONTHS[viewMonth]}, ${viewYear}`
-        : null;
+  const selStatus = selected ? availability[selected] : null;
+  const selMeta = selStatus ? STATUS_META[selStatus] : null;
+  const selDateStr = selected
+    ? `${ordinal(selected)} ${MONTHS[viewMonth]}, ${viewYear}`
+    : null;
 
-    // Calendar grid: leading blanks + days
-    const cells: (number | null)[] = [
-        ...Array(firstDow).fill(null),
-        ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
-    ];
-    // Pad to complete final row
-    while (cells.length % 7 !== 0) cells.push(null);
+  // Calendar grid: leading blanks + days
+  const cells: (number | null)[] = [
+    ...Array(firstDow).fill(null),
+    ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
+  ];
+  // Pad to complete final row
+  while (cells.length % 7 !== 0) cells.push(null);
 
-    return (
-        <>
-            <style>{`
+  return (
+    <>
+      <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap');
 
         /* ── Section ── */
@@ -401,133 +401,133 @@ export default function VenueAvailability() {
         }
       `}</style>
 
-            <section className="va-section">
-                <div className="va-blob va-blob-1" />
-                <div className="va-blob va-blob-2" />
+      <section className="va-section">
+        <div className="va-blob va-blob-1" />
+        <div className="va-blob va-blob-2" />
 
-                <div className="va-inner">
-                    {/* Heading */}
-                    <p className="va-eyebrow">Plan Ahead</p>
-                    <h2 className="va-title">Check Venue Availability</h2>
-                    <p className="va-subtitle">Select a date to see how soon you need to book your dream celebration.</p>
+        <div className="va-inner">
+          {/* Heading */}
+          <p className="va-eyebrow">Plan Ahead</p>
+          <h2 className="va-title">Check Venue Availability</h2>
+          <p className="va-subtitle">Select a date to see how soon you need to book your dream celebration.</p>
 
-                    <div className="va-grid">
-                        {/* ── Calendar ── */}
-                        <div className="va-cal">
-                            <div className="va-cal-nav">
-                                <button className="va-nav-btn" onClick={prevMonth} aria-label="Previous month">
-                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M10 3L5 8l5 5" />
-                                    </svg>
-                                </button>
-                                <div className="va-month-label">
-                                    <span className="va-month-name">{MONTHS[viewMonth]}</span>
-                                    <span className="va-month-year">{viewYear}</span>
-                                </div>
-                                <button className="va-nav-btn" onClick={nextMonth} aria-label="Next month">
-                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M6 3l5 5-5 5" />
-                                    </svg>
-                                </button>
-                            </div>
-
-                            {/* Day headers */}
-                            <div className="va-day-headers">
-                                {DAYS.map((d, i) => (
-                                    <div key={i} className="va-day-hdr">{d}</div>
-                                ))}
-                            </div>
-
-                            {/* Dates */}
-                            <div className="va-dates">
-                                {cells.map((day, i) => {
-                                    if (!day) {
-                                        return <div key={i} className="va-day empty" />;
-                                    }
-                                    const status = availability[day];
-                                    const isSelected = selected === day;
-                                    const isBooked = status === "booked";
-                                    return (
-                                        <button
-                                            key={i}
-                                            className={`va-day${isSelected ? " selected" : ""}${isBooked ? " booked" : ""}`}
-                                            data-status={status}
-                                            onClick={() => !isBooked && setSelected(day)}
-                                            disabled={isBooked}
-                                            aria-label={`${day} ${MONTHS[viewMonth]} — ${STATUS_META[status].label}`}
-                                        >
-                                            {day}
-                                        </button>
-                                    );
-                                })}
-                            </div>
-
-                            {/* Legend */}
-                            <div className="va-legend">
-                                {[
-                                    { color: "#48BB78", label: "Available" },
-                                    { color: "rgba(229,62,62,0.3)", label: "Fully Booked" },
-                                ].map((l) => (
-                                    <div key={l.label} className="va-legend-item">
-                                        <div
-                                            className="va-legend-dot"
-                                            style={{
-                                                background: l.color,
-                                                border: l.dashed ? `1.5px dashed ${l.color}` : "none",
-                                                boxSizing: "border-box",
-                                            }}
-                                        />
-                                        {l.label}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* ── Info panel ── */}
-                        <div className="va-info">
-                            {!selected || !selMeta ? (
-                                <div className="va-info-empty">
-                                    <div className="va-info-empty-icon">📅</div>
-                                    <p className="va-info-empty-text">
-                                        Tap any date on the calendar to check<br />availability for your special day.
-                                    </p>
-                                </div>
-                            ) : (
-                                <>
-                                    <div className="va-info-header">
-                                        <p className="va-info-date">{selDateStr}</p>
-                                        <p className="va-info-day">
-                                            {new Date(viewYear, viewMonth, selected).toLocaleDateString("en-IN", { weekday: "long" })}
-                                        </p>
-                                    </div>
-                                    <div className="va-info-body">
-                                        <div className="va-info-emoji">{selMeta.emoji}</div>
-                                        <p className="va-info-msg">
-                                            {selMeta.msg}
-                                        </p>
-                                        <span
-                                            className="va-status-badge"
-                                            style={{
-                                                color: selMeta.color,
-                                                borderColor: selMeta.color,
-                                                background: `${selMeta.color}12`,
-                                            }}
-                                        >
-                                            {selMeta.label}
-                                        </span>
-                                        <p className="va-info-sub">{selMeta.sub}</p>
-                                        {selStatus !== "booked" && (
-                                            <a href="/rsvp" className="va-info-cta">
-                                                Reserve this date →
-                                            </a>
-                                        )}
-                                    </div>
-                                </>
-                            )}
-                        </div>
-                    </div>
+          <div className="va-grid">
+            {/* ── Calendar ── */}
+            <div className="va-cal">
+              <div className="va-cal-nav">
+                <button className="va-nav-btn" onClick={prevMonth} aria-label="Previous month">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M10 3L5 8l5 5" />
+                  </svg>
+                </button>
+                <div className="va-month-label">
+                  <span className="va-month-name">{MONTHS[viewMonth]}</span>
+                  <span className="va-month-year">{viewYear}</span>
                 </div>
-            </section>
-        </>
-    );
+                <button className="va-nav-btn" onClick={nextMonth} aria-label="Next month">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M6 3l5 5-5 5" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Day headers */}
+              <div className="va-day-headers">
+                {DAYS.map((d, i) => (
+                  <div key={i} className="va-day-hdr">{d}</div>
+                ))}
+              </div>
+
+              {/* Dates */}
+              <div className="va-dates">
+                {cells.map((day, i) => {
+                  if (!day) {
+                    return <div key={i} className="va-day empty" />;
+                  }
+                  const status = availability[day];
+                  const isSelected = selected === day;
+                  const isBooked = status === "booked";
+                  return (
+                    <button
+                      key={i}
+                      className={`va-day${isSelected ? " selected" : ""}${isBooked ? " booked" : ""}`}
+                      data-status={status}
+                      onClick={() => !isBooked && setSelected(day)}
+                      disabled={isBooked}
+                      aria-label={`${day} ${MONTHS[viewMonth]} — ${STATUS_META[status].label}`}
+                    >
+                      {day}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Legend */}
+              <div className="va-legend">
+                {[
+                  { color: "#48BB78", label: "Available" },
+                  { color: "rgba(229,62,62,0.3)", label: "Fully Booked" },
+                ].map((l) => (
+                  <div key={l.label} className="va-legend-item">
+                    <div
+                      className="va-legend-dot"
+                      style={{
+                        background: l.color,
+                        border: l.dashed ? `1.5px dashed ${l.color}` : "none",
+                        boxSizing: "border-box",
+                      }}
+                    />
+                    {l.label}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ── Info panel ── */}
+            <div className="va-info">
+              {!selected || !selMeta ? (
+                <div className="va-info-empty">
+                  <div className="va-info-empty-icon">📅</div>
+                  <p className="va-info-empty-text">
+                    Tap any date on the calendar to check<br />availability for your special day.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <div className="va-info-header">
+                    <p className="va-info-date">{selDateStr}</p>
+                    <p className="va-info-day">
+                      {new Date(viewYear, viewMonth, selected).toLocaleDateString("en-IN", { weekday: "long" })}
+                    </p>
+                  </div>
+                  <div className="va-info-body">
+                    <div className="va-info-emoji">{selMeta.emoji}</div>
+                    <p className="va-info-msg">
+                      {selMeta.msg}
+                    </p>
+                    <span
+                      className="va-status-badge"
+                      style={{
+                        color: selMeta.color,
+                        borderColor: selMeta.color,
+                        background: `${selMeta.color}12`,
+                      }}
+                    >
+                      {selMeta.label}
+                    </span>
+                    <p className="va-info-sub">{selMeta.sub}</p>
+                    {selStatus !== "booked" && (
+                      <a href="/rsvp" className="va-info-cta">
+                        Reserve this date →
+                      </a>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
 }
