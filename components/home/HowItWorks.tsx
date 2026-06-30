@@ -107,22 +107,30 @@ export default function HowItWorks() {
             </div>
 
             <div className={styles.right}>
-              <div className={styles.frame}>
-                {STEPS.map((step, index) => {
-                  let positionClass = styles.visualBelow;
-                  if (index === activeIndex) positionClass = styles.visualActive;
-                  else if (index < activeIndex) positionClass = styles.visualAbove;
+              <div className={styles.frameWrapper}>
+                <img
+                  src="/images/Img frame.png"
+                  alt=""
+                  aria-hidden="true"
+                  className={styles.frameImage}
+                />
+                <div className={styles.frame}>
+                  {STEPS.map((step, index) => {
+                    let positionClass = styles.visualBelow;
+                    if (index === activeIndex) positionClass = styles.visualActive;
+                    else if (index < activeIndex) positionClass = styles.visualAbove;
 
-                  return (
-                    <div
-                      key={step.id}
-                      className={`${styles.visual} ${positionClass}`}
-                      aria-hidden={index !== activeIndex}
-                    >
-                      <StepVisual index={index} />
-                    </div>
-                  );
-                })}
+                    return (
+                      <div
+                        key={step.id}
+                        className={`${styles.visual} ${positionClass}`}
+                        aria-hidden={index !== activeIndex}
+                      >
+                        <StepVisual index={index} />
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>

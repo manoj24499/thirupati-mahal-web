@@ -12,12 +12,12 @@
   overflow: hidden;
   display: flex;
   align-items: center;
-  background: linear-gradient(160deg, #fffefa 0%, #fbf3ea 55%, #fdefde 100%);
+  background: linear-gradient(160deg, #fffefa 0%, #fbf3ea 25%, #fdefde 100%);
 }
 
 .inner {
   width: 100%;
-  max-width: 1350px;
+  max-width: 1440px;
   max-height: 100vh;
   margin: 0 auto;
   padding: 20px 20px 28px;
@@ -83,7 +83,31 @@
 .right {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
+}
+
+.frameWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Size is driven by the decorative image */
+  width: 340px;
+  height: 340px;
+  flex-shrink: 0;
+}
+
+.frameImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* keeps only the drawn lines, drops solid white background */
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* ---------- Step list ---------- */
@@ -160,10 +184,10 @@
 
 .stepTitleActive {
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 30px;
+  font-size: 40px;
   font-weight: 600;
   color: #14151a;
-  margin-top: -10px;
+  margin-top: -13px;
 }
 
 .stepDescWrapper {
@@ -189,14 +213,16 @@
 }
 
 /* ---------- Right side image frame ---------- */
-/* .frame is the static outer circle. Only the children inside .frame move. */
+/* .frame is the yellow circle. Only the children inside .frame move. */
 
 .frame {
   position: relative;
-  width: 220px;
-  height: 220px;
+  z-index: 1;
+  width: 350px;
+  height: 350px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #fbf0b0, #f3e08e);
+  /* background: radial-gradient(circle at 35% 30%, #fbf0b0, #f3e08e); */
+  background: radial-gradient(circle at 35% 30%, #fdefde, #fdefde);
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -229,7 +255,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-
   .stepCircle,
   .stepTitle,
   .stepDescWrapper,
@@ -241,9 +266,14 @@
 /* ---------- Responsive breakpoints ---------- */
 
 @media (min-width: 576px) {
+  .frameWrapper {
+    width: 400px;
+    height: 400px;
+  }
+
   .frame {
-    width: 260px;
-    height: 260px;
+    width: 190px;
+    height: 190px;
   }
 }
 
@@ -252,9 +282,14 @@
     padding: 28px 32px 36px;
   }
 
+  .frameWrapper {
+    width: 460px;
+    height: 460px;
+  }
+
   .frame {
-    width: 320px;
-    height: 320px;
+    width: 220px;
+    height: 220px;
   }
 
   .stepDesc {
@@ -278,16 +313,21 @@
     max-width: 540px;
   }
 
+  .frameWrapper {
+    width: 520px;
+    height: 520px;
+  }
+
   .frame {
-    width: 380px;
-    height: 380px;
+    width: 260px;
+    height: 260px;
   }
 }
 
 @media (min-width: 1200px) {
   .frame {
-    /* width: 440px;
-    height: 440px; */
+    width: 350px;
+    height: 350px;
   }
 }
 
@@ -301,8 +341,13 @@
     display: none;
   }
 
+  .frameWrapper {
+    width: 260px;
+    height: 260px;
+  }
+
   .frame {
-    width: 180px;
-    height: 180px;
+    width: 130px;
+    height: 130px;
   }
 }
