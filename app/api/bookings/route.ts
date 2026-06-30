@@ -1,47 +1,14 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
-
-// Define the shape of our booking data
-export interface Booking {
-  id: string;
-  userName: string;
-  email: string;
-  phone: string;
-  address: string;
-  bookingDate: string;
-  userBookedDate: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-const dataFilePath = path.join(process.cwd(), 'data', 'bookings.json');
-
-// Helper to read the JSON file
-export async function getBookings(): Promise<Booking[]> {
-  try {
-    const data = await fs.readFile(dataFilePath, 'utf8');
-    return JSON.parse(data || '[]');
-  } catch (error: any) {
-    // If file doesn't exist, return empty array
-    if (error.code === 'ENOENT') {
-      return [];
-    }
-    throw error;
-  }
-}
-
-// Helper to write to the JSON file
-export async function saveBookings(bookings: Booking[]) {
-  await fs.writeFile(dataFilePath, JSON.stringify(bookings, null, 2), 'utf8');
-}
-
+import db from '@/lib/db';
+import { Booking } from '@/utils/types';
+import { getBookings, saveBookings } from '@/utils';
 export async function GET() {
   try {
-    const bookings = await getBookings();
+    const stmt = db.prepare('SELECT * FROM bookings ORDER BY createdAt DESC');
+    const bookings = stmt.all();
     return NextResponse.json({ success: true, data: bookings }, { status: 200 });
   } catch (error) {
+    console.error('Error fetching bookings from DB:', error);
     return NextResponse.json({ success: false, error: 'Failed to read bookings data.' }, { status: 500 });
   }
 }
@@ -63,6 +30,14 @@ export async function POST(request: Request) {
       updatedAt: new Date().toISOString(),
     };
 
+    // Save to database
+    const insert = db.prepare(`
+      INSERT INTO bookings (id, userName, email, phone, address, bookingDate, userBookedDate, status, createdAt, updatedAt)
+      VALUES (@id, @userName, @email, @phone, @address, @bookingDate, @userBookedDate, @status, @createdAt, @updatedAt)
+    `);
+    insert.run(newBooking);
+
+    // Save to JSON
     const bookings = await getBookings();
     bookings.push(newBooking);
     
@@ -70,6 +45,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, data: newBooking }, { status: 201 });
   } catch (error) {
+    console.error('Failed to create booking:', error);
     return NextResponse.json({ success: false, error: 'Failed to create booking.' }, { status: 500 });
   }
 }
