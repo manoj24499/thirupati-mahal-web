@@ -12,12 +12,7 @@
   overflow: hidden;
   display: flex;
   align-items: center;
-<<<<<<< HEAD
   background: linear-gradient(160deg, #fffefa 0%, #fbf3ea 25%, #fdefde 100%);
-=======
-  /* background: linear-gradient(160deg, #fffefa 0%, #fbf3ea 25%, #fdefde 100%); */
-  background: linear-gradient(90deg, #fdefde 0%, #fbf3ea 75%, #fffefa 100%);
->>>>>>> fdd792d4cba36721e63febb41af9f17365570a4c
 }
 
 .inner {
