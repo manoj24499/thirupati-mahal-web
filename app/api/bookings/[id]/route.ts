@@ -49,7 +49,8 @@ export async function PUT(
     const updateStmt = db.prepare(`
       UPDATE bookings 
       SET userName = @userName, email = @email, phone = @phone, address = @address, 
-          bookingDate = @bookingDate, userBookedDate = @userBookedDate, status = @status, 
+          bookingStartDate = @bookingStartDate, bookingEndDate = @bookingEndDate,
+          userBookedDate = @userBookedDate, status = @status, 
           createdAt = @createdAt, updatedAt = @updatedAt
       WHERE id = @id
     `);

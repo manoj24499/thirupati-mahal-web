@@ -33,7 +33,7 @@ export default function HowItWorks() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const updateActiveIndex = useCallback(() => {
-    const section = sectionRef.current;
+    const section = sectionRef.current  as any;
     if (!section) return;
 
     const rect = section.getBoundingClientRect();
@@ -59,7 +59,7 @@ export default function HowItWorks() {
   }, []);
 
   useEffect(() => {
-    let frameId = null;
+    let frameId: any = null;
 
     const onScroll = () => {
       if (frameId) return;
@@ -153,7 +153,7 @@ function Heading() {
   );
 }
 
-function StepItem({ step, isActive, isCompleted, isLast }) {
+function StepItem({ step, isActive, isCompleted, isLast }:{ step:any, isActive:boolean, isCompleted:boolean, isLast:boolean }) {
   const circleClass = [
     styles.stepCircle,
     isActive ? styles.stepCircleActive : '',
@@ -188,7 +188,7 @@ function StepItem({ step, isActive, isCompleted, isLast }) {
 /* ---------- Decorative SVGs ---------- */
 /* Swap any of these for real brand assets / next/image whenever you have them. */
 
-function Ornament({ className, flip }) {
+function Ornament({ className, flip }:{ className:string, flip?:boolean }) {
   return (
     <svg
       className={className}
@@ -205,7 +205,7 @@ function Ornament({ className, flip }) {
   );
 }
 
-function StepVisual({ index }) {
+function StepVisual({ index }: { index: number }) {
   if (index === 0) return <RequirementsVisual />;
   if (index === 1) return <ProposalVisual />;
   return <BookingVisual />;

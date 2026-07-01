@@ -12,7 +12,8 @@
   overflow: hidden;
   display: flex;
   align-items: center;
-  background: linear-gradient(160deg, #fffefa 0%, #fbf3ea 25%, #fdefde 100%);
+  /* background: linear-gradient(160deg, #fffefa 0%, #fbf3ea 25%, #fdefde 100%); */
+  background: linear-gradient(90deg, #fdefde 0%, #fbf3ea 75%, #fffefa 100%);
 }
 
 .inner {
@@ -310,7 +311,7 @@
   }
 
   .left {
-    max-width: 540px;
+    max-width: 630px;
   }
 
   .frameWrapper {

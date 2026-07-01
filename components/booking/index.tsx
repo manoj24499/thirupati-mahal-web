@@ -24,9 +24,11 @@ export default function BookingAdmin() {
     email: "",
     phone: "",
     address: "",
-    bookingDate: "",
+    bookingStartDate: "",
+    bookingEndDate: "",
     status: "pending",
   });
+  const today = new Date().toISOString().split("T")[0];
 
   // Handle Login
   const handleLogin = (e: React.FormEvent) => {
@@ -63,7 +65,8 @@ export default function BookingAdmin() {
         email: "",
         phone: "",
         address: "",
-        bookingDate: "",
+        bookingStartDate: "",
+        bookingEndDate: "",
         status: "pending",
       });
     }
@@ -90,7 +93,8 @@ export default function BookingAdmin() {
       email: editingBooking.email,
       phone: editingBooking.phone,
       address: editingBooking.address,
-      bookingDate: editingBooking.bookingDate,
+      bookingStartDate: editingBooking.bookingStartDate,
+      bookingEndDate: editingBooking.bookingEndDate,
       status: editingBooking.status,
     });
 
@@ -203,8 +207,12 @@ export default function BookingAdmin() {
                 <input required name="address" value={formData.address} onChange={handleInputChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-shadow text-black" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Booking Date</label>
-                <input type="date" required name="bookingDate" value={formData.bookingDate} onChange={handleInputChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-shadow text-black" />
+                <label className="block text-sm font-medium text-gray-700 mb-1">Booking Start Date</label>
+                <input type="date"  min={today} required name="bookingStartDate" value={formData.bookingStartDate} onChange={handleInputChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-shadow text-black" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Booking End Date</label>
+                <input type="date" min={today} required name="bookingEndDate" value={formData.bookingEndDate} onChange={handleInputChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-shadow text-black" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
@@ -266,7 +274,7 @@ export default function BookingAdmin() {
                         <div className="text-sm text-gray-500">{booking.phone}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">Event: <span className="font-medium">{booking.bookingDate}</span></div>
+                        <div className="text-sm text-gray-900">Event: <span className="font-medium">{booking.bookingStartDate} - {booking.bookingEndDate}</span></div>
                         <div className="text-xs text-gray-500">Booked: {booking.userBookedDate}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -328,7 +336,11 @@ export default function BookingAdmin() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Booking Date</label>
-                <input type="date" required name="bookingDate" value={editingBooking.bookingDate} onChange={handleEditInputChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-shadow text-black" />
+                <input type="date" required name="bookingStartDate" value={editingBooking.bookingStartDate} onChange={handleEditInputChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-shadow text-black" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Booking End Date</label>
+                <input type="date" required name="bookingEndDate" value={editingBooking.bookingEndDate} onChange={handleEditInputChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-shadow text-black" />
               </div>
               <div className="sm:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>

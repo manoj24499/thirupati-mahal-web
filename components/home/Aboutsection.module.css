@@ -1,0 +1,474 @@
+/* -----------------------------------------------------------------------
+   Section shell
+   ----------------------------------------------------------------------- */
+
+.section {
+  /* background: #fdefde; */
+  padding: 40px 24px;
+  background: linear-gradient(160deg, #fffefa 0%, #fbf3ea 25%, #fdefde 100%);
+}
+
+.inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 35fr 65fr;
+  gap: 56px;
+  align-items: center;
+}
+
+/* -----------------------------------------------------------------------
+   Entry animations
+   All children start hidden. When .visible is added (via IntersectionObserver)
+   each child animates in with a staggered delay.
+   ----------------------------------------------------------------------- */
+
+.imageCol,
+.contentCol {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.75s ease,
+    transform 0.75s ease;
+}
+
+.section.visible .imageCol {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.1s;
+}
+
+.section.visible .contentCol {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .imageCol,
+  .contentCol {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* -----------------------------------------------------------------------
+   Left column — images
+   ----------------------------------------------------------------------- */
+
+.imageCol {
+  position: relative;
+  /* tall enough to hold portrait primary + overlapping secondary */
+  aspect-ratio: 3 / 4.6;
+}
+
+/* ── Primary: tall vertical portrait ── */
+.primaryWrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* leaves room on right + bottom for the secondary overlay */
+  right: 10%;
+  bottom: 10%;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.16);
+}
+
+.primaryImg {
+  object-fit: cover;
+  object-position: center top;
+}
+
+/* ── Secondary: landscape overlay (unchanged feel) ── */
+.secondaryWrap {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 55%;
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
+  border: 5px solid #ffffff;
+}
+
+.secondaryImg {
+  object-fit: cover;
+}
+
+/* -----------------------------------------------------------------------
+   Right column — content
+   ----------------------------------------------------------------------- */
+
+.contentCol {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* -----------------------------------------------------------------------
+   Tabs
+   ----------------------------------------------------------------------- */
+
+.tabBar {
+  display: flex;
+  gap: 0;
+  background: #fff;
+  border-radius: 50px;
+  padding: 5px;
+  width: fit-content;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 12px rgba(156, 28, 84, 0.1);
+}
+
+.tab {
+  padding: 9px 28px;
+  border: none;
+  background: transparent;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: #9c1c54;
+}
+
+.tabActive {
+  background: #9c1c54;
+  color: #ffffff !important;
+}
+
+/* -----------------------------------------------------------------------
+   Panel (eyebrow, heading, body)
+   ----------------------------------------------------------------------- */
+
+.panel {
+  animation: fadeSlideIn 0.4s ease both;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #9c1c54;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+}
+
+.eyebrowLine {
+  display: block;
+  width: 28px;
+  height: 2px;
+  background: #9c1c54;
+  flex-shrink: 0;
+  border-radius: 2px;
+}
+
+.heading {
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  color: #1f2024;
+  margin: 0 0 16px;
+  line-height: 1.25;
+}
+
+.body {
+  color: #4b5563;
+  font-size: 0.97rem;
+  line-height: 1.75;
+  margin: 0 0 28px;
+}
+
+/* -----------------------------------------------------------------------
+   Stats grid — 4 columns, each card gets its own --card-color
+   ----------------------------------------------------------------------- */
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.statCard {
+  background: var(--card-color, #9c1c54);
+  border-radius: 14px;
+  padding: 18px 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+}
+
+.statValue {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* -----------------------------------------------------------------------
+   Services row
+   ----------------------------------------------------------------------- */
+
+.services {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.serviceItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  cursor: default;
+}
+
+.serviceCircle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #f7dfc1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.28s ease;
+  flex-shrink: 0;
+}
+
+.serviceIcon {
+  width: 22px;
+  height: 22px;
+  color: #9c1c54;
+  transition: color 0.28s ease;
+}
+
+.serviceItem:hover .serviceCircle {
+  background: #9c1c54;
+}
+
+.serviceItem:hover .serviceIcon {
+  color: #ffffff;
+}
+
+.serviceLabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #374151;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* -----------------------------------------------------------------------
+   Section-level heading ("Our Facilities")
+   ----------------------------------------------------------------------- */
+
+.sectionHeadingWrap {
+  max-width: 1280px;
+  margin: 0 auto 56px;
+  text-align: center;
+}
+
+.sectionEyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #9c1c54;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.sectionEyebrowLine {
+  display: block;
+  width: 32px;
+  height: 2px;
+  background: #9c1c54;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.sectionTitle {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 700;
+  color: #1f2024;
+  line-height: 1.2;
+  margin: 0;
+}
+
+/* highlighted word inside the title */
+.highlight {
+  position: relative;
+  display: inline-block;
+  color: #9c1c54;
+}
+
+/* subtle underline flourish */
+/* .highlight::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #9c1c54, #f31d82);
+  border-radius: 2px;
+  opacity: 0.6;
+} */
+
+/* -----------------------------------------------------------------------
+   Responsive
+   ----------------------------------------------------------------------- */
+
+/* Laptop / small desktop */
+@media (max-width: 1200px) {
+  .inner {
+    gap: 40px;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Tablet portrait */
+@media (max-width: 900px) {
+  .inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .imageCol {
+    aspect-ratio: 4 / 3;
+    order: 1;
+  }
+
+  .contentCol {
+    order: 2;
+  }
+
+  .primaryWrap {
+    right: 32%;
+    bottom: 20%;
+  }
+
+  .secondaryWrap {
+    width: 58%;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .sectionHeadingWrap {
+    margin-bottom: 40px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .section {
+    padding: 56px 16px;
+  }
+
+  .imageCol {
+    height: 300px;
+  }
+
+  .primaryWrap {
+    inset: 0 50px 50px 0;
+    border-radius: 18px;
+  }
+
+  .secondaryWrap {
+    width: 48%;
+    border-radius: 12px;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .services {
+    gap: 10px;
+  }
+
+  .serviceCircle {
+    width: 48px;
+    height: 48px;
+  }
+
+  .serviceIcon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .tab {
+    padding: 8px 18px;
+    font-size: 0.82rem;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 400px) {
+  .imageCol {
+    height: 260px;
+  }
+
+  .statsGrid {
+    gap: 8px;
+  }
+
+  .statCard {
+    padding: 14px 8px;
+  }
+
+  .services {
+    justify-content: center;
+  }
+}
