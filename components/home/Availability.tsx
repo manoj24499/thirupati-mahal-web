@@ -37,7 +37,15 @@ export default function VenueAvailability() {
   const today = new Date();
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
-  const [selected, setSelected] = useState<number | null>(null);
+  const [selected, setSelected] = useState<number[]>([]);
+
+  const toggleDate = (day: number) => {
+    setSelected((prev) =>
+      prev.includes(day)
+        ? prev.filter((d) => d !== day)
+        : [...prev, day].sort((a, b) => a - b)
+    );
+  };
 
   const availability = useMemo(() => generateAvailability(viewYear, viewMonth), [viewYear, viewMonth]);
 
@@ -48,18 +56,18 @@ export default function VenueAvailability() {
   const prevMonth = () => {
     if (viewMonth === 0) { setViewYear(y => y - 1); setViewMonth(11); }
     else setViewMonth(m => m - 1);
-    setSelected(null);
+    setSelected([]);
   };
   const nextMonth = () => {
     if (viewMonth === 11) { setViewYear(y => y + 1); setViewMonth(0); }
     else setViewMonth(m => m + 1);
-    setSelected(null);
+    setSelected([]);
   };
 
-  const selStatus = selected ? availability[selected] : null;
-  const selMeta = selStatus ? STATUS_META[selStatus] : null;
-  const selDateStr = selected
-    ? `${ordinal(selected)} ${MONTHS[viewMonth]}, ${viewYear}`
+  const selStatus = selected.length > 0 ? availability[selected[0]] : null;
+  const selMeta = selStatus ? STATUS_META[selStatus as any] : null;
+  const selDateStr = selected.length > 0
+    ? `${selected.map(ordinal).join(', ')} ${MONTHS[viewMonth]}, ${viewYear}`
     : null;
 
   // Calendar grid: leading blanks + days
@@ -486,14 +494,14 @@ export default function VenueAvailability() {
                     return <div key={i} className="va-day empty" />;
                   }
                   const status = availability[day];
-                  const isSelected = selected === day;
+                  const isSelected = selected.includes(day);
                   const isBooked = status === "booked";
                   return (
                     <button
                       key={i}
                       className={`va-day${isSelected ? " selected" : ""}${isBooked ? " booked" : ""}`}
                       data-status={status}
-                      onClick={() => !isBooked && setSelected(day)}
+                      onClick={() => !isBooked && toggleDate(day)}
                       disabled={isBooked}
                       aria-label={`${day} ${MONTHS[viewMonth]} — ${STATUS_META[status].label}`}
                     >
@@ -526,7 +534,7 @@ export default function VenueAvailability() {
 
             {/* ── Info panel ── */}
             <div className="va-info">
-              {!selected || !selMeta ? (
+              {selected.length === 0 || !selMeta ? (
                 <div className="va-info-empty">
                   <div className="va-info-empty-icon">📅</div>
                   <p className="va-info-empty-text">
@@ -538,7 +546,9 @@ export default function VenueAvailability() {
                   <div className="va-info-header">
                     <p className="va-info-date">{selDateStr}</p>
                     <p className="va-info-day">
-                      {new Date(viewYear, viewMonth, selected).toLocaleDateString("en-IN", { weekday: "long" })}
+                      {selected.length === 1
+                        ? new Date(viewYear, viewMonth, selected[0]).toLocaleDateString("en-IN", { weekday: "long" })
+                        : `${selected.length} dates selected`}
                     </p>
                   </div>
                   <div className="va-info-body">
