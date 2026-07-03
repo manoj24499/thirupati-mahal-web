@@ -5,9 +5,10 @@
 .gallerySection {
   position: relative;
   width: 100%;
-  padding: 20px 60px;
-  min-height: 100vh;
-  background: #ffffff;
+  padding: 40px 60px;
+  /* min-height: 100vh; */
+  /* background: #fdefde; */
+  background: linear-gradient(320deg, #fdefde 0%, #fbf3ea 25%, #fffefa 100%);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -120,7 +121,8 @@
 
 .item {
   position: relative;
-  flex: 0 0 calc((100cqw - (var(--gap) * (var(--visible) - 1))) / var(--visible));
+  flex: 0 0
+    calc((100cqw - (var(--gap) * (var(--visible) - 1))) / var(--visible));
   aspect-ratio: 1 / 1;
   /* equal width and height */
   margin: 0;

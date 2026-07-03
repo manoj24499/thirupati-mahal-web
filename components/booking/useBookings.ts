@@ -6,7 +6,8 @@ export interface Booking {
   email: string;
   phone: string;
   address: string;
-  bookingDate: string;
+  bookingStartDate: string;
+  bookingEndDate: string;
   userBookedDate: string;
   status: string;
   createdAt: string;

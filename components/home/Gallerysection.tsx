@@ -56,7 +56,7 @@ export default function GallerySection() {
   );
 }
 
-function GalleryRow({ images, direction }) {
+function GalleryRow({ images, direction }:any) {
   // The seamless-loop trick: render the image set TWICE back to back.
   // The track is then exactly 2x the width of one full set, and the
   // CSS animation only ever moves it by 50% of its own width — which

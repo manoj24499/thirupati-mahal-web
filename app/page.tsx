@@ -4,6 +4,7 @@ import Navbar from "../components/layout/Navbar";
 import Preloader from "../components/preloader";
 import Hero from "../components/home/Hero";
 import Gallery from "../components/home/Gallerysection"
+import Aboutsection from "../components/home/Aboutsection";
 import HowItWorks from "@/components/home/HowItWorks";
 import VideoHero from "@/components/home/VideoHero";
 import Calender from "../components/home/Availability";
@@ -20,7 +21,8 @@ export default function Home() {
       {!loaded && <Preloader onComplete={() => setLoaded(true)} />}
       <Navbar />
       <Hero />
-      <Gallery />
+      <Gallery />   
+      <Aboutsection />
       <HowItWorks />
       <VideoHero />
       <Calender />

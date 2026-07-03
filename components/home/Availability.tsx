@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 
-// ── Availability data ────────────────────────────────────────────────
-// "low" | "booked"
-type Status = "low" | "booked";
+// ── Types ────────────────────────────────────────────────────────────────────
+type DayStatus = "available" | "booked" | "loading";
 
+<<<<<<< HEAD
 function generateAvailability(year: number, month: number): Record<number, Status> {
   // Deterministic but varied per month
   const seed = year * 12 + month;
@@ -20,6 +20,12 @@ function generateAvailability(year: number, month: number): Record<number, Statu
 }
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+=======
+const MONTHS = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+];
+>>>>>>> fdd792d4cba36721e63febb41af9f17365570a4c
 const DAYS = ["M", "T", "W", "T", "F", "S", "S"];
 
 function ordinal(d: number) {
@@ -28,12 +34,35 @@ function ordinal(d: number) {
   return d + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
+<<<<<<< HEAD
 const STATUS_META: Record<Status, { label: string; emoji: string; color: string; msg: string; sub: string }> = {
   booked: { label: "Fully Booked", emoji: "💍", color: "#E53E3E", msg: "Uh oh… this date is", sub: "Try another day to find your ideal spot." },
   low: { label: "Available", emoji: "🕊️", color: "#48BB78", msg: "This date is fully", sub: "Plenty of venues available — book at your pace." },
+=======
+const STATUS_META: Record<
+    "available" | "booked",
+    { label: string; emoji: string; color: string; msg: string; sub: string }
+> = {
+    booked: {
+        label: "Fully Booked",
+        emoji: "💍",
+        color: "#E53E3E",
+        msg: "Uh oh… this date is",
+        sub: "Try another day to find your ideal spot.",
+    },
+    available: {
+        label: "Available",
+        emoji: "🕊️",
+        color: "#48BB78",
+        msg: "This date is fully",
+        sub: "Plenty of venues available — book at your pace.",
+    },
+>>>>>>> fdd792d4cba36721e63febb41af9f17365570a4c
 };
 
+// ── Component ─────────────────────────────────────────────────────────────────
 export default function VenueAvailability() {
+<<<<<<< HEAD
   const today = new Date();
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
@@ -44,6 +73,47 @@ export default function VenueAvailability() {
   // Days in month, and what weekday the 1st falls on (0=Mon…6=Sun)
   const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
   const firstDow = (new Date(viewYear, viewMonth, 1).getDay() + 6) % 7; // Mon-based
+=======
+    const today = new Date();
+    const [viewYear, setViewYear] = useState(today.getFullYear());
+    const [viewMonth, setViewMonth] = useState(today.getMonth()); // 0-indexed
+    const [selected, setSelected] = useState<number | null>(null);
+
+    // Set of "YYYY-MM-DD" strings that are booked (from API)
+    const [bookedDates, setBookedDates] = useState<Set<string>>(new Set());
+    const [isFetching, setIsFetching] = useState(false);
+    const [fetchError, setFetchError] = useState<string | null>(null);
+
+    // ── Fetch bookings when month/year changes ───────────────────────────────
+    const fetchBookings = useCallback(async (year: number, month: number) => {
+        setIsFetching(true);
+        setFetchError(null);
+        try {
+            // month param is 1-indexed for the API
+            const res = await fetch(
+                `/api/bookings/by-month?year=${year}&month=${month + 1}`
+            );
+            const json = await res.json();
+            if (json.success) {
+                setBookedDates(new Set<string>(json.bookedDates as string[]));
+            } else {
+                setFetchError(json.error ?? "Failed to load availability.");
+            }
+        } catch {
+            setFetchError("Network error — could not load availability.");
+        } finally {
+            setIsFetching(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchBookings(viewYear, viewMonth);
+    }, [viewYear, viewMonth, fetchBookings]);
+
+    // ── Calendar helpers ─────────────────────────────────────────────────────
+    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+    const firstDow = (new Date(viewYear, viewMonth, 1).getDay() + 6) % 7; // Mon-based
+>>>>>>> fdd792d4cba36721e63febb41af9f17365570a4c
 
   const prevMonth = () => {
     if (viewMonth === 0) { setViewYear(y => y - 1); setViewMonth(11); }
@@ -56,6 +126,7 @@ export default function VenueAvailability() {
     setSelected(null);
   };
 
+<<<<<<< HEAD
   const selStatus = selected ? availability[selected] : null;
   const selMeta = selStatus ? STATUS_META[selStatus] : null;
   const selDateStr = selected
@@ -69,6 +140,35 @@ export default function VenueAvailability() {
   ];
   // Pad to complete final row
   while (cells.length % 7 !== 0) cells.push(null);
+=======
+    /** Return true if the given day-of-month is booked */
+    const isDayBooked = useCallback(
+        (day: number) => {
+            const mm = String(viewMonth + 1).padStart(2, "0");
+            const dd = String(day).padStart(2, "0");
+            return bookedDates.has(`${viewYear}-${mm}-${dd}`);
+        },
+        [bookedDates, viewYear, viewMonth]
+    );
+
+    // ── Selected-date info ───────────────────────────────────────────────────
+    const selStatus: "available" | "booked" | null = useMemo(() => {
+        if (!selected) return null;
+        return isDayBooked(selected) ? "booked" : "available";
+    }, [selected, isDayBooked]);
+
+    const selMeta = selStatus ? STATUS_META[selStatus] : null;
+    const selDateStr = selected
+        ? `${ordinal(selected)} ${MONTHS[viewMonth]}, ${viewYear}`
+        : null;
+
+    // ── Calendar grid cells ──────────────────────────────────────────────────
+    const cells: (number | null)[] = [
+        ...Array(firstDow).fill(null),
+        ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
+    ];
+    while (cells.length % 7 !== 0) cells.push(null);
+>>>>>>> fdd792d4cba36721e63febb41af9f17365570a4c
 
   return (
     <>
@@ -187,7 +287,7 @@ export default function VenueAvailability() {
         .va-nav-btn svg { width: 14px; height: 14px; }
 
         .va-month-label {
-          display: flex; align-items: baseline; gap: 0.4rem;
+          display: flex; align-items: center; gap: 0.4rem;
         }
         .va-month-name {
           font-family: 'Playfair Display', serif;
@@ -199,6 +299,17 @@ export default function VenueAvailability() {
           font-size: 0.82rem; font-weight: 400;
           color: #8C6A50;
         }
+
+        /* Loading spinner next to month label */
+        .va-month-spinner {
+          width: 14px; height: 14px;
+          border: 2px solid rgba(196,150,106,0.25);
+          border-top-color: #C4966A;
+          border-radius: 50%;
+          animation: va-spin 0.7s linear infinite;
+          flex-shrink: 0;
+        }
+        @keyframes va-spin { to { transform: rotate(360deg); } }
 
         /* Day headers */
         .va-day-headers {
@@ -234,7 +345,6 @@ export default function VenueAvailability() {
           position: relative;
         }
         .va-day.empty { pointer-events: none; }
-        .va-day.outside { color: #CDB89A; font-size: 0.75rem; pointer-events: none; }
 
         /* Status dots */
         .va-day::after {
@@ -246,18 +356,36 @@ export default function VenueAvailability() {
           opacity: 0;
         }
 
-        .va-day[data-status="low"]       { background: rgba(72,187,120,0.06); }
-        .va-day[data-status="low"]::after       { background: #48BB78; opacity: 1; }
+        /* Available days */
+        .va-day[data-status="available"] { background: rgba(72,187,120,0.06); }
+        .va-day[data-status="available"]::after { background: #48BB78; opacity: 1; }
 
-        .va-day[data-status="booked"]    {
+        /* Booked days — strikethrough, disabled look */
+        .va-day[data-status="booked"] {
           background: rgba(229,62,62,0.05);
-          color: #B8916A;
+          color: #C4A090;
           text-decoration: line-through;
-          text-decoration-color: rgba(229,62,62,0.4);
+          text-decoration-color: rgba(229,62,62,0.45);
           cursor: not-allowed;
+          pointer-events: none;
+        }
+        .va-day[data-status="booked"]::after { background: #E53E3E; opacity: 0.7; }
+
+        /* Loading skeleton days */
+        .va-day[data-status="loading"] {
+          background: linear-gradient(90deg, #f5ede2 25%, #fdf5ec 50%, #f5ede2 75%);
+          background-size: 200% 100%;
+          animation: va-shimmer 1.2s infinite;
+          color: transparent;
+          cursor: default;
+          pointer-events: none;
+        }
+        @keyframes va-shimmer {
+          0%   { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
         }
 
-        .va-day:not([data-status="booked"]):hover {
+        .va-day:not([data-status="booked"]):not([data-status="loading"]):hover {
           background: rgba(196,150,106,0.15);
           border-color: #C4966A;
           color: #2A1A0E;
@@ -294,6 +422,19 @@ export default function VenueAvailability() {
         }
         .va-legend-dot {
           width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+        }
+
+        /* Error banner */
+        .va-error {
+          font-family: 'Inter', sans-serif;
+          font-size: 0.75rem;
+          color: #E53E3E;
+          background: rgba(229,62,62,0.06);
+          border: 1px solid rgba(229,62,62,0.18);
+          border-radius: 8px;
+          padding: 0.5rem 0.9rem;
+          margin-bottom: 1rem;
+          display: flex; align-items: center; gap: 0.4rem;
         }
 
         /* ── Info panel ── */
@@ -411,6 +552,7 @@ export default function VenueAvailability() {
           <h2 className="va-title">Check Venue Availability</h2>
           <p className="va-subtitle">Select a date to see how soon you need to book your dream celebration.</p>
 
+<<<<<<< HEAD
           <div className="va-grid">
             {/* ── Calendar ── */}
             <div className="va-cal">
@@ -423,6 +565,132 @@ export default function VenueAvailability() {
                 <div className="va-month-label">
                   <span className="va-month-name">{MONTHS[viewMonth]}</span>
                   <span className="va-month-year">{viewYear}</span>
+=======
+                    <div className="va-grid">
+                        {/* ── Calendar ── */}
+                        <div className="va-cal">
+                            <div className="va-cal-nav">
+                                <button className="va-nav-btn" onClick={prevMonth} aria-label="Previous month">
+                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M10 3L5 8l5 5" />
+                                    </svg>
+                                </button>
+                                <div className="va-month-label">
+                                    <span className="va-month-name">{MONTHS[viewMonth]}</span>
+                                    <span className="va-month-year">{viewYear}</span>
+                                    {isFetching && <span className="va-month-spinner" aria-label="Loading..." />}
+                                </div>
+                                <button className="va-nav-btn" onClick={nextMonth} aria-label="Next month">
+                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M6 3l5 5-5 5" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            {/* Error banner */}
+                            {fetchError && (
+                                <div className="va-error" role="alert">
+                                    ⚠ {fetchError}
+                                </div>
+                            )}
+
+                            {/* Day headers */}
+                            <div className="va-day-headers">
+                                {DAYS.map((d, i) => (
+                                    <div key={i} className="va-day-hdr">{d}</div>
+                                ))}
+                            </div>
+
+                            {/* Dates */}
+                            <div className="va-dates">
+                                {cells.map((day, i) => {
+                                    if (!day) {
+                                        return <div key={i} className="va-day empty" />;
+                                    }
+
+                                    const isBooked = !isFetching && isDayBooked(day);
+                                    const statusAttr: DayStatus = isFetching ? "loading" : isBooked ? "booked" : "available";
+                                    const isSelected = selected === day && !isBooked;
+
+                                    return (
+                                        <button
+                                            key={i}
+                                            className={`va-day${isSelected ? " selected" : ""}`}
+                                            data-status={statusAttr}
+                                            onClick={() => {
+                                                if (!isBooked && !isFetching) setSelected(day);
+                                            }}
+                                            disabled={isBooked || isFetching}
+                                            aria-label={`${day} ${MONTHS[viewMonth]} — ${
+                                                isFetching ? "loading" : isBooked ? "Fully Booked" : "Available"
+                                            }`}
+                                            aria-disabled={isBooked || isFetching}
+                                        >
+                                            {day}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            {/* Legend */}
+                            <div className="va-legend">
+                                {[
+                                    { color: "#48BB78", label: "Available" },
+                                    { color: "rgba(229,62,62,0.45)", label: "Fully Booked" },
+                                ].map((l) => (
+                                    <div key={l.label} className="va-legend-item">
+                                        <div
+                                            className="va-legend-dot"
+                                            style={{ background: l.color }}
+                                        />
+                                        {l.label}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* ── Info panel ── */}
+                        <div className="va-info">
+                            {!selected || !selMeta ? (
+                                <div className="va-info-empty">
+                                    <div className="va-info-empty-icon">📅</div>
+                                    <p className="va-info-empty-text">
+                                        Tap any date on the calendar to check<br />availability for your special day.
+                                    </p>
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="va-info-header">
+                                        <p className="va-info-date">{selDateStr}</p>
+                                        <p className="va-info-day">
+                                            {new Date(viewYear, viewMonth, selected).toLocaleDateString("en-IN", { weekday: "long" })}
+                                        </p>
+                                    </div>
+                                    <div className="va-info-body">
+                                        <div className="va-info-emoji">{selMeta.emoji}</div>
+                                        <p className="va-info-msg">{selMeta.msg}</p>
+                                        <span
+                                            className="va-status-badge"
+                                            style={{
+                                                color: selMeta.color,
+                                                borderColor: selMeta.color,
+                                                background: `${selMeta.color}18`,
+                                            }}
+                                        >
+                                            {selMeta.label}
+                                        </span>
+                                        <p className="va-info-sub">{selMeta.sub}</p>
+                                        {selStatus === "available" && (
+                                            <a href="/booking" className="va-info-cta">
+                                                Reserve this date →
+                                            </a>
+                                        )}
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+>>>>>>> fdd792d4cba36721e63febb41af9f17365570a4c
                 </div>
                 <button className="va-nav-btn" onClick={nextMonth} aria-label="Next month">
                   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
