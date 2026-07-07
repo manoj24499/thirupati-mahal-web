@@ -10,21 +10,21 @@ import styles from './HowItWorks.module.css';
 const STEPS = [
   {
     id: 1,
-    title: 'Share your requirements',
+    title: 'Tell Us About Your Wedding',
     description:
-      'Tell us your date, city, guest count and budget. It takes less than 2 minutes.',
+      'Share your preferred wedding date, event type, and estimated guest count. This helps us understand your requirements and recommend the best options.',
   },
   {
     id: 2,
-    title: 'Get a personalised proposal',
+    title: 'Check Venue Availability',
     description:
-      'Get the best deals on venue, catering, and decor as per your preferences.',
+      'Select your preferred wedding date to instantly check availability. If your chosen date is unavailable, we will suggest the nearest available dates for your convenience.',
   },
   {
     id: 3,
-    title: 'Confirm and book',
+    title: 'Reach Out to Us',
     description:
-      'Pay a minimum amount & lock the deal within 7 days. Leave the rest to us.',
+      'Once you have checked your preferred date, connect with us via WhatsApp or phone call to discuss your requirements. Our team will answer your questions, help you plan your event, and guide you through the booking process',
   },
 ];
 
@@ -145,10 +145,10 @@ function Heading() {
     <div className={styles.heading}>
       <div className={styles.titleRow}>
         <Ornament className={styles.ornament} />
-        <h2 className={styles.title}>How it works</h2>
+        <h2 className={styles.title}>Start Planning Your Wedding Today</h2>
         <Ornament className={styles.ornament} flip />
       </div>
-      <p className={styles.subtitle}>Book your wedding service in 3 easy steps</p>
+      <p className={styles.subtitle}>Finding the perfect wedding venue shouldn't be complicated. <br />Check your preferred date, explore availability, and connect with our team to start planning your special day.</p>
     </div>
   );
 }
