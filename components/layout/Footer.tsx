@@ -17,7 +17,7 @@ export default function Footer() {
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "Gallery", href: "/gallery" },
-    { label: "Venues", href: "/venues" },
+    { label: "Venues", href: "/venue" },
     { label: "Contact", href: "/contact" },
   ];
 

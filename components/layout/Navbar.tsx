@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import "./navbar.css";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -14,71 +15,310 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Lock body scroll when sidebar is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
   const navLinks = [
-    { label: "Home", href: "/" },
-    { label: "Venues", href: "/venues" },
-    { label: "About", href: "/about" },
-    { label: "Gallery", href: "/gallery" },
+    { label: "Home",      href: "/" },
+    { label: "Venue",     href: "/venue" },
+    { label: "Gallery",   href: "/gallery" },
+    { label: "Our Story", href: "/our-story" },
+    { label: "Events",    href: "/events" },
   ];
 
-  const socialLinks = [
-    {
-      label: "Facebook",
-      href: "#",
-      icon: (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-        </svg>
-      )
-    },
+  const socials = [
     {
       label: "Instagram",
       href: "#",
       icon: (
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-          <circle cx="12" cy="12" r="4" />
-          <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
         </svg>
-      )
+      ),
+    },
+    {
+      label: "Twitter",
+      href: "#",
+      icon: (
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.258 5.63 5.906-5.63Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+      ),
+    },
+    {
+      label: "Facebook",
+      href: "#",
+      icon: (
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+      ),
     },
     {
       label: "Pinterest",
       href: "#",
       icon: (
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z" />
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/>
         </svg>
-      )
+      ),
     },
   ];
 
   return (
     <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+Garamond:wght@300;400&display=swap');
+
+        .nav-wrapper {
+          position: fixed;
+          top: 0; left: 0; right: 0;
+          z-index: 200;
+          background-color: #FDEFDE;
+          font-family: 'Playfair Display', serif;
+          transition: box-shadow 0.3s ease;
+        }
+        .nav-wrapper.scrolled {
+          box-shadow: 0 2px 24px rgba(180,120,80,0.10);
+        }
+        .nav-accent-line {
+          height: 2px;
+          background: linear-gradient(90deg, transparent 0%, #DDB98A 30%, #C4966A 50%, #DDB98A 70%, transparent 100%);
+          opacity: 0.7;
+        }
+        .nav-inner {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 2rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 80px;
+          transition: height 0.3s ease;
+        }
+        .nav-wrapper.scrolled .nav-inner { height: 66px; }
+
+        .nav-logo {
+          display: flex; align-items: center; gap: 0.55rem;
+          text-decoration: none; flex-shrink: 0;
+        }
+        .logo-monogram {
+          width: 42px; height: 42px;
+          border: 1.5px solid #C4966A;
+          border-radius: 50%;
+          display: flex; align-items: center; justify-content: center;
+          color: #C4966A;
+          font-family: 'Playfair Display', serif;
+          font-size: 0.82rem; font-style: italic;
+          letter-spacing: 0.05em;
+          transition: background 0.25s, color 0.25s;
+        }
+        .nav-logo:hover .logo-monogram { background: #C4966A; color: #FDEFDE; }
+        .logo-text { display: flex; flex-direction: column; line-height: 1.15; }
+        .logo-names {
+          font-family: 'Playfair Display', serif;
+          font-weight: 500; font-size: 1.05rem;
+          color: #3B2A1A; letter-spacing: 0.06em; text-transform: uppercase;
+        }
+        .logo-date {
+          font-family: 'Cormorant Garamond', serif;
+          font-weight: 300; font-size: 0.71rem;
+          color: #C4966A; letter-spacing: 0.2em; text-transform: uppercase;
+        }
+
+        .nav-right {
+          display: flex; align-items: center; gap: 2rem;
+        }
+
+        .nav-links {
+          display: flex; align-items: center; gap: 2.4rem;
+          list-style: none; margin: 0; padding: 0;
+        }
+        .nav-links a {
+          font-family: 'Playfair Display', serif;
+          font-size: 0.92rem; font-weight: 400;
+          color: #6B4F3A; text-decoration: none;
+          letter-spacing: 0.08em;
+          position: relative; padding-bottom: 3px;
+          transition: color 0.2s;
+        }
+        .nav-links a::after {
+          content: ''; position: absolute;
+          bottom: 0; left: 0; width: 0; height: 1px;
+          background: #C4966A; transition: width 0.3s ease;
+        }
+        .nav-links a:hover { color: #3B2A1A; }
+        .nav-links a:hover::after,
+        .nav-links a.active::after { width: 100%; }
+        .nav-links a.active { color: #3B2A1A; }
+
+        .menu-btn {
+          display: flex; flex-direction: column;
+          justify-content: center; gap: 5px;
+          cursor: pointer; padding: 6px;
+          background: none; border: none; outline: none;
+          flex-shrink: 0;
+        }
+        .menu-btn span {
+          display: block; height: 1.5px; background: #6B4F3A;
+          transition: transform 0.35s cubic-bezier(.77,0,.18,1),
+                      opacity 0.25s ease, width 0.3s ease;
+          transform-origin: center;
+        }
+        .menu-btn span:nth-child(1) { width: 24px; }
+        .menu-btn span:nth-child(2) { width: 16px; }
+        .menu-btn span:nth-child(3) { width: 20px; }
+        .menu-btn:hover span { width: 24px !important; }
+        .menu-btn.open span:nth-child(1) { width: 24px !important; transform: translateY(6.5px) rotate(45deg); }
+        .menu-btn.open span:nth-child(2) { opacity: 0; width: 0 !important; }
+        .menu-btn.open span:nth-child(3) { width: 24px !important; transform: translateY(-6.5px) rotate(-45deg); }
+
+        .sidebar-backdrop {
+          position: fixed; inset: 0; z-index: 300;
+          background: rgba(40, 20, 5, 0.45);
+          backdrop-filter: blur(2px);
+          opacity: 0; pointer-events: none;
+          transition: opacity 0.4s ease;
+        }
+        .sidebar-backdrop.open { opacity: 1; pointer-events: all; }
+
+        .sidebar {
+          position: fixed; top: 0; right: 0; bottom: 0;
+          z-index: 400;
+          width: 340px; max-width: 90vw;
+          background: #1A0F07;
+          display: flex; flex-direction: column;
+          padding: 2.5rem 2.5rem 2rem;
+          transform: translateX(100%);
+          transition: transform 0.45s cubic-bezier(.77,0,.18,1);
+          overflow-y: auto;
+        }
+        .sidebar.open { transform: translateX(0); }
+
+        .sidebar-close {
+          align-self: flex-end;
+          background: none; border: none; cursor: pointer;
+          color: #DDB98A; font-size: 1.6rem; line-height: 1;
+          padding: 0; margin-bottom: 2.5rem;
+          transition: color 0.2s, transform 0.2s;
+        }
+        .sidebar-close:hover { color: #fff; transform: rotate(90deg); }
+
+        .sidebar-logo {
+          display: flex; align-items: center; gap: 0.6rem;
+          text-decoration: none; margin-bottom: 0.4rem;
+        }
+        .sidebar-logo .logo-monogram { border-color: #DDB98A; color: #DDB98A; width: 38px; height: 38px; font-size: 0.78rem; }
+        .sidebar-logo:hover .logo-monogram { background: #DDB98A; color: #1A0F07; }
+        .sidebar-logo .logo-names { color: #F5E6D3; font-size: 1rem; }
+        .sidebar-logo .logo-date { color: #DDB98A; }
+
+        .sidebar-tagline {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 0.85rem; font-weight: 300;
+          color: #8C6A50; letter-spacing: 0.12em;
+          margin-bottom: 2.5rem;
+          padding-bottom: 2rem;
+          border-bottom: 1px solid rgba(196,150,106,0.2);
+        }
+
+        .sidebar-nav {
+          display: flex; flex-direction: column;
+          gap: 0; list-style: none; margin: 0; padding: 0;
+          flex: 1;
+        }
+        .sidebar-nav li {
+          opacity: 0; transform: translateX(20px);
+          transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+        .sidebar.open .sidebar-nav li { opacity: 1; transform: translateX(0); }
+        .sidebar.open .sidebar-nav li:nth-child(1) { transition-delay: 0.15s; }
+        .sidebar.open .sidebar-nav li:nth-child(2) { transition-delay: 0.2s; }
+        .sidebar.open .sidebar-nav li:nth-child(3) { transition-delay: 0.25s; }
+        .sidebar.open .sidebar-nav li:nth-child(4) { transition-delay: 0.3s; }
+        .sidebar.open .sidebar-nav li:nth-child(5) { transition-delay: 0.35s; }
+
+        .sidebar-nav a {
+          display: block;
+          font-family: 'Playfair Display', serif;
+          font-size: 1.6rem; font-weight: 400;
+          color: #F5E6D3;
+          text-decoration: none;
+          padding: 0.7rem 0;
+          border-bottom: 1px solid rgba(196,150,106,0.12);
+          letter-spacing: 0.04em;
+          transition: color 0.2s, padding-left 0.25s;
+          position: relative;
+        }
+        .sidebar-nav a::before {
+          content: '—';
+          position: absolute; left: -1.2rem;
+          color: #C4966A; opacity: 0;
+          transition: opacity 0.2s, left 0.25s;
+          font-size: 0.9rem;
+        }
+        .sidebar-nav a:hover { color: #DDB98A; padding-left: 1.2rem; }
+        .sidebar-nav a:hover::before { opacity: 1; left: 0; }
+        .sidebar-nav a.active { color: #C4966A; }
+
+        .sidebar-image {
+          width: 100%; aspect-ratio: 4/3;
+          object-fit: cover; border-radius: 2px;
+          margin: 2rem 0 1.5rem;
+          opacity: 0.85; filter: sepia(20%);
+        }
+
+        .sidebar-cta {
+          display: block; text-align: center;
+          font-family: 'Playfair Display', serif;
+          font-size: 0.78rem; font-weight: 600;
+          letter-spacing: 0.18em; text-transform: uppercase;
+          color: #C4966A;
+          border: 1px solid #C4966A;
+          padding: 0.85rem 1.5rem;
+          text-decoration: none;
+          transition: background 0.25s, color 0.25s;
+          margin-bottom: 1.8rem;
+        }
+        .sidebar-cta:hover { background: #C4966A; color: #1A0F07; }
+
+        .sidebar-socials {
+          display: flex; gap: 0.85rem;
+          list-style: none; margin: 0; padding: 0;
+        }
+        .sidebar-socials a {
+          width: 36px; height: 36px; border-radius: 50%;
+          background: rgba(196,150,106,0.12);
+          border: 1px solid rgba(196,150,106,0.25);
+          display: flex; align-items: center; justify-content: center;
+          color: #DDB98A; text-decoration: none;
+          font-size: 0.78rem; font-family: sans-serif;
+          transition: background 0.2s, border-color 0.2s;
+        }
+        .sidebar-socials a:hover { background: rgba(196,150,106,0.25); border-color: #C4966A; }
+
+        @media (max-width: 768px) {
+          .nav-links { display: none; }
+          .sidebar { width: 100%; max-width: 100vw; }
+        }
+      `}</style>
 
       {/* Backdrop */}
-      <div
-        className={`sidebar-backdrop${menuOpen ? " open" : ""}`}
-        onClick={() => setMenuOpen(false)}
-      />
+      <div className={`sidebar-backdrop${menuOpen ? " open" : ""}`} onClick={() => setMenuOpen(false)} />
 
       {/* Sidebar */}
       <aside className={`sidebar${menuOpen ? " open" : ""}`}>
-        <button className="sidebar-close" onClick={() => setMenuOpen(false)} aria-label="Close menu">
-          ✕
-        </button>
+        <button className="sidebar-close" onClick={() => setMenuOpen(false)} aria-label="Close menu">✕</button>
 
         <Link href="/" className="sidebar-logo" onClick={() => setMenuOpen(false)}>
           <div className="logo-monogram">S&amp;J</div>
           <div className="logo-text">
             <span className="logo-names">Sofia &amp; James</span>
-            <span className="logo-date">Est. 2026</span>
+            <span className="logo-date">September 14, 2025</span>
           </div>
         </Link>
         <p className="sidebar-tagline">A celebration of love &amp; forever</p>
@@ -86,14 +326,17 @@ export default function Navbar() {
         <ul className="sidebar-nav">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <Link href={link.href} onClick={() => setMenuOpen(false)}>
+              <Link
+                href={link.href}
+                className={pathname === link.href ? "active" : ""}
+                onClick={() => setMenuOpen(false)}
+              >
                 {link.label}
               </Link>
             </li>
           ))}
         </ul>
 
-        {/* Placeholder wedding image */}
         <img
           src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80"
           alt="Wedding"
@@ -105,11 +348,9 @@ export default function Navbar() {
         </Link>
 
         <ul className="sidebar-socials">
-          {socialLinks.map((s) => (
+          {socials.map((s) => (
             <li key={s.label}>
-              <a href={s.href} aria-label={s.label}>
-                {s.icon}
-              </a>
+              <a href={s.href} aria-label={s.label}>{s.icon}</a>
             </li>
           ))}
         </ul>
@@ -119,7 +360,6 @@ export default function Navbar() {
       <nav className={`nav-wrapper${scrolled ? " scrolled" : ""}`}>
         <div className="nav-accent-line" />
         <div className="nav-inner">
-
           <Link href="/" className="nav-logo">
             <div className="logo-monogram">S&amp;J</div>
             <div className="logo-text">
@@ -130,27 +370,25 @@ export default function Navbar() {
 
           <div className="nav-right">
             <ul className="nav-links">
-              {navLinks.map((link, i) => (
+              {navLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className={i === 0 ? "active" : ""}>
+                  <Link
+                    href={link.href}
+                    className={pathname === link.href ? "active" : ""}
+                  >
                     {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
-
-            {/* Menu icon — always visible */}
             <button
               className={`menu-btn${menuOpen ? " open" : ""}`}
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle menu"
             >
-              <span />
-              <span />
-              <span />
+              <span /><span /><span />
             </button>
           </div>
-
         </div>
       </nav>
     </>
