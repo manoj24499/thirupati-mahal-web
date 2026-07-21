@@ -17,7 +17,7 @@ export default function Hero() {
         .hero {
           position: relative;
           width: 100%;
-          height: 100svh;
+          height: 100vh;
           min-height: 560px;
           overflow: hidden;
           background: #1A0F07;
@@ -234,7 +234,57 @@ export default function Hero() {
         }
 
         /* ── Responsive ── */
-        @media (max-width: 768px) {
+        @media (max-width: 1100px) {
+        .hero{
+        height: 90vh;
+          }
+          .hero-headline-top {
+            font-size: 40px;
+          }
+          .hero-headline-main {
+            font-size: 60px;
+          }
+          .hero-stats {
+            gap: 1rem;
+          }
+          .stat-value {
+            font-size: 24px;
+          }
+          .stat-label {
+            font-size: 12px;
+          }
+          .hero-cta {
+            font-size: 16px;
+            padding: 0.6rem 2rem;
+            width: 350px;
+            height: 55px; 
+          }
+        }
+          @media (max-width: 900px) {
+          .hero-headline-top {
+            font-size: 30px;
+          }
+          .hero-headline-main {
+            font-size: 50px;
+          }
+          .hero-stats {
+            gap: 0.8rem;
+          }
+          .stat-value {
+            font-size: 20px;
+          }
+          .stat-label {
+            font-size: 10px;
+          }
+          .hero-cta {
+            font-size: 14px;
+            padding: 0.6rem 2rem;
+            width: 300px;
+            height: 55px; 
+          }
+        }
+          
+        @media (max-width: 700px) {
           .hero-bottom {
             flex-direction: column;
             align-items: flex-start;
@@ -246,6 +296,37 @@ export default function Hero() {
           }
           .hero-stats { gap: 1.2rem; }
           .hero-content { padding: 0 0 6vh; }
+          .hero-sparkle {
+            margin-bottom: 10px;
+          }
+            .hero-cta {
+            font-size: 12px;
+            padding: 0.6rem 2rem;
+            width: 250px;
+            height: 50px; 
+          }
+            .hero-scroll svg {
+            display:none;
+      }
+        }
+      @media (max-width: 900px) {
+          .hero-headline-top {
+            font-size: 25px;
+          }
+          .hero-headline-main {
+            font-size: 40px;
+          }
+          .hero-stats {
+            gap: 0.8rem;
+          }
+          .stat-value {
+            font-size: 18px;
+          }
+         
+          .hero-cta {
+            font-size: 13px;
+            padding: 0.6rem 2rem;
+          }
         }
       `}</style>
 
