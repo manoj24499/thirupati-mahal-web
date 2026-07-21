@@ -145,12 +145,12 @@ export default function Preloader({ onComplete }: { onComplete?: () => void }) {
         /* ── Text below image ── */
         .pre-names {
           font-family: 'Playfair Display', serif;
-          font-size: clamp(1.2rem, 4vw, 1.6rem);
+          font-size: 25px;
           font-weight: 500;
           color: #3B2A1A;
           letter-spacing: 0.18em;
           text-transform: uppercase;
-          margin-bottom: 0.25rem;
+          margin-bottom: 20px;
           opacity: 0;
           transform: translateY(10px);
           transition: opacity 0.7s ease 0.3s, transform 0.7s ease 0.3s;
@@ -269,8 +269,8 @@ export default function Preloader({ onComplete }: { onComplete?: () => void }) {
         </div>
 
         {/* Names + date */}
-        <p className={`pre-names${count > 10 ? " show" : ""}`}>Sofia &amp; James</p>
-        <p className={`pre-date${count > 20 ? " show" : ""}`}>Est.2026</p>
+        <p className={`pre-names${count > 10 ? " show" : ""}`}>Tirupati Mahal</p>
+        {/* <p className={`pre-date${count > 20 ? " show" : ""}`}>Est.2026</p> */}
 
         {/* Progress */}
         <div className="pre-progress-wrap">

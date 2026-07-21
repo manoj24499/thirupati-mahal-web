@@ -68,8 +68,8 @@ Z
       <div className={styles.maskedArea}>
         <video
           className={`${styles.video} ${isExpanded ? styles.videoExpanded : ''}`}
-          src="/videos/banner-vid.mp4"
-          poster="/images/venue-hero-poster.jpg"
+          src="/videos/book-your-venue.mp4"
+          poster="/images/banner-video-poster.webp"
           autoPlay
           muted
           loop

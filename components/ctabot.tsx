@@ -42,14 +42,14 @@ export default function QuotePopup() {
                     display: inline-flex;
                     align-items: center;
                     gap: 0.6rem;
-                    background: #C4966A;
+                    background: #c2185b;
                     color: #fff;
                     font-family: 'Cormorant Garamond', serif;
                     font-size: 1rem;
                     font-weight: 500;
                     letter-spacing: 0.08em;
                     padding: 0.85rem 2rem;
-                    border-radius: 100px;
+                    border-radius: 15px;
                     border: none;
                     cursor: pointer;
                     box-shadow: 0 6px 28px rgba(196,150,106,0.4);
@@ -71,8 +71,8 @@ export default function QuotePopup() {
                 }
 
                 .qp-cta:hover {
-                    background: #B8845A;
-                    box-shadow: 0 10px 36px rgba(196,150,106,0.5);
+                    background: #c2185b;
+                    box-shadow: 0 10px 36px #c2185b;
                 }
 
                 .qp-cta svg {
@@ -85,8 +85,8 @@ export default function QuotePopup() {
                     content: '';
                     position: absolute;
                     inset: -4px;
-                    border-radius: 100px;
-                    border: 2px solid rgba(196,150,106,0.4);
+                    border-radius: 15px;
+                    border: 2px solid #c2185b;
                     animation: qpPulse 2s ease-out infinite;
                 }
 

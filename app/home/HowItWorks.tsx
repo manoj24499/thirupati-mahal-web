@@ -143,11 +143,11 @@ export default function HowItWorks() {
 function Heading() {
   return (
     <div className={styles.heading}>
-      <div className={styles.titleRow}>
+      <h2 className={styles.title}>Start Planning Your Wedding Today</h2>
+      {/* <div className={styles.ornamentRow}>
         <Ornament className={styles.ornament} />
-        <h2 className={styles.title}>Start Planning Your Wedding Today</h2>
         <Ornament className={styles.ornament} flip />
-      </div>
+      </div> */}
       <p className={styles.subtitle}>Finding the perfect wedding venue shouldn't be complicated. <br />Check your preferred date, explore availability, and connect with our team to start planning your special day.</p>
     </div>
   );

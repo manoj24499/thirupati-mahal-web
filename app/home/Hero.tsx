@@ -51,51 +51,35 @@ export default function Hero() {
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
-          padding: 0 4vw 4vh;
-          max-width: 1400px;
-          margin: 0 auto;
-          left: 0; right: 0;
-        }
-
-        /* ── Couple tag (centre) ── */
-        .hero-couple-tag {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          display: flex;
-          flex-direction: column;
           align-items: center;
-          gap: 0.5rem;
-          z-index: 5;
+          padding: 0 0 10vh;
         }
 
-        .couple-name-pill {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: clamp(0.75rem, 1.5vw, 0.9rem);
-          font-weight: 400;
-          color: rgba(255,255,255,0.92);
-          letter-spacing: 0.18em;
-          display: flex;
-          align-items: center;
-          gap: 0.6rem;
+        /* ── Top divider line ── */
+        .hero-top-line {
+          width: 100%;
+          height: 1px;
+          background: linear-gradient(
+            to right,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.42) 30%,
+            rgba(255,255,255,0.92) 50%,
+            rgba(255, 255, 255, 0.42) 70%,
+            rgba(255, 255, 255, 0) 100%
+          );
+          margin-bottom: 1.8rem;
         }
-        .couple-name-pill span.dot {
-          width: 3px; height: 3px;
-          border-radius: 50%;
-          background: #C4966A;
-          display: inline-block;
-        }
-
-
 
         /* ── Bottom content row ── */
         .hero-bottom {
-          display: grid;
-          grid-template-columns: 1fr auto;
+          display: flex;
+          flex-direction: row;
           align-items: flex-end;
-          gap: 2rem;
+          justify-content: center;
+          gap: 8rem;
           width: 100%;
+          padding: 0 4vw;
+          box-sizing: border-box;
         }
 
         /* Headline */
@@ -103,108 +87,114 @@ export default function Hero() {
           display: flex;
           flex-direction: column;
           gap: 0;
+          flex-shrink: 0;
         }
         .hero-headline-top {
           font-family: 'Playfair Display', serif;
-          font-size: clamp(1.5rem, 3.5vw, 2.6rem);
+          font-size: 48px;
           font-weight: 400;
           color: rgba(255,255,255,0.88);
           line-height: 1.15;
           letter-spacing: 0.01em;
-          margin: 0;
+          margin: 0 0 10px 0;
         }
         .hero-headline-main {
           font-family: 'Playfair Display', serif;
-          font-size: 85px;
-          font-weight: 700;
-          font-style: italic;
+          font-size: 80px;
           color: #fff;
-          line-height: 1.2;
+          line-height: 1.05;
           letter-spacing: -0.01em;
           margin: 0;
           position: relative;
           display: inline-flex;
           align-items: flex-end;
           gap: 0.2em;
-          margin-bottom: 30px;
         }
 
         /* Sparkle ✦ next to "Weddings" */
         .hero-sparkle {
-          color: #C4966A;
+          // color: #C4966A;
           font-style: normal;
-          font-size: 0.35em;
+          font-size: 0.28em;
           font-weight: 400;
           letter-spacing: 0;
-          margin-bottom: 0.5em;
+          margin-bottom: 0.55em;
           display: inline-flex;
           flex-direction: column;
-          gap: 0.3em;
+          gap: 0.25em;
+          margin-bottom:45px;
         }
 
         /* ── Right side: stats + CTA ── */
         .hero-right {
           display: flex;
           flex-direction: column;
-          align-items: flex-end;
-          gap: 1.6rem;
-          min-width: 260px;
+          align-items: flex-start;
+          gap: 1.2rem;
+          flex-shrink: 0;
         }
 
         .hero-stats {
           display: flex;
-          gap: 2rem;
+          gap: 2.2rem;
           align-items: flex-end;
         }
         .hero-stat {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          gap: 0.15rem;
+          gap: 0.1rem;
         }
         .stat-value {
           font-family: 'Playfair Display', serif;
-          font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+          font-size: 28px;
           font-weight: 600;
           color: #fff;
           letter-spacing: -0.01em;
           line-height: 1;
+          margin-bottom: 10px;
         }
         .stat-label {
           font-family: 'Inter', sans-serif;
-          font-size: clamp(0.62rem, 1vw, 0.72rem);
+          font-size: 14px;
           font-weight: 300;
           color: rgba(255,255,255,0.55);
-          letter-spacing: 0.05em;
+          letter-spacing: 0.04em;
           white-space: nowrap;
         }
 
-        /* CTA button */
+        /* CTA button — rose/pink like reference */
         .hero-cta {
           display: inline-flex;
           align-items: center;
-          gap: 0.6rem;
-          background: #4a233c;
+          justify-content: center;
+          gap: 0.55rem;
+          background: #c2185b;
           color: #fff;
-          font-family: 'Cormorant Garamond', serif;
-          font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+          font-family: 'Inter', sans-serif;
+          font-size: 18px;
           font-weight: 500;
-          letter-spacing: 0.06em;
-          padding: 0.85rem 2rem;
-          border-radius: 100px;
+          letter-spacing: 0.03em;
+          padding: 0.72rem 30px;
+          border-radius: 15px;
           text-decoration: none;
-          border: none; cursor: pointer;
+          border: none;
+          cursor: pointer;
           transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
           white-space: nowrap;
-          box-shadow: 0 4px 20px rgba(196,150,106,0.35);
+          box-shadow: 0 4px 18px rgba(194,24,91,0.4);
+          width: 400px;
+          height: 60px;
         }
         .hero-cta:hover {
-          background: #B8845A;
+          background: #ad1457;
           transform: translateY(-1px);
-          box-shadow: 0 6px 28px rgba(196,150,106,0.45);
+          box-shadow: 0 6px 24px rgba(194,24,91,0.5);
         }
         .hero-cta svg {
-          width: 16px; height: 16px; flex-shrink: 0;
+          width: 14px;
+          height: 14px;
+          flex-shrink: 0;
         }
 
         /* ── Scroll chevron ── */
@@ -217,12 +207,12 @@ export default function Hero() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 4px;
           opacity: 0.5;
           animation: heroScrollBounce 2s ease-in-out infinite;
         }
         .hero-scroll svg {
-          width: 22px; height: 22px;
+          width: 22px;
+          height: 22px;
           color: #fff;
         }
         @keyframes heroScrollBounce {
@@ -246,15 +236,16 @@ export default function Hero() {
         /* ── Responsive ── */
         @media (max-width: 768px) {
           .hero-bottom {
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.4rem;
+            padding: 0 5vw;
           }
           .hero-right {
             align-items: flex-start;
-            min-width: unset;
           }
           .hero-stats { gap: 1.2rem; }
-          .hero-content { padding: 0 5vw 6vh; }
+          .hero-content { padding: 0 0 6vh; }
         }
       `}</style>
 
@@ -268,33 +259,25 @@ export default function Hero() {
           muted
           playsInline
         >
-          {/* Replace this src with your local video path */}
-          <source src="/videos/banner-vid.mp4" type="video/mp4" />
+          <source src="/videos/banner-video.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 
         {/* Overlay */}
         <div className="hero-overlay" />
 
-        {/* Centre couple tag */}
-        {/* <div className="hero-couple-tag">
-          <p className="couple-name-pill">
-            Sofia & James
-            <span className="dot" />
-            Mumbai
-            <span className="dot" />
-            Sep '25
-          </p>
-        </div> */}
-
         {/* Bottom content */}
         <div className="hero-content">
+
+          {/* Top divider line */}
+          <div className="hero-top-line" />
+
           <div className="hero-bottom">
 
             {/* Left: headline */}
-            <div className="hero-headline">
-              <p className="hero-headline-top hero-animate">Crafting Memorable</p>
-              <p className="hero-headline-main hero-animate">
+            <div className="hero-headline hero-animate">
+              <p className="hero-headline-top">Crafting Memorable</p>
+              <p className="hero-headline-main">
                 Weddings
                 <span className="hero-sparkle">✦<br />✦</span>
               </p>
@@ -310,7 +293,7 @@ export default function Hero() {
                   </div>
                 ))}
               </div>
-              <a href="/rsvp" className="hero-cta">
+              <a href="/booking" className="hero-cta">
                 Start my wedding planning
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14M12 5l7 7-7 7" />
