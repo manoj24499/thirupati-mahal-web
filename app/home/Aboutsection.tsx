@@ -10,7 +10,7 @@ import styles from './Aboutsection.module.css';
 const HALLS = {
   mainHall: {
     id: 'mainHall',
-    label: 'Main Hall',
+    label: 'Main Hall (A/C)',
     eyebrow: 'ABOUT MAIN WEDDING HALL',
     heading: 'A Grand Space for Weddings & Receptions',
     body: `Designed for large-scale celebrations, our Main Wedding Hall offers spacious interiors, comfortable seating, and dedicated facilities to make every wedding celebration seamless.`,
