@@ -27,6 +27,24 @@ function ordinal(d: number) {
   return d + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
+// Decorative ornament flanking the "Check Venue Availability" heading
+function Ornament({ className, flip }: { className: string; flip?: boolean }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 120 16"
+      style={flip ? { transform: 'scaleX(-1)' } : undefined}
+      aria-hidden="true"
+    >
+      <line x1="0" y1="8" x2="104" y2="8" stroke="#C4966A" strokeWidth="1.4" />
+      <rect x="20" y="4" width="8" height="8" fill="#C4966A" transform="rotate(45 24 8)" />
+      <rect x="58" y="4" width="8" height="8" fill="#C4966A" transform="rotate(45 62 8)" />
+      <rect x="94" y="2" width="12" height="12" fill="#C4966A" transform="rotate(45 100 8)" />
+      <circle cx="113" cy="8" r="2.2" fill="#C4966A" />
+    </svg>
+  );
+}
+
 const STATUS_META: Record<Status, { label: string; emoji: string; color: string; msg: string; sub: string }> = {
   booked: { label: "Fully Booked", emoji: "💍", color: "#E53E3E", msg: "Uh oh… this date is", sub: "Try another day to find your ideal spot." },
   low: { label: "Available", emoji: "🕊️", color: "#48BB78", msg: "This date is fully", sub: "Plenty of venues available — book at your pace." },
@@ -140,12 +158,24 @@ export default function VenueAvailability() {
           opacity: 0.5;
         }
 
+        .va-title-row {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          flex-wrap: wrap;
+          margin: 0 0 0.4rem;
+        }
+        .va-ornament {
+          width: 60px;
+          height: 14px;
+          flex-shrink: 0;
+        }
         .va-title {
           font-family: 'Playfair Display', serif;
           font-size: 36px;
           font-weight: 700;
           color: #2A1A0E;
-          margin: 0 0 0.4rem;
+          margin: 0;
           line-height: 1.15;
         }
         .va-subtitle {
@@ -448,6 +478,9 @@ export default function VenueAvailability() {
           .va-section { padding: 4rem 1.2rem 5rem; }
           .va-info { min-height: 280px; }
         }
+        @media (max-width: 480px) {
+          .va-ornament { width: 36px; }
+        }
       `}</style>
 
       <section className="va-section">
@@ -457,7 +490,11 @@ export default function VenueAvailability() {
         <div className="va-inner">
           {/* Heading */}
           <p className="va-eyebrow">Plan Ahead</p>
-          <h2 className="va-title">Check Venue Availability</h2>
+          <div className="va-title-row">
+            <Ornament className="va-ornament" />
+            <h2 className="va-title">Check Venue Availability</h2>
+            <Ornament className="va-ornament" flip />
+          </div>
           <p className="va-subtitle">Select a date to see how soon you need to book your dream celebration.</p>
 
           <div className="va-grid">

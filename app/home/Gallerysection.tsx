@@ -45,7 +45,11 @@ export default function GallerySection() {
       <div className={styles.cornerRight}>
         <Image src="/images/big-mandala.webp" alt="" fill className={styles.cornerImg} />
       </div>
-      <h2 className={styles.heading}>Our Gallery</h2>
+      <div className={styles.headingRow}>
+        <Ornament className={styles.ornament} />
+        <h2 className={styles.heading}>Our Gallery</h2>
+        <Ornament className={styles.ornament} flip />
+      </div>
 
       {/* Row 1 — scrolls right to left */}
       <GalleryRow images={rowOneImages} direction="left" />
@@ -53,6 +57,24 @@ export default function GallerySection() {
       {/* Row 2 — scrolls left to right, same speed as Row 1 */}
       <GalleryRow images={rowTwoImages} direction="right" />
     </section>
+  );
+}
+
+/* ---------- Decorative ornament flanking the heading ---------- */
+function Ornament({ className, flip }: { className: string; flip?: boolean }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 120 16"
+      style={flip ? { transform: 'scaleX(-1)' } : undefined}
+      aria-hidden="true"
+    >
+      <line x1="0" y1="8" x2="104" y2="8" stroke="#c9a24b" strokeWidth="1.4" />
+      <rect x="20" y="4" width="8" height="8" fill="#c9a24b" transform="rotate(45 24 8)" />
+      <rect x="58" y="4" width="8" height="8" fill="#c9a24b" transform="rotate(45 62 8)" />
+      <rect x="94" y="2" width="12" height="12" fill="#c9a24b" transform="rotate(45 100 8)" />
+      <circle cx="113" cy="8" r="2.2" fill="#c9a24b" />
+    </svg>
   );
 }
 

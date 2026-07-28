@@ -17,26 +17,26 @@ const HALLS = {
     primaryImage: '/images/main-three.jpg',
     secondaryImage: '/images/main-two.jpg',
     stats: [
-      { value: '', label: 'Weddings', color: '#9c1c54' },
-      { value: '', label: 'Receptions', color: '#f31d82' },
-      { value: '', label: 'Engagement Ceremonies', color: '#1f2024' },
-      { value: '', label: 'Traditional Functions', color: '#c9a24b' },
-      { value: '', label: 'Family Celebrations', color: '#f7af78ff' },
+      { value: '20+', label: 'Guest capacity', color: '#9c1c54' },
+      { value: '20+', label: '⁠Floating capacity', color: '#f31d82' },
+      { value: '20+', label: '⁠Parking availability', color: '#1f2024' },
+      { value: '20+', label: '⁠Happy clients', color: '#c9a24b' },
+      // { value: '20+', label: 'Family Celebrations', color: '#f7af78ff' },
     ],
 
   },
   miniHall: {
     id: 'miniHall',
     label: 'Mini Hall',
-    eyebrow: 'ABOUT US',
-    heading: 'Mini Hall — Intimate Celebrations, Grand Memories',
-    body: 'Our Mini Hall is perfect for intimate gatherings and close-knit celebrations. Whether it\'s an engagement, bridal shower, or small reception, we deliver the same premium experience at a cozier scale. Every detail is curated with love — venue, catering, decor, and more. Your dream event, made effortlessly real.',
+    eyebrow: 'ABOUT MINI HALL',  
+    heading: 'Perfect for Intimate Celebrations & Professional Gatherings',
+    body: 'Our Mini Hall is an ideal choice for smaller events that require a comfortable and elegant venue without compromising on facilities.',
     primaryImage: '/images/mini-one.jpg',
     secondaryImage: '/images/mini-two.jpg',
     stats: [
-      { value: '500+', label: 'Events Hosted', color: '#9c1c54' },
-      { value: '200+', label: 'Vendor Partners', color: '#f31d82' },
-      { value: '20+', label: 'Cities Available', color: '#1f2024' },
+      { value: '500+', label: 'Guest capacity', color: '#9c1c54' },
+      { value: '200+', label: '⁠Floating capacity', color: '#f31d82' },
+      { value: '20+', label: '⁠Parking availability', color: '#1f2024' },
       { value: '98%', label: 'Happy Clients', color: '#c9a24b' },
     ],
   },
@@ -91,11 +91,15 @@ export default function AboutSection() {
           What We Offer
           <span className={styles.sectionEyebrowLine} aria-hidden="true" />
         </p> */}
-        <h2 className={styles.sectionTitle}>
-          Our{' '}
-          <span className={styles.highlight}>Facilities</span>
-          {' '}with Highlights
-        </h2>
+        <div className={styles.headingRow}>
+          <Ornament className={styles.ornament} />
+          <h2 className={styles.sectionTitle}>
+            Our{' '}
+            <span className={styles.highlight}>Facilities</span>
+            {' '}with Highlights
+          </h2>
+          <Ornament className={styles.ornament} flip />
+        </div>
       </div>
 
       <div className={styles.inner}>
@@ -104,20 +108,11 @@ export default function AboutSection() {
           <div className={styles.primaryWrap}>
             <Image
               src={hall.primaryImage}
-              alt={`${hall.label} primary photo`}
+              alt={`${hall.label} photo`}
               fill
-              sizes="(max-width: 900px) 100vw, 35vw"
+              sizes="(max-width: 900px) 100vw, 40vw"
               className={styles.primaryImg}
               priority
-            />
-          </div>
-          <div className={styles.secondaryWrap}>
-            <Image
-              src={hall.secondaryImage}
-              alt={`${hall.label} secondary photo`}
-              fill
-              sizes="(max-width: 900px) 60vw, 22vw"
-              className={styles.secondaryImg}
             />
           </div>
         </div>
@@ -184,6 +179,26 @@ export default function AboutSection() {
         </div>
       </div>
     </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Decorative ornament flanking a heading
+// ---------------------------------------------------------------------------
+function Ornament({ className, flip }: { className: string; flip?: boolean }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 120 16"
+      style={flip ? { transform: 'scaleX(-1)' } : undefined}
+      aria-hidden="true"
+    >
+      <line x1="0" y1="8" x2="104" y2="8" stroke="#c9a24b" strokeWidth="1.4" />
+      <rect x="20" y="4" width="8" height="8" fill="#c9a24b" transform="rotate(45 24 8)" />
+      <rect x="58" y="4" width="8" height="8" fill="#c9a24b" transform="rotate(45 62 8)" />
+      <rect x="94" y="2" width="12" height="12" fill="#c9a24b" transform="rotate(45 100 8)" />
+      <circle cx="113" cy="8" r="2.2" fill="#c9a24b" />
+    </svg>
   );
 }
 

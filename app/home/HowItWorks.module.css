@@ -41,26 +41,18 @@
   flex-shrink: 0;
 }
 
-/* Ornaments row — below the title, centered, side by side */
-.ornamentRow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-
-/* No longer used for ornaments, kept for backwards compat just in case */
+/* Title row — ornament, heading, ornament, all on one line, centered */
 .titleRow {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 0 0 20px 0;
 }
 
 .ornament {
-  width: 80px;
+  width: 70px;
   height: 14px;
   flex-shrink: 0;
 }
@@ -70,7 +62,7 @@
   font-weight: 700;
   font-size: 45px;
   color: #1f2024;
-  margin: 0 0 20px 0;
+  margin: 0;
   letter-spacing: -0.01em;
   line-height: 1.1;
 }
@@ -456,7 +448,7 @@
   }
 
   .ornament {
-    width: 60px;
+    width: 40px;
   }
 }
 
@@ -472,9 +464,8 @@
     display: none;
   }
 
-  .ornamentRow {
-    margin-top: 4px;
-    margin-bottom: 4px;
+  .titleRow {
+    margin-bottom: 8px;
   }
 
   .frameWrapper {

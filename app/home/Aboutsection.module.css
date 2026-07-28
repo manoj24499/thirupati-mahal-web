@@ -12,7 +12,7 @@
   max-width: 1280px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 35fr 65fr;
+  grid-template-columns: 40fr 60fr;
   gap: 56px;
   align-items: center;
 }
@@ -59,18 +59,16 @@
 
 .imageCol {
   position: relative;
-  /* tall enough to hold portrait primary + overlapping secondary */
-  aspect-ratio: 3 / 4.6;
+  /* single square photo, sized to match the content column */
+  width: 100%;
+  aspect-ratio: 1 / 1;
 }
 
-/* ── Primary: tall vertical portrait ── */
+/* ── Primary: single square photo, fills the column and lines up
+     with the content beside it ── */
 .primaryWrap {
   position: absolute;
-  top: 0;
-  left: 0;
-  /* leaves room on right + bottom for the secondary overlay */
-  right: 10%;
-  bottom: 10%;
+  inset: 0;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.16);
@@ -78,24 +76,7 @@
 
 .primaryImg {
   object-fit: cover;
-  object-position: center top;
-}
-
-/* ── Secondary: landscape overlay (unchanged feel) ── */
-.secondaryWrap {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 55%;
-  aspect-ratio: 4 / 3;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
-  border: 5px solid #ffffff;
-}
-
-.secondaryImg {
-  object-fit: cover;
+  object-position: center;
 }
 
 /* -----------------------------------------------------------------------
@@ -341,6 +322,21 @@
   margin: 0;
 }
 
+/* Heading flanked by ornaments, same row */
+.headingRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.ornament {
+  width: 70px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
 /* highlighted word inside the title */
 .highlight {
   position: relative;
@@ -384,21 +380,13 @@
   }
 
   .imageCol {
-    aspect-ratio: 4 / 3;
     order: 1;
+    max-width: 480px;
+    margin: 0 auto;
   }
 
   .contentCol {
     order: 2;
-  }
-
-  .primaryWrap {
-    right: 32%;
-    bottom: 20%;
-  }
-
-  .secondaryWrap {
-    width: 58%;
   }
 
   .statsGrid {
@@ -417,17 +405,11 @@
   }
 
   .imageCol {
-    height: 300px;
+    max-width: 360px;
   }
 
   .primaryWrap {
-    inset: 0 50px 50px 0;
-    border-radius: 18px;
-  }
-
-  .secondaryWrap {
-    width: 48%;
-    border-radius: 12px;
+    border-radius: 16px;
   }
 
   .statsGrid {
@@ -452,12 +434,16 @@
     padding: 8px 18px;
     font-size: 0.82rem;
   }
+
+  .ornament {
+    width: 40px;
+  }
 }
 
 /* Small mobile */
 @media (max-width: 400px) {
   .imageCol {
-    height: 260px;
+    max-width: 300px;
   }
 
   .statsGrid {
