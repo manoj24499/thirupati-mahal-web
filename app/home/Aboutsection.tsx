@@ -17,39 +17,45 @@ const HALLS = {
     primaryImage: '/images/main-three.jpg',
     secondaryImage: '/images/main-two.jpg',
     stats: [
-      { value: '20+', label: 'Guest capacity', color: '#9c1c54' },
-      { value: '20+', label: '⁠Floating capacity', color: '#f31d82' },
-      { value: '20+', label: '⁠Parking availability', color: '#1f2024' },
-      { value: '20+', label: '⁠Happy clients', color: '#c9a24b' },
-      // { value: '20+', label: 'Family Celebrations', color: '#f7af78ff' },
+      { value: '', label: 'Weddings', color: '#9c1c54' },
+      { value: '', label: 'Receptions', color: '#f31d82' },
+      { value: '', label: 'Engagement Ceremonies', color: '#1f2024' },
+      { value: '', label: 'Traditional Functions', color: '#c9a24b' },
+      { value: '', label: 'Family Celebrations', color: '#f7af78ff' },
     ],
-
+    services: [
+      { icon: IconRings, label: 'Weddings' },
+      { icon: IconReception, label: 'Receptions' },
+      { icon: IconEngagementRing, label: 'Engagement Ceremonies' },
+      { icon: IconDiya, label: 'Traditional Functions' },
+      { icon: IconHeart, label: 'Family Celebrations' },
+    ],
   },
   miniHall: {
     id: 'miniHall',
     label: 'Mini Hall',
-    eyebrow: 'ABOUT MINI HALL',  
-    heading: 'Perfect for Intimate Celebrations & Professional Gatherings',
-    body: 'Our Mini Hall is an ideal choice for smaller events that require a comfortable and elegant venue without compromising on facilities.',
+    eyebrow: 'ABOUT US',
+    heading: 'Mini Hall — Intimate Celebrations, Grand Memories',
+    body: 'Our Mini Hall is perfect for intimate gatherings and close-knit celebrations. Whether it\'s an engagement, bridal shower, or small reception, we deliver the same premium experience at a cozier scale. Every detail is curated with love — venue, catering, decor, and more. Your dream event, made effortlessly real.',
     primaryImage: '/images/mini-one.jpg',
     secondaryImage: '/images/mini-two.jpg',
     stats: [
-      { value: '500+', label: 'Guest capacity', color: '#9c1c54' },
-      { value: '200+', label: '⁠Floating capacity', color: '#f31d82' },
-      { value: '20+', label: '⁠Parking availability', color: '#1f2024' },
+      { value: '500+', label: 'Events Hosted', color: '#9c1c54' },
+      { value: '200+', label: 'Vendor Partners', color: '#f31d82' },
+      { value: '20+', label: 'Cities Available', color: '#1f2024' },
       { value: '98%', label: 'Happy Clients', color: '#c9a24b' },
+    ],
+    services: [
+      { icon: IconEngagementRing, label: 'Engagements' },
+      { icon: IconCake, label: 'Birthday Parties' },
+      { icon: IconPacifier, label: 'Baby Showers' },
+      { icon: IconNameTag, label: 'Naming Ceremonies' },
+      { icon: IconBriefcase, label: 'Corporate Meetings' },
+      { icon: IconPresentation, label: 'Conferences' },
+      { icon: IconGroup, label: 'Family Gatherings' },
     ],
   },
 };
-
-const SERVICES = [
-  { icon: IconHotel, label: 'Hotel Booking' },
-  { icon: IconDestination, label: 'Destinations' },
-  { icon: IconVirtual, label: 'Virtual Plan' },
-  { icon: IconCatering, label: 'Catering' },
-  { icon: IconDecor, label: 'Decor' },
-  { icon: IconVenue, label: 'Best Venues' },
-];
 
 // ---------------------------------------------------------------------------
 // Main Component
@@ -135,46 +141,56 @@ export default function AboutSection() {
             ))}
           </div>
 
-          {/* Panel */}
-          <div
-            id={`panel-${hall.id}`}
-            role="tabpanel"
-            aria-label={hall.label}
-            className={styles.panel}
-          >
-            <p className={styles.eyebrow}>
-              <span className={styles.eyebrowLine} aria-hidden="true" />
-              {hall.eyebrow}
-            </p>
+          {/* Panel stack — both halls' panels are always mounted, one on
+              top of the other in the same grid cell, so the container is
+              always sized to whichever panel is tallest. This keeps the
+              section's height fixed when switching tabs instead of
+              jumping around to match whichever hall has more content. */}
+          <div className={styles.panelStack}>
+            {Object.values(HALLS).map((h) => (
+              <div
+                key={h.id}
+                id={`panel-${h.id}`}
+                role="tabpanel"
+                aria-label={h.label}
+                aria-hidden={activeTab !== h.id}
+                className={`${styles.panel} ${activeTab === h.id ? styles.panelActive : styles.panelInactive}`}
+              >
+                <p className={styles.eyebrow}>
+                  <span className={styles.eyebrowLine} aria-hidden="true" />
+                  {h.eyebrow}
+                </p>
 
-            <h2 className={styles.heading}>{hall.heading}</h2>
-            <p className={styles.body}>{hall.body}</p>
+                <h2 className={styles.heading}>{h.heading}</h2>
+                <p className={styles.body}>{h.body}</p>
 
-            {/* Stats grid — 4 cols */}
-            <div className={styles.statsGrid}>
-              {hall.stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className={styles.statCard}
-                  style={{ '--card-color': stat.color }}
-                >
-                  <span className={styles.statValue}>{stat.value}</span>
-                  <span className={styles.statLabel}>{stat.label}</span>
+                {/* Stats grid — 4 cols */}
+                <div className={styles.statsGrid}>
+                  {h.stats.map((stat) => (
+                    <div
+                      key={stat.label}
+                      className={styles.statCard}
+                      style={{ '--card-color': stat.color }}
+                    >
+                      <span className={styles.statValue}>{stat.value}</span>
+                      <span className={styles.statLabel}>{stat.label}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
 
-            {/* Services row */}
-            <div className={styles.services} role="list">
-              {SERVICES.map(({ icon: Icon, label }) => (
-                <div key={label} className={styles.serviceItem} role="listitem">
-                  <span className={styles.serviceCircle} aria-hidden="true">
-                    <Icon className={styles.serviceIcon} />
-                  </span>
-                  <span className={styles.serviceLabel}>{label}</span>
+                {/* Services row — each hall has its own list */}
+                <div className={styles.services} role="list">
+                  {h.services.map(({ icon: Icon, label }) => (
+                    <div key={label} className={styles.serviceItem} role="listitem">
+                      <span className={styles.serviceCircle} aria-hidden="true">
+                        <Icon className={styles.serviceIcon} />
+                      </span>
+                      <span className={styles.serviceLabel}>{label}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -203,58 +219,109 @@ function Ornament({ className, flip }: { className: string; flip?: boolean }) {
 }
 
 // ---------------------------------------------------------------------------
-// Inline SVG icons
+// Inline SVG icons — one per service label above
 // ---------------------------------------------------------------------------
-function IconHotel({ className }) {
+function IconRings({ className }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="2" y="7" width="20" height="14" rx="2" />
-      <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
-      <line x1="12" y1="12" x2="12" y2="12.01" />
-      <path d="M2 17h20" />
+      <circle cx="8.5" cy="15" r="5" />
+      <circle cx="15.5" cy="15" r="5" />
     </svg>
   );
 }
-function IconDestination({ className }) {
+function IconReception({ className }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-      <circle cx="12" cy="10" r="3" />
+      <path d="M4 18h16" />
+      <path d="M5.5 18a6.5 6.5 0 0 1 13 0" />
+      <circle cx="12" cy="5.5" r="1.4" />
+      <line x1="12" y1="6.9" x2="12" y2="9.5" />
     </svg>
   );
 }
-function IconVirtual({ className }) {
+function IconEngagementRing({ className }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="2" y="4" width="20" height="16" rx="2" />
-      <path d="m10 8 6 4-6 4V8z" />
+      <circle cx="12" cy="16" r="5" />
+      <path d="M9 6l3-3.2L15 6l-3 5-3-5z" />
     </svg>
   );
 }
-function IconCatering({ className }) {
+function IconDiya({ className }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 8v4l3 3" />
-      <path d="M3.6 9h16.8M3.6 15h16.8" />
+      <ellipse cx="12" cy="16" rx="9" ry="3" />
+      <path d="M3 16c0 2.8 4 5 9 5s9-2.2 9-5" />
+      <path d="M12 13.5c-1.2-1.6-.6-3.2.3-4.3-1 .3-1.9-.4-1.7-1.7.4 1.1-1 1.9-1 3.4 0 1.4 1 2.3 2.4 2.6z" />
     </svg>
   );
 }
-function IconDecor({ className }) {
+function IconHeart({ className }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="13.5" cy="6.5" r="2.5" />
-      <path d="M17 11.5a5 5 0 0 1-10 0" />
-      <path d="M8.5 11.5c0 0 0-4 3.5-4s3.5 4 3.5 4" />
-      <line x1="12" y1="16" x2="12" y2="20" />
+      <path d="M12 20.5s-7.2-4.4-9.7-8.7C.8 8.4 3 5 6.6 5c2 0 3.5 1.4 5.4 3.2C13.9 6.4 15.4 5 17.4 5 21 5 23.2 8.4 21.7 11.8 19.2 16.1 12 20.5 12 20.5z" />
+    </svg>
+  );
+}
+function IconCake({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="12" width="18" height="8" rx="2" />
+      <path d="M3 15.5c1.5 1 3 1 4.5 0s3-1 4.5 0 3 1 4.5 0 3-1 4.5 0" />
+      <path d="M3 12v-1a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1" />
+      <line x1="8" y1="9" x2="8" y2="6" />
+      <line x1="12" y1="9" x2="12" y2="5" />
+      <line x1="16" y1="9" x2="16" y2="6" />
+      <circle cx="12" cy="3.2" r="0.9" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+function IconPacifier({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="9" r="5" />
+      <circle cx="12" cy="9" r="1.5" fill="currentColor" stroke="none" />
+      <path d="M8.5 12.5L6.3 14.7a1.8 1.8 0 1 0 2.5 2.5" />
+      <path d="M15.5 12.5l2.2 2.2a1.8 1.8 0 1 1-2.5 2.5" />
+    </svg>
+  );
+}
+function IconNameTag({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M3.5 6h13l4 6-4 6h-13z" />
+      <circle cx="8" cy="12" r="1.3" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+function IconBriefcase({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="7" width="18" height="12" rx="2" />
+      <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+    </svg>
+  );
+}
+function IconPresentation({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="4" width="18" height="12" rx="2" />
+      <path d="M7 10l3-3 2 2 4-4" />
       <line x1="9" y1="20" x2="15" y2="20" />
+      <line x1="12" y1="16" x2="12" y2="20" />
     </svg>
   );
 }
-function IconVenue({ className }) {
+function IconGroup({ className }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 0 0 1 1h3m10-11l2 2m-2-2v10a1 1 0 0 1-1 1h-3m-6 0a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1m-6 0h6" />
+      <circle cx="12" cy="7" r="3" />
+      <circle cx="4.5" cy="9.5" r="2.3" />
+      <circle cx="19.5" cy="9.5" r="2.3" />
+      <path d="M7 21v-1.5c0-2.8 2.2-5 5-5s5 2.2 5 5V21" />
+      <path d="M4.5 19.5V18c0-1.7 1-3.1 2.5-3.7" />
+      <path d="M19.5 19.5V18c0-1.7-1-3.1-2.5-3.7" />
     </svg>
   );
 }

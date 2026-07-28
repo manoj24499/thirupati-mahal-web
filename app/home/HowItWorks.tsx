@@ -145,7 +145,7 @@ function Heading() {
     <div className={styles.heading}>
       <div className={styles.titleRow}>
         <Ornament className={styles.ornament} />
-        <h2 className={styles.title}>Start Planning Your Wedding Today</h2>
+        <h2 className={styles.title}>Start <span className={styles.highlight}>Planning</span> Your Wedding Today</h2>
         <Ornament className={styles.ornament} flip />
       </div>
       <p className={styles.subtitle}>Finding the perfect wedding venue shouldn't be complicated. <br />Check your preferred date, explore availability, and connect with our team to start planning your special day.</p>

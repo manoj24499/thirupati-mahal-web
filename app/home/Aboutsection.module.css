@@ -129,10 +129,29 @@
 }
 
 /* -----------------------------------------------------------------------
-   Panel (eyebrow, heading, body)
+   Panel stack — both halls' panels are always in the DOM, placed in the
+   same grid cell. CSS grid sizes that cell to its tallest child, so the
+   stack (and the whole section) never resizes when the active tab
+   changes — it's already exactly as tall as the taller of the two halls,
+   at every screen width, with no hardcoded heights to keep in sync.
    ----------------------------------------------------------------------- */
 
+.panelStack {
+  display: grid;
+}
+
 .panel {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+.panelInactive {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.panelActive {
+  visibility: visible;
   animation: fadeSlideIn 0.4s ease both;
 }
 

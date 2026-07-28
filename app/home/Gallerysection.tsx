@@ -47,7 +47,7 @@ export default function GallerySection() {
       </div>
       <div className={styles.headingRow}>
         <Ornament className={styles.ornament} />
-        <h2 className={styles.heading}>Our Gallery</h2>
+        <h2 className={styles.heading}>Our <span className={styles.highlight}>Gallery</span></h2>
         <Ornament className={styles.ornament} flip />
       </div>
 

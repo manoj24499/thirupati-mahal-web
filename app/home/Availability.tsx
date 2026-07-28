@@ -178,6 +178,9 @@ export default function VenueAvailability() {
           margin: 0;
           line-height: 1.15;
         }
+        .va-highlight {
+          color: #9c1c54;
+        }
         .va-subtitle {
           font-family: 'Cormorant Garamond', serif;
           font-size: 1rem;
@@ -492,7 +495,7 @@ export default function VenueAvailability() {
           <p className="va-eyebrow">Plan Ahead</p>
           <div className="va-title-row">
             <Ornament className="va-ornament" />
-            <h2 className="va-title">Check Venue Availability</h2>
+            <h2 className="va-title">Check Venue <span className="va-highlight">Availability</span></h2>
             <Ornament className="va-ornament" flip />
           </div>
           <p className="va-subtitle">Select a date to see how soon you need to book your dream celebration.</p>
