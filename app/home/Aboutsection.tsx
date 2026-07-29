@@ -17,11 +17,11 @@ const HALLS = {
     primaryImage: '/images/main-three.jpg',
     secondaryImage: '/images/main-two.jpg',
     stats: [
-      { value: '', label: 'Weddings', color: '#9c1c54' },
-      { value: '', label: 'Receptions', color: '#f31d82' },
-      { value: '', label: 'Engagement Ceremonies', color: '#1f2024' },
-      { value: '', label: 'Traditional Functions', color: '#c9a24b' },
-      { value: '', label: 'Family Celebrations', color: '#f7af78ff' },
+      { value: '500+', label: 'Guest capacity', color: '#9c1c54' },
+      { value: '200+', label: 'floating capacity', color: '#f31d82' },
+      { value: '30+', label: 'parking availability', color: '#1f2024' },
+      { value: '99%', label: '⁠happy clients', color: '#c9a24b' },
+      // { value: '', label: 'Family Celebrations', color: '#f7af78ff' },
     ],
     services: [
       { icon: IconRings, label: 'Weddings' },
@@ -40,10 +40,10 @@ const HALLS = {
     primaryImage: '/images/mini-one.jpg',
     secondaryImage: '/images/mini-two.jpg',
     stats: [
-      { value: '500+', label: 'Events Hosted', color: '#9c1c54' },
-      { value: '200+', label: 'Vendor Partners', color: '#f31d82' },
-      { value: '20+', label: 'Cities Available', color: '#1f2024' },
-      { value: '98%', label: 'Happy Clients', color: '#c9a24b' },
+      { value: '500+', label: 'Guest capacity', color: '#9c1c54' },
+      { value: '200+', label: 'floating capacity', color: '#f31d82' },
+      { value: '20+', label: 'parking availability', color: '#1f2024' },
+      { value: '98%', label: '⁠happy clients', color: '#c9a24b' },
     ],
     services: [
       { icon: IconEngagementRing, label: 'Engagements' },
