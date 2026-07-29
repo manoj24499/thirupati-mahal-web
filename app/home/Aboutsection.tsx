@@ -17,11 +17,10 @@ const HALLS = {
     primaryImage: '/images/main-three.jpg',
     secondaryImage: '/images/main-two.jpg',
     stats: [
-      { value: '500+', label: 'Guest capacity', color: '#9c1c54' },
-      { value: '200+', label: 'floating capacity', color: '#f31d82' },
-      { value: '30+', label: 'parking availability', color: '#1f2024' },
-      { value: '99%', label: '⁠happy clients', color: '#c9a24b' },
-      // { value: '', label: 'Family Celebrations', color: '#f7af78ff' },
+      { value: '1000+', label: 'Guest Capacity', color: '#9c1c54' },
+      { value: '1500+', label: 'Floating Capacity', color: '#f31d82' },
+      { value: '200+', label: 'Parking Availability', color: '#1f2024' },
+      { value: '500+', label: 'Happy Clients', color: '#c9a24b' },
     ],
     services: [
       { icon: IconRings, label: 'Weddings' },
@@ -34,16 +33,16 @@ const HALLS = {
   miniHall: {
     id: 'miniHall',
     label: 'Mini Hall',
-    eyebrow: 'ABOUT US',
-    heading: 'Mini Hall — Intimate Celebrations, Grand Memories',
-    body: 'Our Mini Hall is perfect for intimate gatherings and close-knit celebrations. Whether it\'s an engagement, bridal shower, or small reception, we deliver the same premium experience at a cozier scale. Every detail is curated with love — venue, catering, decor, and more. Your dream event, made effortlessly real.',
+    eyebrow: 'ABOUT MINI HALL',
+    heading: 'Perfect for Intimate Celebrations & Professional Gatherings',
+    body: 'Our Mini Hall is an ideal choice for smaller events that require a comfortable and elegant venue without compromising on facilities.',
     primaryImage: '/images/mini-one.jpg',
     secondaryImage: '/images/mini-two.jpg',
     stats: [
-      { value: '500+', label: 'Guest capacity', color: '#9c1c54' },
-      { value: '200+', label: 'floating capacity', color: '#f31d82' },
-      { value: '20+', label: 'parking availability', color: '#1f2024' },
-      { value: '98%', label: '⁠happy clients', color: '#c9a24b' },
+      { value: '300+', label: 'Guest Capacity', color: '#9c1c54' },
+      { value: '450+', label: 'Floating Capacity', color: '#f31d82' },
+      { value: '100+', label: 'Parking Availability', color: '#1f2024' },
+      { value: '250+', label: 'Happy Clients', color: '#c9a24b' },
     ],
     services: [
       { icon: IconEngagementRing, label: 'Engagements' },
@@ -178,16 +177,32 @@ export default function AboutSection() {
                   ))}
                 </div>
 
-                {/* Services row — each hall has its own list */}
+                {/* Services row — each hall has its own list. Two-word
+                    labels are forced onto two lines (first word / second
+                    word) so every item keeps the same footprint and the
+                    icons all line up in a row, regardless of label length. */}
                 <div className={styles.services} role="list">
-                  {h.services.map(({ icon: Icon, label }) => (
-                    <div key={label} className={styles.serviceItem} role="listitem">
-                      <span className={styles.serviceCircle} aria-hidden="true">
-                        <Icon className={styles.serviceIcon} />
-                      </span>
-                      <span className={styles.serviceLabel}>{label}</span>
-                    </div>
-                  ))}
+                  {h.services.map(({ icon: Icon, label }) => {
+                    const words = label.split(' ');
+                    return (
+                      <div key={label} className={styles.serviceItem} role="listitem">
+                        <span className={styles.serviceCircle} aria-hidden="true">
+                          <Icon className={styles.serviceIcon} />
+                        </span>
+                        <span className={styles.serviceLabel}>
+                          {words.length > 1 ? (
+                            <>
+                              {words[0]}
+                              <br />
+                              {words.slice(1).join(' ')}
+                            </>
+                          ) : (
+                            label
+                          )}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             ))}

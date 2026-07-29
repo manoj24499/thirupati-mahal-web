@@ -5,6 +5,7 @@ import Preloader from "../components/preloader";
 import Hero from "./home/Hero";
 import Gallery from "./home/Gallerysection"
 import Aboutsection from "./home/Aboutsection";
+import WhyWeBetter from "./home/WhyWeBetter";
 import HowItWorks from "./home/HowItWorks";
 import VideoHero from "./home/VideoHero";
 import Calender from "./home/Availability";
@@ -23,9 +24,11 @@ export default function Home() {
       <Hero />
       <Gallery />   
       <Aboutsection />
+      
       <HowItWorks />
       <VideoHero />
       <Calender />
+      <WhyWeBetter />
       {/* <FAndQ /> */}
       <CtaBot />
       <WhatsAppContact />

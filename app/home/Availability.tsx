@@ -101,9 +101,11 @@ export default function VenueAvailability() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap');
 
-        /* ── Section ── */
+        /* ── Section ──
+           Straight top-to-bottom gradient (not diagonal) so the white
+           finish is even across the full width at the bottom edge. */
         .va-section {
-          background: #FDEFDE;
+          background: linear-gradient(180deg, #FDEFDE 0%, #FFFFFF 100%);
           padding: 4rem 2rem 4rem;
           position: relative;
           overflow: hidden;
@@ -136,31 +138,11 @@ export default function VenueAvailability() {
           margin: 0 auto;
         }
 
-        /* ── Heading ── */
-        .va-eyebrow {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 14px;
-          font-weight: 400;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: #C4966A;
-          margin: 0 0 0.6rem;
-          display: flex;
-          align-items: center;
-          gap: 0.6rem;
-        }
-        .va-eyebrow::before,
-        .va-eyebrow::after {
-          content: '';
-          flex: 0 0 28px;
-          height: 1px;
-          background: #C4966A;
-          opacity: 0.5;
-        }
-
+        /* ── Heading — centered ── */
         .va-title-row {
           display: flex;
           align-items: center;
+          justify-content: center;
           gap: 14px;
           flex-wrap: wrap;
           margin: 0 0 0.4rem;
@@ -177,6 +159,7 @@ export default function VenueAvailability() {
           color: #2A1A0E;
           margin: 0;
           line-height: 1.15;
+          text-align: center;
         }
         .va-highlight {
           color: #9c1c54;
@@ -188,6 +171,7 @@ export default function VenueAvailability() {
           color: #8C6A50;
           margin: 0 0 3rem;
           letter-spacing: 0.02em;
+          text-align: center;
         }
 
         /* ── Grid ── */
@@ -491,8 +475,7 @@ export default function VenueAvailability() {
         <div className="va-blob va-blob-2" />
 
         <div className="va-inner">
-          {/* Heading */}
-          <p className="va-eyebrow">Plan Ahead</p>
+          {/* Heading — centered */}
           <div className="va-title-row">
             <Ornament className="va-ornament" />
             <h2 className="va-title">Check Venue <span className="va-highlight">Availability</span></h2>

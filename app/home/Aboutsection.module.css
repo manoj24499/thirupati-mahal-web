@@ -248,13 +248,19 @@
 }
 
 /* -----------------------------------------------------------------------
-   Services row
+   Services row — a real grid instead of a wrapping flex row, so every
+   item gets the same fixed width (and therefore the same gap on every
+   side) no matter how many items there are or how long each label is.
+   Grid items are top-aligned by default, so the icon circles always sit
+   on the same line across a row even when one label wraps to two lines
+   and its neighbour doesn't.
    ----------------------------------------------------------------------- */
 
 .services {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 84px);
+  justify-content: center;
+  gap: 22px 16px;
 }
 
 .serviceItem {
@@ -262,7 +268,7 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  flex: 0 0 auto;
+  width: 84px;
   cursor: default;
 }
 
@@ -279,8 +285,8 @@
 }
 
 .serviceIcon {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   color: #9c1c54;
   transition: color 0.28s ease;
 }
@@ -298,7 +304,7 @@
   font-weight: 600;
   color: #374151;
   text-align: center;
-  white-space: nowrap;
+  line-height: 1.35;
 }
 
 /* -----------------------------------------------------------------------
@@ -436,7 +442,12 @@
   }
 
   .services {
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, 64px);
+    gap: 16px 10px;
+  }
+
+  .serviceItem {
+    width: 64px;
   }
 
   .serviceCircle {
@@ -445,8 +456,8 @@
   }
 
   .serviceIcon {
-    width: 20px;
-    height: 20px;
+    width: 26px;
+    height: 26px;
   }
 
   .tab {
