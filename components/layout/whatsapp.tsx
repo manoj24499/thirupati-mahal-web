@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 const WHATSAPP_NUMBER = "9597980663"; // Format: country code + number, no +
 const WHATSAPP_MESSAGE = "Hi! I visited your wedding website and I'd love to know more about your services. 💍";
 
+const VENUE_MAPS_URL = "https://www.google.com/maps/place/THIRUPATHI+MAHAL/@10.3889601,78.8074966,215m/data=!3m1!1e3!4m14!1m7!3m6!1s0x3b0079d20b507059:0x4631628872673134!2sTHIRUPATHI+MAHAL!8m2!3d10.3885765!4d78.8083858!16s%2Fg%2F11pv5mbrw0!3m5!1s0x3b0079d20b507059:0x4631628872673134!8m2!3d10.3885765!4d78.8083858!16s%2Fg%2F11pv5mbrw0";
+
 export default function WhatsAppContact() {
     const [popupOpen, setPopupOpen] = useState(false);
     const [redirecting, setRedirecting] = useState(false);
@@ -53,7 +55,7 @@ export default function WhatsAppContact() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 0.5rem;
+          gap: 1.25rem;
         }
 
         .wa-btn {
@@ -80,6 +82,34 @@ export default function WhatsAppContact() {
         .wa-btn svg {
           width: 26px;
           height: 26px;
+          fill: #fff;
+          flex-shrink: 0;
+        }
+
+        /* ── Location button (sits above WA button) ── */
+        .loc-btn {
+          width: 46px;
+          height: 46px;
+          border-radius: 50%;
+          background: #C4966A;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 20px rgba(196,150,106,0.45);
+          transition: transform 0.25s cubic-bezier(.77,0,.18,1),
+                      box-shadow 0.25s ease,
+                      background 0.2s;
+        }
+        .loc-btn:hover {
+          transform: scale(1.1);
+          background: #B07F4F;
+          box-shadow: 0 8px 28px rgba(196,150,106,0.55);
+        }
+        .loc-btn svg {
+          width: 22px;
+          height: 22px;
           fill: #fff;
           flex-shrink: 0;
         }
@@ -358,8 +388,17 @@ export default function WhatsAppContact() {
         }
       `}</style>
 
-            {/* ── Floating button ── */}
+            {/* ── Floating buttons ── */}
             <div className="wa-fab">
+                <button
+                    className="loc-btn"
+                    onClick={() => window.open(VENUE_MAPS_URL, "_blank", "noopener,noreferrer")}
+                    aria-label="Open location in Google Maps"
+                >
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C7.58 2 4 5.58 4 10c0 5.25 7.05 11.35 7.35 11.61a1 1 0 001.3 0C13 21.35 20 15.25 20 10c0-4.42-3.58-8-8-8zm0 10.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" />
+                    </svg>
+                </button>
                 <button className="wa-btn" onClick={() => setPopupOpen(true)} aria-label="Chat on WhatsApp">
                     {/* Official WhatsApp icon */}
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
