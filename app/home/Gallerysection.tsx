@@ -6,29 +6,27 @@ import styles from './Gallerysection.module.css';
 // Files should live in /public/gallery/ for the paths below to resolve.
 // ---------------------------------------------------------------------------
 const rowOneImages = [
-  '/images/1.jpg',
-  '/images/2.jpg',
-  '/images/3.jpg',
-  '/images/4.jpg',
-  '/images/5.jpg',
-  '/images/6.jpg',
-  '/images/1.jpg',
-  '/images/2.jpg',
-  '/images/3.jpg',
-  '/images/4.jpg',
+  '/images/one.jpg',
+  '/images/two.jpg',
+  '/images/three.jpg',
+  '/images/four.jpg',
+  '/images/five.jpg',
+  '/images/six.jpg',
+  '/images/seven.jpg',
+  '/images/eight.jpg',
+  '/images/nine.jpeg',
+  '/images/ten.jpg',
 ];
 
 const rowTwoImages = [
-  '/images/1.jpg',
-  '/images/2.jpg',
-  '/images/3.jpg',
-  '/images/4.jpg',
-  '/images/5.jpg',
-  '/images/6.jpg',
-  '/images/1.jpg',
-  '/images/2.jpg',
-  '/images/5.jpg',
-  '/images/6.jpg',
+  '/images/eleven.jpg',
+  '/images/thirteen.jpg',
+  '/images/fourteen.jpg',
+  '/images/fifteen.jpg',
+  '/images/seventeen.jpg',
+  '/images/eighteen.jpg',
+  // '/images/nineteen.jpg',
+  // '/images/twenty.jpg',
 ];
 
 /**

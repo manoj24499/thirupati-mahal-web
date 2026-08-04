@@ -14,13 +14,13 @@ const HALLS = {
     eyebrow: 'ABOUT MAIN WEDDING HALL',
     heading: 'A Grand Space for Weddings & Receptions',
     body: `Designed for large-scale celebrations, our Main Wedding Hall offers spacious interiors, comfortable seating, and dedicated facilities to make every wedding celebration seamless.`,
-    primaryImage: '/images/main-three.jpg',
-    secondaryImage: '/images/main-two.jpg',
+    primaryImage: '/images/main-one.jpeg',
+    // secondaryImage: '/images/main-two.jpg',
     stats: [
-      { value: '1000+', label: 'Guest Capacity', color: '#9c1c54' },
+      { value: '380+', label: 'Guest Capacity', color: '#9c1c54' },
       { value: '1500+', label: 'Floating Capacity', color: '#f31d82' },
-      { value: '200+', label: 'Parking Availability', color: '#1f2024' },
-      { value: '500+', label: 'Happy Clients', color: '#c9a24b' },
+      { value: '100+', label: 'Parking Availability', color: '#1f2024' },
+      { value: '100+', label: 'Happy Clients', color: '#c9a24b' },
     ],
     services: [
       { icon: IconRings, label: 'Weddings' },
@@ -36,13 +36,13 @@ const HALLS = {
     eyebrow: 'ABOUT MINI HALL',
     heading: 'Perfect for Intimate Celebrations & Professional Gatherings',
     body: 'Our Mini Hall is an ideal choice for smaller events that require a comfortable and elegant venue without compromising on facilities.',
-    primaryImage: '/images/mini-one.jpg',
-    secondaryImage: '/images/mini-two.jpg',
+    primaryImage: '/images/mini-one.jpeg',
+    // secondaryImage: '/images/mini-two.jpeg',
     stats: [
-      { value: '300+', label: 'Guest Capacity', color: '#9c1c54' },
-      { value: '450+', label: 'Floating Capacity', color: '#f31d82' },
+      { value: '120+', label: 'Guest Capacity', color: '#9c1c54' },
+      { value: '800+', label: 'Floating Capacity', color: '#f31d82' },
       { value: '100+', label: 'Parking Availability', color: '#1f2024' },
-      { value: '250+', label: 'Happy Clients', color: '#c9a24b' },
+      { value: '50+', label: 'Happy Clients', color: '#c9a24b' },
     ],
     services: [
       { icon: IconEngagementRing, label: 'Engagements' },
@@ -181,6 +181,7 @@ export default function AboutSection() {
                     labels are forced onto two lines (first word / second
                     word) so every item keeps the same footprint and the
                     icons all line up in a row, regardless of label length. */}
+                <h3 className={styles.servicesHeading}>Our Services</h3>
                 <div className={styles.services} role="list">
                   {h.services.map(({ icon: Icon, label }) => {
                     const words = label.split(' ');

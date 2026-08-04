@@ -365,8 +365,8 @@ function VenueSection() {
           flex-shrink: 0;
         }
         .vp-loc-photo {
-          width: clamp(100px, 13vw, 140px);
-          height: clamp(100px, 13vw, 140px);
+          width: clamp(100px, 13vw, 170px);
+          height: clamp(100px, 13vw, 170px);
           border-radius: 50%;
           object-fit: cover;
           border: 3px solid #C4966A;

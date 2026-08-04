@@ -63,11 +63,12 @@ export default function Preloader({ onComplete }: { onComplete?: () => void }) {
         /* ── Image frame ── */
         .pre-image-wrap {
           position: relative;
-          width: min(340px, 78vw);
-          aspect-ratio: 3 / 4;
+          width: min(320px, 82vw);
           overflow: hidden;
           border-radius: 2px;
           margin-bottom: 2.8rem;
+          background: #FDEFDE;
+          padding: 14px;
         }
 
         /* Reveal mask: slides up as count rises */
@@ -82,10 +83,10 @@ export default function Preloader({ onComplete }: { onComplete?: () => void }) {
 
         .pre-image {
           width: 100%;
-          height: 100%;
-          object-fit: cover;
+          height: auto;
+          object-fit: contain;
           display: block;
-          filter: sepia(15%) saturate(0.9);
+          mix-blend-mode: multiply;
         }
 
         /* Thin gold border that draws in */
@@ -254,7 +255,7 @@ export default function Preloader({ onComplete }: { onComplete?: () => void }) {
         {/* Image with reveal mask */}
         <div className={`pre-image-wrap${count > 5 ? " reveal" : ""}`}>
           <img
-            src="/images/preloader.png"
+            src="/images/Logo-Tirupati-Mahaal.jpg"
             alt="Wedding"
             className="pre-image"
           />

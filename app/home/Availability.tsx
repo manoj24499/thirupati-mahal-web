@@ -165,10 +165,10 @@ export default function VenueAvailability() {
           color: #9c1c54;
         }
         .va-subtitle {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 1rem;
+          // font-family: 'Cormorant Garamond', serif;
+          font-size: 16px;
           font-weight: 300;
-          color: #8C6A50;
+          color: #6b7280;
           margin: 0 0 3rem;
           letter-spacing: 0.02em;
           text-align: center;

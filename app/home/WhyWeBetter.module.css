@@ -7,7 +7,12 @@
   position: relative;
   width: 100%;
   padding: 90px 24px 72px;
-  background: linear-gradient(160deg, #fff8f9 0%, #fdedf1 45%, #fbe3ea 100%);
+  background:
+    linear-gradient(rgba(255, 248, 249, 0.85), rgba(251, 227, 234, 0.9)),
+    url("/images/main-one.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   overflow: hidden;
 }
 
