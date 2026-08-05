@@ -21,11 +21,10 @@ export default function Navbar() {
   }, [menuOpen]);
 
   const navLinks = [
-    { label: "Home",      href: "/" },
-    { label: "Venue",     href: "/venue" },
-    { label: "Gallery",   href: "/gallery" },
-    { label: "Our Story", href: "/our-story" },
-    { label: "Events",    href: "/events" },
+    { label: "Home",               href: "/" },
+    { label: "Venue",              href: "/venue" },
+    { label: "Gallery",            href: "/#gallery" },
+    { label: "Venue Availability", href: "/#availability" },
   ];
 
   const socials = [
@@ -40,15 +39,15 @@ export default function Navbar() {
         </svg>
       ),
     },
-    {
-      label: "Twitter",
-      href: "#",
-      icon: (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.258 5.63 5.906-5.63Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-        </svg>
-      ),
-    },
+    // {
+    //   label: "Twitter",
+    //   href: "#",
+    //   icon: (
+    //     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+    //       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.258 5.63 5.906-5.63Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+    //     </svg>
+    //   ),
+    // },
     {
       label: "Facebook",
       href: "#",
@@ -58,15 +57,15 @@ export default function Navbar() {
         </svg>
       ),
     },
-    {
-      label: "Pinterest",
-      href: "#",
-      icon: (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/>
-        </svg>
-      ),
-    },
+    // {
+    //   label: "Pinterest",
+    //   href: "#",
+    //   icon: (
+    //     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+    //       <path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/>
+    //     </svg>
+    //   ),
+    // },
   ];
 
   return (
@@ -103,32 +102,17 @@ export default function Navbar() {
         .nav-wrapper.scrolled .nav-inner { height: 66px; }
 
         .nav-logo {
-          display: flex; align-items: center; gap: 0.55rem;
+          display: flex; align-items: center;
           text-decoration: none; flex-shrink: 0;
         }
-        .logo-monogram {
-          width: 42px; height: 42px;
-          border: 1.5px solid #C4966A;
-          border-radius: 50%;
-          display: flex; align-items: center; justify-content: center;
-          color: #C4966A;
-          font-family: 'Playfair Display', serif;
-          font-size: 0.82rem; font-style: italic;
-          letter-spacing: 0.05em;
-          transition: background 0.25s, color 0.25s;
+        .nav-logo-img {
+          height: 70px;
+          width: auto;
+          object-fit: contain;
+          display: block;
+          transition: opacity 0.2s ease;
         }
-        .nav-logo:hover .logo-monogram { background: #C4966A; color: #FDEFDE; }
-        .logo-text { display: flex; flex-direction: column; line-height: 1.15; }
-        .logo-names {
-          font-family: 'Playfair Display', serif;
-          font-weight: 500; font-size: 1.05rem;
-          color: #3B2A1A; letter-spacing: 0.06em; text-transform: uppercase;
-        }
-        .logo-date {
-          font-family: 'Cormorant Garamond', serif;
-          font-weight: 300; font-size: 0.71rem;
-          color: #C4966A; letter-spacing: 0.2em; text-transform: uppercase;
-        }
+        // .nav-logo:hover .nav-logo-img { opacity: 0.85; }
 
         .nav-right {
           display: flex; align-items: center; gap: 2rem;
@@ -209,13 +193,17 @@ export default function Navbar() {
         .sidebar-close:hover { color: #fff; transform: rotate(90deg); }
 
         .sidebar-logo {
-          display: flex; align-items: center; gap: 0.6rem;
+          display: flex; align-items: center; justify-content: center;
           text-decoration: none; margin-bottom: 0.4rem;
         }
-        .sidebar-logo .logo-monogram { border-color: #DDB98A; color: #DDB98A; width: 38px; height: 38px; font-size: 0.78rem; }
-        .sidebar-logo:hover .logo-monogram { background: #DDB98A; color: #1A0F07; }
-        .sidebar-logo .logo-names { color: #F5E6D3; font-size: 1rem; }
-        .sidebar-logo .logo-date { color: #DDB98A; }
+        .sidebar-logo-img {
+          height: 100px;
+          width: auto;
+          object-fit: contain;
+          display: block;
+          transition: opacity 0.2s ease;
+        }
+        .sidebar-logo:hover .sidebar-logo-img { opacity: 0.85; }
 
         .sidebar-tagline {
           font-family: 'Cormorant Garamond', serif;
@@ -289,6 +277,7 @@ export default function Navbar() {
         .sidebar-socials {
           display: flex; gap: 0.85rem;
           list-style: none; margin: 0; padding: 0;
+          justify-content: center;
         }
         .sidebar-socials a {
           width: 36px; height: 36px; border-radius: 50%;
@@ -315,13 +304,8 @@ export default function Navbar() {
         <button className="sidebar-close" onClick={() => setMenuOpen(false)} aria-label="Close menu">✕</button>
 
         <Link href="/" className="sidebar-logo" onClick={() => setMenuOpen(false)}>
-          <div className="logo-monogram">S&amp;J</div>
-          <div className="logo-text">
-            <span className="logo-names">Sofia &amp; James</span>
-            <span className="logo-date">September 14, 2025</span>
-          </div>
+          <img src="/images/Logo-Tirupati-Mahaal.png" alt="Tirupati Mahaal" className="sidebar-logo-img" />
         </Link>
-        <p className="sidebar-tagline">A celebration of love &amp; forever</p>
 
         <ul className="sidebar-nav">
           {navLinks.map((link) => (
@@ -338,7 +322,7 @@ export default function Navbar() {
         </ul>
 
         <img
-          src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80"
+          src="images/two.jpg"
           alt="Wedding"
           className="sidebar-image"
         />
@@ -361,11 +345,7 @@ export default function Navbar() {
         <div className="nav-accent-line" />
         <div className="nav-inner">
           <Link href="/" className="nav-logo">
-            <div className="logo-monogram">S&amp;J</div>
-            <div className="logo-text">
-              <span className="logo-names">Sofia &amp; James</span>
-              <span className="logo-date">September 14, 2025</span>
-            </div>
+            <img src="/images/Logo-Tirupati-Mahaal.png" alt="Tirupati Mahaal" className="nav-logo-img" />
           </Link>
 
           <div className="nav-right">

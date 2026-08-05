@@ -255,7 +255,7 @@ export default function Preloader({ onComplete }: { onComplete?: () => void }) {
         {/* Image with reveal mask */}
         <div className={`pre-image-wrap${count > 5 ? " reveal" : ""}`}>
           <img
-            src="/images/Logo-Tirupati-Mahaal.jpg"
+            src="/images/Logo-Tirupati-Mahaal.png"
             alt="Wedding"
             className="pre-image"
           />

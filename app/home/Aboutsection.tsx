@@ -12,15 +12,15 @@ const HALLS = {
     id: 'mainHall',
     label: 'Main Hall (A/C)',
     eyebrow: 'ABOUT MAIN WEDDING HALL',
-    heading: 'A Grand Space for Weddings & Receptions',
+    heading: 'A Grand Space for Weddings & Receptions with Air Conditioning',
     body: `Designed for large-scale celebrations, our Main Wedding Hall offers spacious interiors, comfortable seating, and dedicated facilities to make every wedding celebration seamless.`,
-    primaryImage: '/images/main-one.jpeg',
+    primaryImage: '/images/main-hall.png',
     // secondaryImage: '/images/main-two.jpg',
     stats: [
-      { value: '380+', label: 'Guest Capacity', color: '#9c1c54' },
-      { value: '1500+', label: 'Floating Capacity', color: '#f31d82' },
-      { value: '100+', label: 'Parking Availability', color: '#1f2024' },
-      { value: '100+', label: 'Happy Clients', color: '#c9a24b' },
+      { value: '380+', label: 'seating capacity', color: '#9c1c54' },
+      { value: '1500+', label: 'Floating capacity', color: '#f31d82' },
+      { value: '100+', label: 'Parking capacity', color: '#1f2024' },
+      // { value: '100+', label: 'Happy Clients', color: '#c9a24b' },
     ],
     services: [
       { icon: IconRings, label: 'Weddings' },
@@ -36,13 +36,13 @@ const HALLS = {
     eyebrow: 'ABOUT MINI HALL',
     heading: 'Perfect for Intimate Celebrations & Professional Gatherings',
     body: 'Our Mini Hall is an ideal choice for smaller events that require a comfortable and elegant venue without compromising on facilities.',
-    primaryImage: '/images/mini-one.jpeg',
+    primaryImage: '/images/mini-hall.png',
     // secondaryImage: '/images/mini-two.jpeg',
     stats: [
-      { value: '120+', label: 'Guest Capacity', color: '#9c1c54' },
+      { value: '120+', label: 'seating capacity', color: '#9c1c54' },
       { value: '800+', label: 'Floating Capacity', color: '#f31d82' },
-      { value: '100+', label: 'Parking Availability', color: '#1f2024' },
-      { value: '50+', label: 'Happy Clients', color: '#c9a24b' },
+      { value: '100+', label: 'Parking capacity', color: '#1f2024' },
+      // { value: '50+', label: 'Happy Clients', color: '#c9a24b' },
     ],
     services: [
       { icon: IconEngagementRing, label: 'Engagements' },
@@ -110,15 +110,24 @@ export default function AboutSection() {
       <div className={styles.inner}>
         {/* ---------- LEFT — images ---------- */}
         <div className={styles.imageCol}>
-          <div className={styles.primaryWrap}>
-            <Image
-              src={hall.primaryImage}
-              alt={`${hall.label} photo`}
-              fill
-              sizes="(max-width: 900px) 100vw, 40vw"
-              className={styles.primaryImg}
-              priority
-            />
+          {/* Decorative frame */}
+          <div className={styles.frameOuter}>
+            {/* Corner ornaments */}
+            <CornerOrnament className={`${styles.corner} ${styles.cornerTL}`} />
+            <CornerOrnament className={`${styles.corner} ${styles.cornerTR}`} flipX />
+            <CornerOrnament className={`${styles.corner} ${styles.cornerBL}`} flipY />
+            <CornerOrnament className={`${styles.corner} ${styles.cornerBR}`} flipX flipY />
+
+            <div className={styles.primaryWrap}>
+              <Image
+                src={hall.primaryImage}
+                alt={`${hall.label} photo`}
+                fill
+                sizes="(max-width: 900px) 100vw, 40vw"
+                className={styles.primaryImg}
+                priority
+              />
+            </div>
           </div>
         </div>
 
@@ -211,6 +220,41 @@ export default function AboutSection() {
         </div>
       </div>
     </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Corner frame ornament — traditional square-bracket style corner piece
+// ---------------------------------------------------------------------------
+function CornerOrnament({
+  className,
+  flipX,
+  flipY,
+}: {
+  className?: string;
+  flipX?: boolean;
+  flipY?: boolean;
+}) {
+  const sx = flipX ? -1 : 1;
+  const sy = flipY ? -1 : 1;
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 60 60"
+      fill="none"
+      aria-hidden="true"
+      style={{ transform: `scale(${sx}, ${sy})` }}
+    >
+      {/* Outer square bracket — horizontal arm */}
+      <rect x="0" y="0" width="42" height="4" rx="1" fill="#c9a24b" />
+      {/* Outer square bracket — vertical arm */}
+      <rect x="0" y="0" width="4" height="42" rx="1" fill="#c9a24b" />
+      {/* Inner top square */}
+      <rect x="8" y="8" width="12" height="4" rx="0.5" fill="#c9a24b" />
+      <rect x="8" y="8" width="4" height="12" rx="0.5" fill="#c9a24b" />
+      {/* Inner small corner accent */}
+      <rect x="8" y="8" width="8" height="8" rx="1" fill="none" stroke="#c9a24b" strokeWidth="1.5" />
+    </svg>
   );
 }
 

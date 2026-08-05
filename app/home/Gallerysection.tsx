@@ -16,17 +16,20 @@ const rowOneImages = [
   '/images/eight.jpg',
   '/images/nine.jpeg',
   '/images/ten.jpg',
+  // '/images/main-one.jpeg',
 ];
 
 const rowTwoImages = [
+  '/images/Mini-one.jpeg',
+  '/images/four.jpg',
   '/images/eleven.jpg',
   '/images/thirteen.jpg',
   '/images/fourteen.jpg',
   '/images/fifteen.jpg',
-  '/images/seventeen.jpg',
+  '/images/seventeen.jpeg',
   '/images/eighteen.jpg',
   // '/images/nineteen.jpg',
-  // '/images/twenty.jpg',
+  '/images/twenty.jpg',
 ];
 
 /**
@@ -36,7 +39,7 @@ const rowTwoImages = [
  */
 export default function GallerySection() {
   return (
-    <section className={styles.gallerySection} aria-label="Our Gallery">
+    <section id="gallery" className={styles.gallerySection} aria-label="Our Gallery">
       <div className={styles.cornerLeft}>
         <Image src="/images/big-mandala.webp" alt="" fill className={styles.cornerImg} />
       </div>

@@ -470,7 +470,7 @@ export default function VenueAvailability() {
         }
       `}</style>
 
-      <section className="va-section">
+      <section id="availability" className="va-section">
         <div className="va-blob va-blob-1" />
         <div className="va-blob va-blob-2" />
 
