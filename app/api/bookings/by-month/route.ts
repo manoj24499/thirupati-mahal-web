@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import db from '@/lib/db';
+import { dbQuery } from '@/lib/db';
 
 /**
  * GET /api/bookings/by-month?year=YYYY&month=M
@@ -41,34 +41,41 @@ export async function GET(request: Request) {
     const monthStr = String(month).padStart(2, '0');
     const prefix = `${year}-${monthStr}`;
 
-    // Query bookings where start OR end date is in this month
-    const stmt = db.prepare(`
-      SELECT * FROM bookings
-      WHERE bookingStartDate LIKE ? OR bookingEndDate LIKE ?
-      ORDER BY bookingStartDate ASC
-    `);
-    const bookings = stmt.all(`${prefix}%`, `${prefix}%`) as Array<{
+    // Query bookings from PostgreSQL where start OR end date is in this month and not cancelled
+    const res = await dbQuery(
+      `SELECT * FROM bookings
+       WHERE ("bookingStartDate" LIKE $1 OR "bookingEndDate" LIKE $2)
+         AND "status" != 'cancelled'
+       ORDER BY "bookingStartDate" ASC`,
+      [`${prefix}%`, `${prefix}%`]
+    );
+
+    const bookings = res.rows as Array<{
       bookingStartDate: string;
       bookingEndDate: string;
+      status: string;
       [key: string]: unknown;
     }>;
 
-    // Expand each booking's date range into individual booked days
-    // so the calendar can mark each day simply by checking a Set
     const bookedDatesSet = new Set<string>();
 
     for (const booking of bookings) {
-      const start = new Date(booking.bookingStartDate);
-      const end = new Date(booking.bookingEndDate);
+      if (!booking.bookingStartDate || !booking.bookingEndDate) continue;
+      
+      const [sY, sM, sD] = booking.bookingStartDate.split('-').map(Number);
+      const [eY, eM, eD] = booking.bookingEndDate.split('-').map(Number);
 
-      // Iterate day-by-day from start to end (inclusive)
-      const cur = new Date(start);
-      while (cur <= end) {
-        const y = cur.getFullYear();
-        const m = String(cur.getMonth() + 1).padStart(2, '0');
-        const d = String(cur.getDate()).padStart(2, '0');
-        bookedDatesSet.add(`${y}-${m}-${d}`);
-        cur.setDate(cur.getDate() + 1);
+      if (sY && sM && sD && eY && eM && eD) {
+        const start = new Date(sY, sM - 1, sD);
+        const end = new Date(eY, eM - 1, eD);
+        const cur = new Date(start);
+        while (cur <= end) {
+          const y = cur.getFullYear();
+          const m = String(cur.getMonth() + 1).padStart(2, '0');
+          const d = String(cur.getDate()).padStart(2, '0');
+          bookedDatesSet.add(`${y}-${m}-${d}`);
+          cur.setDate(cur.getDate() + 1);
+        }
       }
     }
 

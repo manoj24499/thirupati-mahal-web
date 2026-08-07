@@ -17,6 +17,7 @@ export interface Booking {
 export function useBookings() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(false);
+  const [createBookingLoading, setCreateBookingLoading] = useState(false);
 
   const fetchBookings = useCallback(async () => {
     setLoading(true);
@@ -34,6 +35,7 @@ export function useBookings() {
   }, []);
 
   const createBooking = async (bookingData: Partial<Booking>) => {
+    setCreateBookingLoading(true);
     try {
       const res = await fetch("/api/bookings", {
         method: "POST",
@@ -42,7 +44,8 @@ export function useBookings() {
       });
       const data = await res.json();
       if (data.success) {
-        await fetchBookings();
+        setBookings((prev) => [data.data, ...prev]);
+        setCreateBookingLoading(false);
         return true;
       }
       return false;
@@ -61,7 +64,11 @@ export function useBookings() {
       });
       const data = await res.json();
       if (data.success) {
-        await fetchBookings();
+        setBookings((prev) =>
+          prev.map((booking) =>
+            booking.id === id ? { ...booking, ...bookingData } : booking,
+          ),
+        );
         return true;
       }
       return false;
@@ -92,6 +99,7 @@ export function useBookings() {
     bookings,
     loading,
     fetchBookings,
+    createBookingLoading,
     createBooking,
     updateBooking,
     deleteBooking,

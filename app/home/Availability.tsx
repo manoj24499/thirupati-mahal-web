@@ -1,24 +1,14 @@
 "use client";
 
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 type DayStatus = "available" | "booked" | "loading";
 
-function generateAvailability(year: number, month: number): Record<number, Status> {
-  // Deterministic but varied per month
-  const seed = year * 12 + month;
-  const booked = [2, 9, 12, 17, 24, 28, 1, 5, 8, 15, 22].map((d) => ((d + seed) % 28) + 1);
-
-  const map: Record<number, Status> = {};
-  for (let d = 1; d <= 31; d++) {
-    if (booked.includes(d)) map[d] = "booked";
-    else map[d] = "low";
-  }
-  return map;
-}
-
-const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const MONTHS = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
 const DAYS = ["M", "T", "W", "T", "F", "S", "S"];
 
 function ordinal(d: number) {
@@ -45,9 +35,10 @@ function Ornament({ className, flip }: { className: string; flip?: boolean }) {
   );
 }
 
-const STATUS_META: Record<Status, { label: string; emoji: string; color: string; msg: string; sub: string }> = {
+const STATUS_META: Record<string, { label: string; emoji: string; color: string; msg: string; sub: string }> = {
   booked: { label: "Fully Booked", emoji: "💍", color: "#E53E3E", msg: "Uh oh… this date is", sub: "Try another day to find your ideal spot." },
-  low: { label: "Available", emoji: "🕊️", color: "#48BB78", msg: "This date is fully", sub: "Plenty of venues available — book at your pace." },
+  available: { label: "Available", emoji: "🕊️", color: "#48BB78", msg: "This date is fully", sub: "Plenty of dates available — book at your pace." },
+  loading: { label: "Checking...", emoji: "⏳", color: "#C4966A", msg: "Fetching date status...", sub: "Please wait a moment." },
 };
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -55,17 +46,46 @@ export default function VenueAvailability() {
   const today = new Date();
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
-  const [selected, setSelected] = useState<number[]>([]);
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [hoveredDay, setHoveredDay] = useState<number | null>(null);
+  const [bookedDatesSet, setBookedDatesSet] = useState<Set<string>>(new Set());
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const toggleDate = (day: number) => {
-    setSelected((prev) =>
-      prev.includes(day)
-        ? prev.filter((d) => d !== day)
-        : [...prev, day].sort((a, b) => a - b)
-    );
+  // Fetch availability from /api/bookings/by-month
+  useEffect(() => {
+    let isMounted = true;
+    setLoading(true);
+    setError(null);
+
+    const monthNum = viewMonth + 1;
+    fetch(`/api/bookings/by-month?year=${viewYear}&month=${monthNum}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (!isMounted) return;
+        if (data.success && Array.isArray(data.bookedDates)) {
+          setBookedDatesSet(new Set(data.bookedDates));
+        } else {
+          setError(data.error || "Failed to load availability.");
+        }
+      })
+      .catch((err) => {
+        if (!isMounted) return;
+        console.error("Error loading availability:", err);
+        setError("Failed to connect to server.");
+      })
+      .finally(() => {
+        if (isMounted) setLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [viewYear, viewMonth]);
+
+  const handleSelectDate = (day: number) => {
+    setSelectedDay((prev) => (prev === day ? null : day));
   };
-
-  const availability = useMemo(() => generateAvailability(viewYear, viewMonth), [viewYear, viewMonth]);
 
   // Days in month, and what weekday the 1st falls on (0=Mon…6=Sun)
   const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
@@ -74,18 +94,29 @@ export default function VenueAvailability() {
   const prevMonth = () => {
     if (viewMonth === 0) { setViewYear(y => y - 1); setViewMonth(11); }
     else setViewMonth(m => m - 1);
-    setSelected([]);
+    setSelectedDay(null);
+    setHoveredDay(null);
   };
   const nextMonth = () => {
     if (viewMonth === 11) { setViewYear(y => y + 1); setViewMonth(0); }
     else setViewMonth(m => m + 1);
-    setSelected([]);
+    setSelectedDay(null);
+    setHoveredDay(null);
   };
 
-  const selStatus = selected.length > 0 ? availability[selected[0]] : null;
-  const selMeta = selStatus ? STATUS_META[selStatus as any] : null;
-  const selDateStr = selected.length > 0
-    ? `${selected.map(ordinal).join(', ')} ${MONTHS[viewMonth]}, ${viewYear}`
+  const getDayStatus = useCallback((day: number): DayStatus => {
+    if (loading) return "loading";
+    const mStr = String(viewMonth + 1).padStart(2, '0');
+    const dStr = String(day).padStart(2, '0');
+    const dateStr = `${viewYear}-${mStr}-${dStr}`;
+    return bookedDatesSet.has(dateStr) ? "booked" : "available";
+  }, [loading, viewYear, viewMonth, bookedDatesSet]);
+
+  const activeDay = hoveredDay !== null ? hoveredDay : selectedDay;
+  const selStatus = activeDay !== null ? getDayStatus(activeDay) : null;
+  const selMeta = selStatus ? STATUS_META[selStatus] || STATUS_META.available : null;
+  const selDateStr = activeDay !== null
+    ? `${ordinal(activeDay)} ${MONTHS[viewMonth]}, ${viewYear}`
     : null;
 
   // Calendar grid: leading blanks + days
@@ -97,512 +128,176 @@ export default function VenueAvailability() {
   while (cells.length % 7 !== 0) cells.push(null);
 
   return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap');
+    <section className="relative overflow-hidden py-8 px-4 sm:px-8 pb-16 bg-gradient-to-b from-[#FDEFDE] to-white scroll-mt-[66px]" id="availability">
+      {/* Background blobs */}
+      <div className="absolute top-[-100px] left-[-80px] w-[400px] h-[400px] rounded-full bg-[#C4966A]/8 blur-[80px] pointer-events-none z-0" />
+      <div className="absolute bottom-[-60px] right-[-60px] w-[320px] h-[320px] rounded-full bg-[#D97B8A]/7 blur-[80px] pointer-events-none z-0" />
 
-        /* ── Section ──
-           Straight top-to-bottom gradient (not diagonal) so the white
-           finish is even across the full width at the bottom edge. */
-        .va-section {
-          background: linear-gradient(180deg, #FDEFDE 0%, #FFFFFF 100%);
-          padding: 2rem 2rem 4rem;
-          position: relative;
-          overflow: hidden;
-          scroll-margin-top: 66px;
-        }
+      <div className="relative z-10 max-w-[1000px] mx-auto">
+        {/* Heading */}
+        <div className="flex items-center justify-center gap-3.5 flex-wrap mb-1.5">
+          <Ornament className="w-9 sm:w-15 h-3.5 flex-shrink-0" />
+          <h2 className="font-serif text-3xl sm:text-[36px] font-bold text-[#2A1A0E] mb-2.5 leading-[1.15] text-center">
+            Check Venue <span className="text-[#9c1c54]">Availability</span>
+          </h2>
+          <Ornament className="w-9 sm:w-15 h-3.5 flex-shrink-0" flip />
+        </div>
+        <p className="text-[16px] font-light text-gray-500 mb-12 tracking-[0.02em] text-center">
+          Select a date to see how soon you need to book your dream celebration.
+        </p>
 
-        /* Soft background blobs */
-        .va-blob {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(80px);
-          pointer-events: none;
-          z-index: 0;
-        }
-        .va-blob-1 {
-          width: 400px; height: 400px;
-          background: rgba(196,150,106,0.08);
-          top: -100px; left: -80px;
-        }
-        .va-blob-2 {
-          width: 320px; height: 320px;
-          background: rgba(217,123,138,0.07);
-          bottom: -60px; right: -60px;
-        }
-
-        /* ── Inner ── */
-        .va-inner {
-          position: relative;
-          z-index: 1;
-          max-width: 1000px;
-          margin: 0 auto;
-        }
-
-        /* ── Heading — centered ── */
-        .va-title-row {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 14px;
-          flex-wrap: wrap;
-          margin: 0 0 0.4rem;
-        }
-        .va-ornament {
-          width: 60px;
-          height: 14px;
-          flex-shrink: 0;
-        }
-        .va-title {
-          font-family: 'Playfair Display', serif;
-          font-size: 36px;
-          font-weight: 700;
-          color: #2A1A0E;
-          margin: 0 0 10px 0;
-          line-height: 1.15;
-          text-align: center;
-        }
-        .va-highlight {
-          color: #9c1c54;
-        }
-        .va-subtitle {
-          // font-family: 'Cormorant Garamond', serif;
-          font-size: 16px;
-          font-weight: 300;
-          color: #6b7280;
-          margin: 0 0 3rem;
-          letter-spacing: 0.02em;
-          text-align: center;
-        }
-
-        /* ── Grid ── */
-        .va-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1.5rem;
-          align-items: start;
-        }
-
-        /* ── Calendar card ── */
-        .va-cal {
-          background: #fff;
-          border-radius: 16px;
-          padding: 1.8rem;
-          box-shadow: 0 4px 32px rgba(42,26,14,0.06);
-          border: 1px solid rgba(196,150,106,0.12);
-        }
-
-        /* Month nav */
-        .va-cal-nav {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 1.5rem;
-        }
-        .va-nav-btn {
-          width: 32px; height: 32px;
-          border-radius: 50%;
-          border: 1px solid rgba(196,150,106,0.3);
-          background: none;
-          cursor: pointer;
-          display: flex; align-items: center; justify-content: center;
-          color: #6B4F3A;
-          transition: background 0.2s, border-color 0.2s;
-        }
-        .va-nav-btn:hover { background: rgba(196,150,106,0.1); border-color: #C4966A; }
-        .va-nav-btn svg { width: 14px; height: 14px; }
-
-        .va-month-label {
-          display: flex; align-items: center; gap: 0.4rem;
-        }
-        .va-month-name {
-          font-family: 'Playfair Display', serif;
-          font-size: 1.05rem; font-weight: 600;
-          color: #2A1A0E; letter-spacing: 0.02em;
-        }
-        .va-month-year {
-          font-family: 'Inter', sans-serif;
-          font-size: 0.82rem; font-weight: 400;
-          color: #8C6A50;
-        }
-
-        /* Loading spinner next to month label */
-        .va-month-spinner {
-          width: 14px; height: 14px;
-          border: 2px solid rgba(196,150,106,0.25);
-          border-top-color: #C4966A;
-          border-radius: 50%;
-          animation: va-spin 0.7s linear infinite;
-          flex-shrink: 0;
-        }
-        @keyframes va-spin { to { transform: rotate(360deg); } }
-
-        /* Day headers */
-        .va-day-headers {
-          display: grid;
-          grid-template-columns: repeat(7, 1fr);
-          margin-bottom: 0.5rem;
-          gap: 2px;
-        }
-        .va-day-hdr {
-          font-family: 'Inter', sans-serif;
-          font-size: 0.68rem; font-weight: 500;
-          letter-spacing: 0.08em; text-transform: uppercase;
-          color: #B8916A; text-align: center;
-          padding: 0.3rem 0;
-        }
-
-        /* Date grid */
-        .va-dates {
-          display: grid;
-          grid-template-columns: repeat(7, 1fr);
-          gap: 3px;
-        }
-        .va-day {
-          aspect-ratio: 1;
-          border-radius: 8px;
-          display: flex; align-items: center; justify-content: center;
-          font-family: 'Inter', sans-serif;
-          font-size: 0.82rem; font-weight: 400;
-          color: #6B4F3A;
-          cursor: pointer;
-          border: 1.5px solid transparent;
-          transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.15s;
-          position: relative;
-        }
-        .va-day.empty { pointer-events: none; }
-
-        /* Status dots */
-        .va-day::after {
-          content: '';
-          position: absolute;
-          bottom: 4px; left: 50%; transform: translateX(-50%);
-          width: 4px; height: 4px;
-          border-radius: 50%;
-          opacity: 0;
-        }
-
-        /* Available days */
-        .va-day[data-status="available"] { background: rgba(72,187,120,0.06); }
-        .va-day[data-status="available"]::after { background: #48BB78; opacity: 1; }
-
-        /* Booked days — strikethrough, disabled look */
-        .va-day[data-status="booked"] {
-          background: rgba(229,62,62,0.05);
-          color: #C4A090;
-          text-decoration: line-through;
-          text-decoration-color: rgba(229,62,62,0.45);
-          cursor: not-allowed;
-          pointer-events: none;
-        }
-        .va-day[data-status="booked"]::after { background: #E53E3E; opacity: 0.7; }
-
-        /* Loading skeleton days */
-        .va-day[data-status="loading"] {
-          background: linear-gradient(90deg, #f5ede2 25%, #fdf5ec 50%, #f5ede2 75%);
-          background-size: 200% 100%;
-          animation: va-shimmer 1.2s infinite;
-          color: transparent;
-          cursor: default;
-          pointer-events: none;
-        }
-        @keyframes va-shimmer {
-          0%   { background-position: 200% 0; }
-          100% { background-position: -200% 0; }
-        }
-
-        .va-day:not([data-status="booked"]):not([data-status="loading"]):hover {
-          background: rgba(196,150,106,0.15);
-          border-color: #C4966A;
-          color: #2A1A0E;
-          transform: scale(1.08);
-          z-index: 1;
-        }
-
-        .va-day.selected {
-          background: #C4966A !important;
-          color: #fff !important;
-          border-color: #C4966A !important;
-          font-weight: 600;
-          text-decoration: none !important;
-          transform: scale(1.1) !important;
-          box-shadow: 0 4px 16px rgba(196,150,106,0.4);
-          z-index: 2;
-        }
-        .va-day.selected::after { opacity: 0 !important; }
-
-        /* Legend */
-        .va-legend {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.6rem 1.2rem;
-          margin-top: 1.4rem;
-          padding-top: 1.2rem;
-          border-top: 1px solid rgba(196,150,106,0.12);
-        }
-        .va-legend-item {
-          display: flex; align-items: center; gap: 0.35rem;
-          font-family: 'Inter', sans-serif;
-          font-size: 0.68rem; font-weight: 400;
-          color: #8C6A50; letter-spacing: 0.03em;
-        }
-        .va-legend-dot {
-          width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-        }
-
-        /* Error banner */
-        .va-error {
-          font-family: 'Inter', sans-serif;
-          font-size: 0.75rem;
-          color: #E53E3E;
-          background: rgba(229,62,62,0.06);
-          border: 1px solid rgba(229,62,62,0.18);
-          border-radius: 8px;
-          padding: 0.5rem 0.9rem;
-          margin-bottom: 1rem;
-          display: flex; align-items: center; gap: 0.4rem;
-        }
-
-        /* ── Info panel ── */
-        .va-info {
-          background: #fff;
-          border-radius: 16px;
-          box-shadow: 0 4px 32px rgba(42,26,14,0.06);
-          border: 1px solid rgba(196,150,106,0.12);
-          overflow: hidden;
-          min-height: 360px;
-          display: flex; flex-direction: column;
-        }
-
-        /* Info: no selection */
-        .va-info-empty {
-          flex: 1;
-          display: flex; flex-direction: column;
-          align-items: center; justify-content: center;
-          padding: 2.5rem;
-          text-align: center;
-          gap: 1rem;
-        }
-        .va-info-empty-icon {
-          font-size: 2.8rem;
-          opacity: 0.4;
-        }
-        .va-info-empty-text {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 1rem; font-weight: 300;
-          color: #B8916A; line-height: 1.6;
-        }
-
-        /* Info: date header */
-        .va-info-header {
-          padding: 1.4rem 1.8rem 1.2rem;
-          border-bottom: 1px solid rgba(196,150,106,0.1);
-        }
-        .va-info-date {
-          font-family: 'Playfair Display', serif;
-          font-size: 1.2rem; font-weight: 600;
-          color: #2A1A0E; margin: 0;
-        }
-        .va-info-day {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 0.82rem; font-weight: 300;
-          color: #8C6A50; letter-spacing: 0.08em; text-transform: uppercase;
-          margin-top: 2px;
-        }
-
-        /* Info: body */
-        .va-info-body {
-          flex: 1;
-          display: flex; flex-direction: column;
-          align-items: center; justify-content: center;
-          padding: 2rem 1.8rem;
-          text-align: center;
-          gap: 1rem;
-        }
-
-        .va-info-emoji { font-size: 3rem; }
-
-        .va-info-msg {
-          font-family: 'Playfair Display', serif;
-          font-size: 1.05rem; font-weight: 400;
-          color: #2A1A0E; margin: 0; line-height: 1.45;
-        }
-
-        .va-status-badge {
-          display: inline-block;
-          padding: 0.3rem 1rem;
-          border-radius: 4px;
-          font-family: 'Inter', sans-serif;
-          font-size: 0.78rem; font-weight: 600;
-          letter-spacing: 0.12em; text-transform: uppercase;
-          border: 1.5px solid;
-        }
-
-        .va-info-sub {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 0.92rem; font-weight: 300;
-          color: #8C6A50; margin: 0; line-height: 1.55;
-        }
-
-        /* CTA in info panel */
-        .va-info-cta {
-          display: inline-flex; align-items: center; gap: 0.45rem;
-          padding: 0.65rem 1.4rem;
-          background: #C4966A; color: #fff;
-          font-family: 'Inter', sans-serif;
-          font-size: 0.78rem; font-weight: 500;
-          letter-spacing: 0.06em;
-          border: none; border-radius: 100px;
-          cursor: pointer;
-          transition: background 0.2s, transform 0.15s;
-          text-decoration: none;
-          margin-top: 0.3rem;
-        }
-        .va-info-cta:hover { background: #B8845A; transform: translateY(-1px); }
-
-        /* ── Responsive ── */
-        @media (max-width: 768px) {
-          .va-grid { grid-template-columns: 1fr; }
-          .va-section { padding: 4rem 1.2rem 5rem; }
-          .va-info { min-height: 280px; }
-        }
-        @media (max-width: 480px) {
-          .va-ornament { width: 36px; }
-        }
-      `}</style>
-
-      <section className="va-section" id="availability">
-        <div className="va-blob va-blob-1" />
-        <div className="va-blob va-blob-2" />
-
-        <div className="va-inner">
-          {/* Heading — centered */}
-          <div className="va-title-row">
-            <Ornament className="va-ornament" />
-            <h2 className="va-title">Check Venue <span className="va-highlight">Availability</span></h2>
-            <Ornament className="va-ornament" flip />
+        {error && (
+          <div className="font-sans text-[0.75rem] text-[#E53E3E] bg-[#E53E3E]/6 border border-[#E53E3E]/18 rounded-lg p-2.5 px-3.5 mb-4 flex items-center gap-1.5">
+            <span>⚠️</span>
+            <span>{error}</span>
           </div>
-          <p className="va-subtitle">Select a date to see how soon you need to book your dream celebration.</p>
+        )}
 
-          <div className="va-grid">
-            {/* ── Calendar ── */}
-            <div className="va-cal">
-              <div className="va-cal-nav">
-                <button className="va-nav-btn" onClick={prevMonth} aria-label="Previous month">
-                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M10 3L5 8l5 5" />
-                  </svg>
-                </button>
-                <div className="va-month-label">
-                  <span className="va-month-name">{MONTHS[viewMonth]}</span>
-                  <span className="va-month-year">{viewYear}</span>
-                </div>
-                <button className="va-nav-btn" onClick={nextMonth} aria-label="Next month">
-                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M6 3l5 5-5 5" />
-                  </svg>
-                </button>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+          {/* ── Calendar Card ── */}
+          <div className="bg-white rounded-2xl p-7 shadow-sm border border-[#C4966A]/15">
+            {/* Nav */}
+            <div className="flex items-center justify-between mb-6">
+              <button
+                className="w-8 h-8 rounded-full border border-[#C4966A]/30 bg-transparent flex items-center justify-center text-[#6B4F3A] hover:bg-[#C4966A]/10 hover:border-[#C4966A] focus:outline-none transition-colors"
+                onClick={prevMonth}
+                aria-label="Previous month"
+              >
+                <svg viewBox="0 0 16 16" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M10 3L5 8l5 5" />
+                </svg>
+              </button>
+              <div className="flex items-center gap-1.5">
+                <span className="font-serif text-[1.05rem] font-semibold text-[#2A1A0E] tracking-[0.02em]">{MONTHS[viewMonth]}</span>
+                <span className="font-sans text-[0.82rem] font-normal text-[#8C6A50]">{viewYear}</span>
+                {loading && <span className="w-3.5 h-3.5 border-2 border-[#C4966A]/25 border-t-[#C4966A] rounded-full animate-spin flex-shrink-0" />}
               </div>
-
-              {/* Day headers */}
-              <div className="va-day-headers">
-                {DAYS.map((d, i) => (
-                  <div key={i} className="va-day-hdr">{d}</div>
-                ))}
-              </div>
-
-              {/* Dates */}
-              <div className="va-dates">
-                {cells.map((day, i) => {
-                  if (!day) {
-                    return <div key={i} className="va-day empty" />;
-                  }
-                  const status = availability[day];
-                  const isSelected = selected.includes(day);
-                  const isBooked = status === "booked";
-                  return (
-                    <button
-                      key={i}
-                      className={`va-day${isSelected ? " selected" : ""}${isBooked ? " booked" : ""}`}
-                      data-status={status}
-                      onClick={() => !isBooked && toggleDate(day)}
-                      disabled={isBooked}
-                      aria-label={`${day} ${MONTHS[viewMonth]} — ${STATUS_META[status].label}`}
-                    >
-                      {day}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Legend */}
-              <div className="va-legend">
-                {[
-                  { color: "#48BB78", label: "Available" },
-                  { color: "rgba(229,62,62,0.3)", label: "Fully Booked" },
-                ].map((l) => (
-                  <div key={l.label} className="va-legend-item">
-                    <div
-                      className="va-legend-dot"
-                      style={{
-                        background: l.color,
-                        border: l.dashed ? `1.5px dashed ${l.color}` : "none",
-                        boxSizing: "border-box",
-                      }}
-                    />
-                    {l.label}
-                  </div>
-                ))}
-              </div>
+              <button
+                className="w-8 h-8 rounded-full border border-[#C4966A]/30 bg-transparent flex items-center justify-center text-[#6B4F3A] hover:bg-[#C4966A]/10 hover:border-[#C4966A] focus:outline-none transition-colors"
+                onClick={nextMonth}
+                aria-label="Next month"
+              >
+                <svg viewBox="0 0 16 16" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 3l5 5-5 5" />
+                </svg>
+              </button>
             </div>
 
-            {/* ── Info panel ── */}
-            <div className="va-info">
-              {selected.length === 0 || !selMeta ? (
-                <div className="va-info-empty">
-                  <div className="va-info-empty-icon">📅</div>
-                  <p className="va-info-empty-text">
-                    Tap any date on the calendar to check<br />availability for your special day.
+            {/* Day headers */}
+            <div className="grid grid-cols-7 mb-2 gap-0.5">
+              {DAYS.map((d, i) => (
+                <div key={i} className="font-sans text-[0.68rem] font-medium tracking-[0.08em] uppercase text-[#B8916A] text-center py-1">{d}</div>
+              ))}
+            </div>
+
+            {/* Dates Grid */}
+            <div className="grid grid-cols-7 gap-1">
+              {cells.map((day, i) => {
+                if (!day) {
+                  return <div key={i} className="aspect-square pointer-events-none" />;
+                }
+                const status = getDayStatus(day);
+                const isSelected = selectedDay === day;
+                const isBooked = status === "booked";
+
+                let statusClasses = "";
+                if (status === "loading") {
+                  statusClasses = "bg-gradient-to-r from-[#f5ede2] via-[#fdf5ec] to-[#f5ede2] bg-[length:200%_100%] animate-pulse text-transparent cursor-default pointer-events-none";
+                } else if (isBooked) {
+                  statusClasses = "bg-[#E53E3E]/5 text-[#C4A090] line-through decoration-[#E53E3E]/45 cursor-not-allowed pointer-events-none";
+                } else {
+                  statusClasses = "bg-[#48BB78]/6 text-[#6B4F3A] cursor-pointer hover:bg-[#C4966A]/15 hover:border-[#C4966A] hover:text-[#2A1A0E] hover:scale-105 focus:bg-[#C4966A]/15 focus:border-[#C4966A] focus:text-[#2A1A0E] focus:scale-105 focus-visible:bg-[#C4966A]/15 focus-visible:border-[#C4966A] focus-visible:text-[#2A1A0E] focus-visible:scale-105";
+                }
+
+                if (isSelected) {
+                  statusClasses = "bg-[#C4966A]/15 text-[#2A1A0E] !border-[#C4966A] font-semibold scale-105 z-10 shadow-sm";
+                }
+
+                return (
+                  <button
+                    key={i}
+                    className={`aspect-square rounded-lg flex items-center justify-center font-sans text-[0.82rem] transition-all relative border border-transparent outline-none ${statusClasses}`}
+                    onClick={() => !isBooked && handleSelectDate(day)}
+                    onMouseEnter={() => !isBooked && setHoveredDay(day)}
+                    onMouseLeave={() => setHoveredDay(null)}
+                    onFocus={() => !isBooked && setHoveredDay(day)}
+                    onBlur={() => setHoveredDay(null)}
+                    disabled={isBooked}
+                    aria-label={`${day} ${MONTHS[viewMonth]} — ${STATUS_META[status]?.label || status}`}
+                  >
+                    {day}
+                    {status === "available" && (
+                      <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#48BB78]" />
+                    )}
+                    {status === "booked" && (
+                      <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#E53E3E]/70" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Legend */}
+            <div className="flex flex-wrap gap-x-5 gap-y-2.5 mt-5 pt-5 border-t border-[#C4966A]/15">
+              {[
+                { color: "#48BB78", label: "Available" },
+                { color: "rgba(229,62,62,0.3)", label: "Fully Booked" },
+              ].map((l) => (
+                <div key={l.label} className="flex items-center gap-1.5 font-sans text-[0.68rem] font-normal text-[#8C6A50] tracking-[0.03em]">
+                  <div
+                    className="w-2 h-2 rounded-full flex-shrink-0"
+                    style={{ background: l.color }}
+                  />
+                  {l.label}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Info Panel ── */}
+          <div className="bg-white rounded-2xl shadow-sm border border-[#C4966A]/15 overflow-hidden min-h-[360px] md:min-h-[280px] flex flex-col">
+            {activeDay === null || !selMeta ? (
+              <div className="flex-1 flex flex-col items-center justify-center p-10 text-center gap-4">
+                <div className="text-4xl opacity-40">📅</div>
+                <p className="font-serif text-[1rem] font-light text-[#B8916A] leading-relaxed">
+                  Tap any date on the calendar to check<br />availability for your special day.
+                </p>
+              </div>
+            ) : (
+              <>
+                <div className="p-6 border-b border-[#C4966A]/10">
+                  <p className="font-serif text-[1.2rem] font-semibold text-[#2A1A0E] m-0">{selDateStr}</p>
+                  <p className="font-serif text-[0.82rem] font-light text-[#8C6A50] tracking-[0.08em] uppercase mt-0.5">
+                    {new Date(viewYear, viewMonth, activeDay).toLocaleDateString("en-IN", { weekday: "long" })}
                   </p>
                 </div>
-              ) : (
-                <>
-                  <div className="va-info-header">
-                    <p className="va-info-date">{selDateStr}</p>
-                    <p className="va-info-day">
-                      {selected.length === 1
-                        ? new Date(viewYear, viewMonth, selected[0]).toLocaleDateString("en-IN", { weekday: "long" })
-                        : `${selected.length} dates selected`}
-                    </p>
-                  </div>
-                  <div className="va-info-body">
-                    <div className="va-info-emoji">{selMeta.emoji}</div>
-                    <p className="va-info-msg">
-                      {selMeta.msg}
-                    </p>
-                    <span
-                      className="va-status-badge"
-                      style={{
-                        color: selMeta.color,
-                        borderColor: selMeta.color,
-                        background: `${selMeta.color}12`,
-                      }}
-                    >
-                      {selMeta.label}
-                    </span>
-                    <p className="va-info-sub">{selMeta.sub}</p>
-                    {selStatus !== "booked" && (
-                      <a href="/rsvp" className="va-info-cta">
-                        Reserve this date →
-                      </a>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
+                <div className="flex-1 flex flex-col items-center justify-center p-7 text-center gap-4">
+                  <div className="text-5xl">{selMeta.emoji}</div>
+                  <p className="font-serif text-[1.05rem] font-normal text-[#2A1A0E] m-0 leading-snug">
+                    {selMeta.msg}
+                  </p>
+                  <span
+                    className="inline-block px-4 py-1 rounded font-sans text-[0.78rem] font-semibold tracking-[0.12em] uppercase border"
+                    style={{
+                      color: selMeta.color,
+                      borderColor: selMeta.color,
+                      background: `${selMeta.color}12`,
+                    }}
+                  >
+                    {selMeta.label}
+                  </span>
+                  <p className="font-serif text-[0.92rem] font-light text-[#8C6A50] m-0 leading-relaxed">{selMeta.sub}</p>
+                  {selStatus !== "booked" && (
+                    <a href="/booking" className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#C4966A] text-white font-sans text-[0.78rem] font-medium tracking-[0.06em] rounded-full hover:bg-[#B8845A] hover:-translate-y-0.5 transition-all mt-1">
+                      Reserve this date →
+                    </a>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
-import db from '@/lib/db';
+import { dbQuery } from '@/lib/db';
 import { Booking } from '@/utils/types';
-import { getBookings, saveBookings } from '@/utils';
 
 export async function GET(
   request: Request,
@@ -9,8 +8,8 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const stmt = db.prepare('SELECT * FROM bookings WHERE id = ?');
-    const booking = stmt.get(id);
+    const res = await dbQuery('SELECT * FROM bookings WHERE id = $1', [id]);
+    const booking = res.rows[0];
 
     if (!booking) {
       return NextResponse.json({ success: false, error: 'Booking not found' }, { status: 404 });
@@ -30,14 +29,13 @@ export async function PUT(
     const { id } = await params;
     const body = await request.json();
     
-    const stmt = db.prepare('SELECT * FROM bookings WHERE id = ?');
-    const currentBooking = stmt.get(id) as Booking | undefined;
+    const currentRes = await dbQuery('SELECT * FROM bookings WHERE id = $1', [id]);
+    const currentBooking = currentRes.rows[0] as Booking | undefined;
 
     if (!currentBooking) {
       return NextResponse.json({ success: false, error: 'Booking not found' }, { status: 404 });
     }
 
-    // Update fields if provided in request body
     const updatedBooking: Booking = {
       ...currentBooking,
       ...body,
@@ -45,26 +43,28 @@ export async function PUT(
       updatedAt: new Date().toISOString(),
     };
 
-    // Update SQLite
-    const updateStmt = db.prepare(`
-      UPDATE bookings 
-      SET userName = @userName, email = @email, phone = @phone, address = @address, 
-          bookingStartDate = @bookingStartDate, bookingEndDate = @bookingEndDate,
-          userBookedDate = @userBookedDate, status = @status, 
-          createdAt = @createdAt, updatedAt = @updatedAt
-      WHERE id = @id
-    `);
-    updateStmt.run(updatedBooking);
-
-    // Update JSON
-    const bookings = await getBookings();
-    const index = bookings.findIndex((b: Booking) => b.id === id);
-    if (index !== -1) {
-      bookings[index] = updatedBooking;
-    } else {
-      bookings.push(updatedBooking); // Fallback in case it wasn't in JSON
-    }
-    await saveBookings(bookings);
+    // Update PostgreSQL
+    await dbQuery(
+      `UPDATE bookings 
+       SET "userName" = $1, "email" = $2, "phone" = $3, "address" = $4, 
+           "bookingStartDate" = $5, "bookingEndDate" = $6,
+           "userBookedDate" = $7, "status" = $8, 
+           "createdAt" = $9, "updatedAt" = $10
+       WHERE id = $11`,
+      [
+        updatedBooking.userName,
+        updatedBooking.email,
+        updatedBooking.phone,
+        updatedBooking.address,
+        updatedBooking.bookingStartDate,
+        updatedBooking.bookingEndDate,
+        updatedBooking.userBookedDate,
+        updatedBooking.status,
+        updatedBooking.createdAt,
+        updatedBooking.updatedAt,
+        id,
+      ]
+    );
 
     return NextResponse.json({ success: true, data: updatedBooking }, { status: 200 });
   } catch (error) {
@@ -80,24 +80,13 @@ export async function DELETE(
   try {
     const { id } = await params;
     
-    const stmt = db.prepare('SELECT * FROM bookings WHERE id = ?');
-    const existing = stmt.get(id);
-
-    if (!existing) {
+    const currentRes = await dbQuery('SELECT * FROM bookings WHERE id = $1', [id]);
+    if (currentRes.rowCount === 0) {
       return NextResponse.json({ success: false, error: 'Booking not found' }, { status: 404 });
     }
 
-    // Delete from SQLite
-    const deleteStmt = db.prepare('DELETE FROM bookings WHERE id = ?');
-    deleteStmt.run(id);
-
-    // Delete from JSON
-    const bookings = await getBookings();
-    const index = bookings.findIndex((b: Booking) => b.id === id);
-    if (index !== -1) {
-      bookings.splice(index, 1);
-      await saveBookings(bookings);
-    }
+    // Delete from PostgreSQL
+    await dbQuery('DELETE FROM bookings WHERE id = $1', [id]);
 
     return NextResponse.json({ success: true, message: 'Booking deleted successfully' }, { status: 200 });
   } catch (error) {

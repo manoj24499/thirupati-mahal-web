@@ -1,5 +1,5 @@
 import BookingAdmin from "../../components/booking";
 
 export default function BookingPage() {
-  return <BookingAgdmin />;
+  return <BookingAdmin />;
 }
