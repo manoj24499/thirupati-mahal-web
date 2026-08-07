@@ -108,10 +108,7 @@ export default function QuotePopup() {
       <button 
         className={`qp-cta${showCta ? " visible" : ""}`}
         onClick={() => {
-          const section = document.querySelector('.va-section');
-          if (section) {
-            section.scrollIntoView({ behavior: 'smooth' });
-          }
+          window.location.href = '/#availability';
         }}
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">

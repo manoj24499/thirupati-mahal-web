@@ -15,12 +15,12 @@ const HALLS = {
     heading: 'A Grand Space for Weddings & Receptions with Air Conditioning',
     body: `Designed for large-scale celebrations, our Main Wedding Hall offers spacious interiors, comfortable seating, and dedicated facilities to make every wedding celebration seamless.`,
     primaryImage: '/images/main-hall.png',
-    // secondaryImage: '/images/main-two.jpg',
+    // secondaryImage: '/images/main-hall.',
     stats: [
-      { value: '380+', label: 'seating capacity', color: '#9c1c54' },
-      { value: '1500+', label: 'Floating capacity', color: '#f31d82' },
-      { value: '100+', label: 'Parking capacity', color: '#1f2024' },
-      // { value: '100+', label: 'Happy Clients', color: '#c9a24b' },
+      { value: '380', label: 'Seating Capacity', color: '#9c1c54' },
+      { value: '1500', label: 'Floating Capacity', color: '#f31d82' },
+      { value: '100+', label: 'Parking Capacity', color: '#1f2024' },
+      // { value: '500+', label: 'Happy Clients', color: '#c9a24b' },
     ],
     services: [
       { icon: IconRings, label: 'Weddings' },
@@ -37,12 +37,12 @@ const HALLS = {
     heading: 'Perfect for Intimate Celebrations & Professional Gatherings',
     body: 'Our Mini Hall is an ideal choice for smaller events that require a comfortable and elegant venue without compromising on facilities.',
     primaryImage: '/images/mini-hall.png',
-    // secondaryImage: '/images/mini-two.jpeg',
+    // secondaryImage: '/images/mini-two.jpg',
     stats: [
-      { value: '120+', label: 'seating capacity', color: '#9c1c54' },
-      { value: '800+', label: 'Floating Capacity', color: '#f31d82' },
-      { value: '100+', label: 'Parking capacity', color: '#1f2024' },
-      // { value: '50+', label: 'Happy Clients', color: '#c9a24b' },
+      { value: '120', label: 'Seating Capacity', color: '#9c1c54' },
+      { value: '800', label: 'Floating Capacity', color: '#f31d82' },
+      { value: '100+', label: 'Parking Capacity', color: '#1f2024' },
+      // { value: '250+', label: 'Happy Clients', color: '#c9a24b' },
     ],
     services: [
       { icon: IconEngagementRing, label: 'Engagements' },
@@ -110,24 +110,34 @@ export default function AboutSection() {
       <div className={styles.inner}>
         {/* ---------- LEFT — images ---------- */}
         <div className={styles.imageCol}>
-          {/* Decorative frame */}
-          <div className={styles.frameOuter}>
-            {/* Corner ornaments */}
-            <CornerOrnament className={`${styles.corner} ${styles.cornerTL}`} />
-            <CornerOrnament className={`${styles.corner} ${styles.cornerTR}`} flipX />
-            <CornerOrnament className={`${styles.corner} ${styles.cornerBL}`} flipY />
-            <CornerOrnament className={`${styles.corner} ${styles.cornerBR}`} flipX flipY />
+          <div className={styles.primaryWrap}>
+            <Image
+              src={hall.primaryImage}
+              alt={`${hall.label} photo`}
+              fill
+              sizes="(max-width: 900px) 100vw, 40vw"
+              className={styles.primaryImg}
+              priority
+            />
+          </div>
 
-            <div className={styles.primaryWrap}>
-              <Image
-                src={hall.primaryImage}
-                alt={`${hall.label} photo`}
-                fill
-                sizes="(max-width: 900px) 100vw, 40vw"
-                className={styles.primaryImg}
-                priority
-              />
-            </div>
+          {/* Decorative ornamental frame — sits on top of the photo,
+              a double-line border with a scroll flourish tucked into
+              every corner. Purely decorative, doesn't touch the image
+              markup above. */}
+          <div className={styles.imageFrame} aria-hidden="true">
+            <span className={`${styles.frameCorner} ${styles.frameCornerTL}`}>
+              <CornerFlourish className={styles.frameCornerSvg} />
+            </span>
+            <span className={`${styles.frameCorner} ${styles.frameCornerTR}`}>
+              <CornerFlourish className={styles.frameCornerSvg} />
+            </span>
+            <span className={`${styles.frameCorner} ${styles.frameCornerBL}`}>
+              <CornerFlourish className={styles.frameCornerSvg} />
+            </span>
+            <span className={`${styles.frameCorner} ${styles.frameCornerBR}`}>
+              <CornerFlourish className={styles.frameCornerSvg} />
+            </span>
           </div>
         </div>
 
@@ -172,7 +182,7 @@ export default function AboutSection() {
                 <h2 className={styles.heading}>{h.heading}</h2>
                 <p className={styles.body}>{h.body}</p>
 
-                {/* Stats grid — 4 cols */}
+                {/* Stats grid — 3 active cols (4th stat kept commented above) */}
                 <div className={styles.statsGrid}>
                   {h.stats.map((stat) => (
                     <div
@@ -186,11 +196,12 @@ export default function AboutSection() {
                   ))}
                 </div>
 
+                <h4 className={styles.servicesHeading}>Our Services</h4>
+
                 {/* Services row — each hall has its own list. Two-word
                     labels are forced onto two lines (first word / second
                     word) so every item keeps the same footprint and the
                     icons all line up in a row, regardless of label length. */}
-                <h3 className={styles.servicesHeading}>Our Services</h3>
                 <div className={styles.services} role="list">
                   {h.services.map(({ icon: Icon, label }) => {
                     const words = label.split(' ');
@@ -224,36 +235,28 @@ export default function AboutSection() {
 }
 
 // ---------------------------------------------------------------------------
-// Corner frame ornament — traditional square-bracket style corner piece
+// Decorative corner flourish for the hall photo frame — drawn once
+// anchored to the bottom-left corner of its own box, then mirrored with
+// CSS transforms (scaleX/scaleY) onto the other three corners so the
+// same artwork wraps every corner of the frame.
 // ---------------------------------------------------------------------------
-function CornerOrnament({
-  className,
-  flipX,
-  flipY,
-}: {
-  className?: string;
-  flipX?: boolean;
-  flipY?: boolean;
-}) {
-  const sx = flipX ? -1 : 1;
-  const sy = flipY ? -1 : 1;
+function CornerFlourish({ className }: { className: string }) {
   return (
-    <svg
-      className={className}
-      viewBox="0 0 60 60"
-      fill="none"
-      aria-hidden="true"
-      style={{ transform: `scale(${sx}, ${sy})` }}
-    >
-      {/* Outer square bracket — horizontal arm */}
-      <rect x="0" y="0" width="42" height="4" rx="1" fill="#c9a24b" />
-      {/* Outer square bracket — vertical arm */}
-      <rect x="0" y="0" width="4" height="42" rx="1" fill="#c9a24b" />
-      {/* Inner top square */}
-      <rect x="8" y="8" width="12" height="4" rx="0.5" fill="#c9a24b" />
-      <rect x="8" y="8" width="4" height="12" rx="0.5" fill="#c9a24b" />
-      {/* Inner small corner accent */}
-      <rect x="8" y="8" width="8" height="8" rx="1" fill="none" stroke="#c9a24b" strokeWidth="1.5" />
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path
+        d="M4 60 C4 40 6 26 20 20 C30 16 38 22 34 30 C31 36 22 36 21 29 C20.3 24.5 25 22 28 25"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M4 60 C16 46 28 40 44 37 C52 35.5 58 30 60 22"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+      />
+      <circle cx="60" cy="20" r="2.6" fill="currentColor" />
+      <circle cx="8" cy="54" r="2" fill="currentColor" />
     </svg>
   );
 }

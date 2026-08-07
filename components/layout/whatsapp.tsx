@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 const WHATSAPP_NUMBER = "9597980663"; // Format: country code + number, no +
 const WHATSAPP_MESSAGE = "Hi! I visited your wedding website and I'd love to know more about your services. 💍";
 
-const VENUE_MAPS_URL = "https://www.google.com/maps/place/THIRUPATHI+MAHAL/@10.3889601,78.8074966,215m/data=!3m1!1e3!4m14!1m7!3m6!1s0x3b0079d20b507059:0x4631628872673134!2sTHIRUPATHI+MAHAL!8m2!3d10.3885765!4d78.8083858!16s%2Fg%2F11pv5mbrw0!3m5!1s0x3b0079d20b507059:0x4631628872673134!8m2!3d10.3885765!4d78.8083858!16s%2Fg%2F11pv5mbrw0";
+const VENUE_MAPS_URL = "https://www.google.com/maps/place/Tirupati+Mahaal/@10.6079309,77.2734942,1152m/data=!3m1!1e3!4m6!3m5!1s0x3ba9cb6617dbb847:0x77c4e3957324ecf1!8m2!3d10.6077709!4d77.2770051!16s%2Fg%2F11md81r15g?entry=ttu&g_ep=EgoyMDI2MDgwNC4wIKXMDSoASAFQAw%3D%3D";
 
 export default function WhatsAppContact() {
     const [popupOpen, setPopupOpen] = useState(false);
@@ -422,7 +422,7 @@ export default function WhatsAppContact() {
                         </svg>
                     </div>
                     <div className="wa-popup-header-text">
-                        <p className="wa-popup-name">Sofia &amp; James Wedding</p>
+                        <p className="wa-popup-name">TIRUPATI MAHAL</p>
                         <p className="wa-popup-status">
                             <span className="wa-status-dot" />
                             Typically replies within minutes

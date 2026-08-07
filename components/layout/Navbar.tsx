@@ -112,7 +112,7 @@ export default function Navbar() {
           display: block;
           transition: opacity 0.2s ease;
         }
-        // .nav-logo:hover .nav-logo-img { opacity: 0.85; }
+        
 
         .nav-right {
           display: flex; align-items: center; gap: 2rem;
@@ -174,7 +174,7 @@ export default function Navbar() {
           position: fixed; top: 0; right: 0; bottom: 0;
           z-index: 400;
           width: 340px; max-width: 90vw;
-          background: #1A0F07;
+          background: #fdeddeff;
           display: flex; flex-direction: column;
           padding: 2.5rem 2.5rem 2rem;
           transform: translateX(100%);
@@ -190,7 +190,7 @@ export default function Navbar() {
           padding: 0; margin-bottom: 2.5rem;
           transition: color 0.2s, transform 0.2s;
         }
-        .sidebar-close:hover { color: #fff; transform: rotate(90deg); }
+        .sidebar-close:hover { color: #1A0F07; transform: rotate(90deg); }
 
         .sidebar-logo {
           display: flex; align-items: center; justify-content: center;
@@ -203,7 +203,6 @@ export default function Navbar() {
           display: block;
           transition: opacity 0.2s ease;
         }
-        .sidebar-logo:hover .sidebar-logo-img { opacity: 0.85; }
 
         .sidebar-tagline {
           font-family: 'Cormorant Garamond', serif;
@@ -233,8 +232,8 @@ export default function Navbar() {
         .sidebar-nav a {
           display: block;
           font-family: 'Playfair Display', serif;
-          font-size: 1.6rem; font-weight: 400;
-          color: #F5E6D3;
+          font-size: 1.6rem; font-weight: 500;
+          color: #532744;
           text-decoration: none;
           padding: 0.7rem 0;
           border-bottom: 1px solid rgba(196,150,106,0.12);
@@ -245,13 +244,13 @@ export default function Navbar() {
         .sidebar-nav a::before {
           content: '—';
           position: absolute; left: -1.2rem;
-          color: #C4966A; opacity: 0;
+          color: #1A0F07; opacity: 0;
           transition: opacity 0.2s, left 0.25s;
           font-size: 0.9rem;
         }
-        .sidebar-nav a:hover { color: #DDB98A; padding-left: 1.2rem; }
+        .sidebar-nav a:hover { color:   #532744; padding-left: 1.2rem; }
         .sidebar-nav a:hover::before { opacity: 1; left: 0; }
-        .sidebar-nav a.active { color: #C4966A; }
+        .sidebar-nav a.active { color: #532744;  text-decoration: underline;  }
 
         .sidebar-image {
           width: 100%; aspect-ratio: 4/3;
@@ -265,14 +264,13 @@ export default function Navbar() {
           font-family: 'Playfair Display', serif;
           font-size: 0.78rem; font-weight: 600;
           letter-spacing: 0.18em; text-transform: uppercase;
-          color: #C4966A;
-          border: 1px solid #C4966A;
+          color: #532744;
+          background: transparent;
+          border: 1px solid #532744;
           padding: 0.85rem 1.5rem;
-          text-decoration: none;
-          transition: background 0.25s, color 0.25s;
           margin-bottom: 1.8rem;
+          cursor: default;
         }
-        .sidebar-cta:hover { background: #C4966A; color: #1A0F07; }
 
         .sidebar-socials {
           display: flex; gap: 0.85rem;
@@ -281,14 +279,14 @@ export default function Navbar() {
         }
         .sidebar-socials a {
           width: 36px; height: 36px; border-radius: 50%;
-          background: rgba(196,150,106,0.12);
-          border: 1px solid rgba(196,150,106,0.25);
+          background: transparent;
+          border: 1px solid #532744;
           display: flex; align-items: center; justify-content: center;
-          color: #DDB98A; text-decoration: none;
+          color: #532744; text-decoration: none;
           font-size: 0.78rem; font-family: sans-serif;
-          transition: background 0.2s, border-color 0.2s;
+          transition: background 0.2s, color 0.2s;
         }
-        .sidebar-socials a:hover { background: rgba(196,150,106,0.25); border-color: #C4966A; }
+        .sidebar-socials a:hover { background: #532744; color: #fff; }
 
         @media (max-width: 768px) {
           .nav-links { display: none; }
@@ -327,9 +325,9 @@ export default function Navbar() {
           className="sidebar-image"
         />
 
-        <Link href="/rsvp" className="sidebar-cta" onClick={() => setMenuOpen(false)}>
+        <p className="sidebar-cta">
           Get in Touch
-        </Link>
+        </p>
 
         <ul className="sidebar-socials">
           {socials.map((s) => (

@@ -1,24 +1,15 @@
-"use client";
-
 import Link from "next/link";
-import { useState } from "react";
+
+// Google Maps location for Tirupati Mahaal
+const MAP_URL =
+  "https://www.google.com/maps/place/Tirupati+Mahaal/@10.6077154,77.2739915,823m/data=!3m1!1e3!4m6!3m5!1s0x3ba9cb6617dbb847:0x77c4e3957324ecf1!8m2!3d10.6077709!4d77.2770051!16s%2Fg%2F11md81r15g?entry=ttu&g_ep=EgoyMDI2MDgwMi4wIKXMDSoASAFQAw%3D%3D";
 
 export default function Footer() {
-  const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = () => {
-    if (email.trim()) {
-      setSubscribed(true);
-      setEmail("");
-    }
-  };
-
   const navLinks = [
     { label: "Home", href: "/" },
-    { label: "Gallery", href: "/gallery" },
+    { label: "Gallery", href: "/#gallery" },
     { label: "Venues", href: "/venue" },
-    { label: "Contact", href: "/contact" },
+    { label: "Venue Availability", href: "/#availability" },
   ];
 
   const socials = [
@@ -34,15 +25,6 @@ export default function Footer() {
       ),
     },
     {
-      label: "Twitter",
-      href: "#",
-      icon: (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.258 5.63 5.906-5.63Zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-        </svg>
-      ),
-    },
-    {
       label: "Facebook",
       href: "#",
       icon: (
@@ -51,15 +33,24 @@ export default function Footer() {
         </svg>
       ),
     },
-    {
-      label: "Pinterest",
-      href: "#",
-      icon: (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z" />
-        </svg>
-      ),
-    },
+    // {
+    //   label: "Twitter",
+    //   href: "#",
+    //   icon: (
+    //     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+    //       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.258 5.63 5.906-5.63Zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    //     </svg>
+    //   ),
+    // },
+    // {
+    //   label: "Pinterest",
+    //   href: "#",
+    //   icon: (
+    //     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+    //       <path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z" />
+    //     </svg>
+    //   ),
+    // },
   ];
 
   return (
@@ -82,7 +73,7 @@ export default function Footer() {
         /* ── Main footer grid ── */
         .footer-main {
           margin: 0 auto;
-          padding: 4rem 2.5rem 2.5rem;
+          padding: 2.5rem 2.5rem 2.5rem;
           display: grid;
           grid-template-columns: 1fr auto 1fr;
           gap: 3rem;
@@ -137,7 +128,11 @@ export default function Footer() {
           letter-spacing: 0.04em;
           margin-bottom: 1.2rem;
           text-align: center;
+          text-decoration: none;
+          display: block;
+          transition: color 0.2s;
         }
+        .footer-contact-phone:hover { color: #3B2A1A; }
 
         .footer-contact-bio {
           font-family: 'Cormorant Garamond', serif;
@@ -147,7 +142,7 @@ export default function Footer() {
           line-height: 1.65;
           letter-spacing: 0.02em;
           text-align: center;
-          max-width: 220px;
+          max-width: 240px;
         }
 
         /* ── Centre: Brand ── */
@@ -159,18 +154,20 @@ export default function Footer() {
           padding-top: 0.5rem;
         }
 
-        /* Monogram / logo icon */
+        /* Logo */
         .footer-logo-icon {
           display: flex;
           flex-direction: column;
           align-items: center;
           gap: 0.1rem;
-          color: #C4966A;
         }
-        .footer-logo-icon svg {
-          width: 28px;
-          height: 36px;
-          opacity: 0.8;
+        .footer-logo-img {
+          height: 80px;
+          width: auto;
+          object-fit: contain;
+          display: block;
+          s
+          
         }
 
         .footer-logo-text {
@@ -204,85 +201,98 @@ export default function Footer() {
           transform: translateY(-2px);
         }
 
-        /* Credit line */
-        .footer-credit {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 0.72rem;
-          font-weight: 300;
-          color: #B8916A;
-          letter-spacing: 0.1em;
-          font-style: italic;
-          text-align: center;
-          opacity: 0.7;
-        }
-
-        /* ── Right: Stay in touch ── */
+        /* ── Right: Find Us (map) ── */
         .footer-col-right {
           display: flex;
           flex-direction: column;
           align-items: center;
           gap: 0;
+          
         }
 
-        .footer-subscribe-form {
+        .footer-map-link {
+          display: block;
+          width: 100%;
+          max-width: 420px;
+          text-decoration: none;
+        }
+
+        /* Real map screenshot — frame ratio matches the source image
+           (1095x638) so object-fit: cover never has to crop it. */
+        .footer-map-frame {
+          position: relative;
+          display: block;
+          width: 100%;
+          aspect-ratio: 1095 / 638;
+          border-radius: 6px;
+          overflow: hidden;
+          background: #F7DFC1;
+          box-shadow: 0 10px 28px rgba(59, 42, 26, 0.18);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          border: 5px solid #c49b6aff;
+        }
+        .footer-map-link:hover .footer-map-frame {
+          transform: translateY(-3px);
+          box-shadow: 0 16px 36px rgba(59, 42, 26, 0.24);
+        }
+
+        .footer-map-img {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          display: block;
+        }
+
+        /* Soft radar-style ping ring accenting the pin already marked on
+           the map photo (positioned to match the pin in the source image). */
+        .footer-map-ping {
+          position: absolute;
+          left: 46.9%;
+          top: 57.5%;
+          width: 25px;
+          height: 25px;
+          margin: -8px 0 0 -8px;
+          border-radius: 50%;
+          border: 2px solid rgba(196, 150, 106, 0.85);
+          animation: footerMapPing 2.2s ease-out infinite;
+          z-index: 1;
+          pointer-events: none;
+        }
+        @keyframes footerMapPing {
+          0%   { transform: scale(1);   opacity: 0.8; }
+          100% { transform: scale(3.2); opacity: 0; }
+        }
+
+        /* Hover overlay — affordance that the card is clickable */
+        .footer-map-hover {
+          position: absolute;
+          inset: 0;
           display: flex;
-          flex-direction: column;
-          gap: 0.6rem;
-          width: 100%;
-          max-width: 200px;
+          align-items: center;
+          justify-content: center;
+          background: rgba(59, 42, 26, 0);
+          opacity: 0;
+          transition: opacity 0.25s ease, background 0.25s ease;
+          z-index: 2;
         }
-
-        .footer-email-input {
-          width: 100%;
-          padding: 0.6rem 0.9rem;
-          border: 1px solid rgba(196, 150, 106, 0.35);
-          background: rgba(255, 255, 255, 0.6);
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 0.85rem;
-          font-weight: 300;
-          color: #3B2A1A;
-          letter-spacing: 0.06em;
-          outline: none;
-          transition: border-color 0.2s;
-          box-sizing: border-box;
-          border-radius: 0;
+        .footer-map-link:hover .footer-map-hover {
+          opacity: 1;
+          background: rgba(59, 42, 26, 0.32);
         }
-        .footer-email-input::placeholder {
-          color: #B8916A;
-          font-style: italic;
-        }
-        .footer-email-input:focus {
-          border-color: #C4966A;
-        }
-
-        .footer-subscribe-btn {
-          width: 100%;
-          padding: 0.6rem 0.9rem;
-          background: transparent;
-          border: 1px solid rgba(196, 150, 106, 0.45);
+        .footer-map-hover span {
           font-family: 'Inter', sans-serif;
           font-size: 0.65rem;
-          font-weight: 400;
-          letter-spacing: 0.22em;
+          font-weight: 600;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: #8C6A50;
-          cursor: pointer;
-          transition: background 0.25s, color 0.25s, border-color 0.25s;
-        }
-        .footer-subscribe-btn:hover {
-          background: #C4966A;
-          color: #FDEFDE;
-          border-color: #C4966A;
-        }
-
-        .footer-subscribed {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 0.85rem;
-          font-weight: 300;
-          color: #C4966A;
-          font-style: italic;
-          letter-spacing: 0.05em;
-          text-align: center;
+          color: #ffffff;
+          border: 1px solid rgba(255, 255, 255, 0.75);
+          padding: 8px 16px;
+          border-radius: 24px;
+          white-space: nowrap;
         }
 
         /* ── Bottom nav bar ── */
@@ -321,7 +331,7 @@ export default function Footer() {
             text-align: center;
           }
           .footer-nav { gap: 1.4rem; flex-wrap: wrap; }
-          .footer-subscribe-form { max-width: 260px; margin: 0 auto; }
+          .footer-map-link { max-width: 380px; margin: 0 auto; }
         }
       `}</style>
       <footer className="footer">
@@ -333,31 +343,26 @@ export default function Footer() {
           <div className="footer-col-left">
             <p className="footer-section-label">Contact</p>
             <div className="footer-divider" />
-            <a href="mailto:hello@sofiaandjames.com" className="footer-contact-email">
-              hello@sofiaandjames.com
+            <a href="mailto:tirupathimahal@gmail.com" className="footer-contact-email">
+              tirupathimahal@gmail.com
             </a>
-            <p className="footer-contact-phone">+91 98765 43210</p>
+            <a href="tel:+919842226236" className="footer-contact-phone">
+              98422 26236
+            </a>
             <p className="footer-contact-bio">
-              Based in Mumbai, India.<br />
-              Available to celebrate love<br />across India &amp; Worldwide.
+              25/2 Indra Nagar, Dharapuram Road,<br />
+              Thungavi, Post, Periakottai,<br />
+              Udumalaipettai, Tamil Nadu 642203
             </p>
           </div>
 
           {/* ── Centre: Brand ── */}
           <div className="footer-brand">
-            {/* Camera tripod icon — wedding photographer feel */}
             <div className="footer-logo-icon">
-              <svg viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="14" cy="8" r="5.5" stroke="#C4966A" strokeWidth="1.2" />
-                <circle cx="14" cy="8" r="2.5" stroke="#C4966A" strokeWidth="1" />
-                <line x1="14" y1="14" x2="14" y2="20" stroke="#C4966A" strokeWidth="1.2" />
-                <line x1="14" y1="20" x2="6" y2="34" stroke="#C4966A" strokeWidth="1.2" />
-                <line x1="14" y1="20" x2="22" y2="34" stroke="#C4966A" strokeWidth="1.2" />
-                <line x1="14" y1="26" x2="9" y2="34" stroke="#C4966A" strokeWidth="1" />
-              </svg>
+              <img src="/images/Logo-Tirupati-Mahaal.png" alt="Tirupati Mahal" className="footer-logo-img" />
             </div>
 
-            <p className="footer-logo-text">Sofia &amp; James</p>
+            <p className="footer-logo-text">Tirupati Mahal</p>
 
             <ul className="footer-socials">
               {socials.map((s) => (
@@ -366,31 +371,30 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-
-            <p className="footer-credit">by The Design Space</p>
           </div>
 
-          {/* ── Right: Stay in Touch ── */}
+          {/* ── Right: Find Us (real map image) ── */}
           <div className="footer-col-right">
-            <p className="footer-section-label">Stay in Touch</p>
+            <p className="footer-section-label">Find Us</p>
             <div className="footer-divider" />
-            {subscribed ? (
-              <p className="footer-subscribed">Thank you for subscribing ✦</p>
-            ) : (
-              <div className="footer-subscribe-form">
-                <input
-                  type="email"
-                  className="footer-email-input"
-                  placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleSubscribe()}
+
+            <a
+              href={MAP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-map-link"
+              aria-label="Open Tirupati Mahal location in Google Maps"
+            >
+              <span className="footer-map-frame">
+                <img
+                  src="/images/tirupati-mahal-map.png"
+                  alt="Map showing Tirupati Mahal's location"
+                  className="footer-map-img"
                 />
-                <button className="footer-subscribe-btn" onClick={handleSubscribe}>
-                  Subscribe
-                </button>
-              </div>
-            )}
+                <span className="footer-map-ping" />
+                <span className="footer-map-hover"><span>View on Google Maps</span></span>
+              </span>
+            </a>
           </div>
 
         </div>

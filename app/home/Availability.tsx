@@ -106,9 +106,10 @@ export default function VenueAvailability() {
            finish is even across the full width at the bottom edge. */
         .va-section {
           background: linear-gradient(180deg, #FDEFDE 0%, #FFFFFF 100%);
-          padding: 4rem 2rem 4rem;
+          padding: 2rem 2rem 4rem;
           position: relative;
           overflow: hidden;
+          scroll-margin-top: 66px;
         }
 
         /* Soft background blobs */
@@ -157,7 +158,7 @@ export default function VenueAvailability() {
           font-size: 36px;
           font-weight: 700;
           color: #2A1A0E;
-          margin: 0;
+          margin: 0 0 10px 0;
           line-height: 1.15;
           text-align: center;
         }
@@ -470,7 +471,7 @@ export default function VenueAvailability() {
         }
       `}</style>
 
-      <section id="availability" className="va-section">
+      <section className="va-section" id="availability">
         <div className="va-blob va-blob-1" />
         <div className="va-blob va-blob-2" />
 

@@ -6,6 +6,7 @@
   position: relative;
   width: 100%;
   padding: 40px 60px;
+  scroll-margin-top: 66px; /* Exactly matches the scrolled navbar height */
   /* min-height: 100vh; */
   /* background: #fdefde; */
   background: linear-gradient(320deg, #fdefde 0%, #fbf3ea 25%, #fffefa 100%);
