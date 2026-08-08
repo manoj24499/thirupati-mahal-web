@@ -47,7 +47,6 @@ export default function VenueAvailability() {
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
-  const [hoveredDay, setHoveredDay] = useState<number | null>(null);
   const [bookedDatesSet, setBookedDatesSet] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -83,7 +82,13 @@ export default function VenueAvailability() {
     };
   }, [viewYear, viewMonth]);
 
+  // True when the currently viewed month/year is strictly before today's month
+  const isPastMonth =
+    viewYear < today.getFullYear() ||
+    (viewYear === today.getFullYear() && viewMonth < today.getMonth());
+
   const handleSelectDate = (day: number) => {
+    if (isPastMonth) return;
     setSelectedDay((prev) => (prev === day ? null : day));
   };
 
@@ -95,13 +100,11 @@ export default function VenueAvailability() {
     if (viewMonth === 0) { setViewYear(y => y - 1); setViewMonth(11); }
     else setViewMonth(m => m - 1);
     setSelectedDay(null);
-    setHoveredDay(null);
   };
   const nextMonth = () => {
     if (viewMonth === 11) { setViewYear(y => y + 1); setViewMonth(0); }
     else setViewMonth(m => m + 1);
     setSelectedDay(null);
-    setHoveredDay(null);
   };
 
   const getDayStatus = useCallback((day: number): DayStatus => {
@@ -112,7 +115,7 @@ export default function VenueAvailability() {
     return bookedDatesSet.has(dateStr) ? "booked" : "available";
   }, [loading, viewYear, viewMonth, bookedDatesSet]);
 
-  const activeDay = hoveredDay !== null ? hoveredDay : selectedDay;
+  const activeDay = selectedDay;
   const selStatus = activeDay !== null ? getDayStatus(activeDay) : null;
   const selMeta = selStatus ? STATUS_META[selStatus] || STATUS_META.available : null;
   const selDateStr = activeDay !== null
@@ -200,16 +203,22 @@ export default function VenueAvailability() {
                 const isSelected = selectedDay === day;
                 const isBooked = status === "booked";
 
+                // Dates in past months are shown but disabled
+                const isPastDay = isPastMonth;
+
                 let statusClasses = "";
                 if (status === "loading") {
                   statusClasses = "bg-gradient-to-r from-[#f5ede2] via-[#fdf5ec] to-[#f5ede2] bg-[length:200%_100%] animate-pulse text-transparent cursor-default pointer-events-none";
+                } else if (isPastDay) {
+                  // Past month: visible but muted and not clickable
+                  statusClasses = "text-[#C4B8AD] bg-transparent cursor-not-allowed opacity-50";
                 } else if (isBooked) {
                   statusClasses = "bg-[#E53E3E]/5 text-[#C4A090] line-through decoration-[#E53E3E]/45 cursor-not-allowed pointer-events-none";
                 } else {
                   statusClasses = "bg-[#48BB78]/6 text-[#6B4F3A] cursor-pointer hover:bg-[#C4966A]/15 hover:border-[#C4966A] hover:text-[#2A1A0E] hover:scale-105 focus:bg-[#C4966A]/15 focus:border-[#C4966A] focus:text-[#2A1A0E] focus:scale-105 focus-visible:bg-[#C4966A]/15 focus-visible:border-[#C4966A] focus-visible:text-[#2A1A0E] focus-visible:scale-105";
                 }
 
-                if (isSelected) {
+                if (isSelected && !isPastDay) {
                   statusClasses = "bg-[#C4966A]/15 text-[#2A1A0E] !border-[#C4966A] font-semibold scale-105 z-10 shadow-sm";
                 }
 
@@ -217,19 +226,15 @@ export default function VenueAvailability() {
                   <button
                     key={i}
                     className={`aspect-square rounded-lg flex items-center justify-center font-sans text-[0.82rem] transition-all relative border border-transparent outline-none ${statusClasses}`}
-                    onClick={() => !isBooked && handleSelectDate(day)}
-                    onMouseEnter={() => !isBooked && setHoveredDay(day)}
-                    onMouseLeave={() => setHoveredDay(null)}
-                    onFocus={() => !isBooked && setHoveredDay(day)}
-                    onBlur={() => setHoveredDay(null)}
-                    disabled={isBooked}
-                    aria-label={`${day} ${MONTHS[viewMonth]} — ${STATUS_META[status]?.label || status}`}
+                    onClick={() => !isBooked && !isPastDay && handleSelectDate(day)}
+                    disabled={isBooked || isPastDay}
+                    aria-label={`${day} ${MONTHS[viewMonth]}${isPastDay ? " — past date" : " — " + (STATUS_META[status]?.label || status)}`}
                   >
                     {day}
-                    {status === "available" && (
+                    {!isPastDay && status === "available" && (
                       <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#48BB78]" />
                     )}
-                    {status === "booked" && (
+                    {!isPastDay && status === "booked" && (
                       <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#E53E3E]/70" />
                     )}
                   </button>
