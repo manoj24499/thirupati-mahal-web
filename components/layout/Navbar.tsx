@@ -16,8 +16,26 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    if (menuOpen) {
+      // Measure scrollbar width before hiding it
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.overflow = "hidden";
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+      // Also pad the fixed navbar so it doesn't shift
+      const navbar = document.getElementById("main-navbar");
+      if (navbar) navbar.style.paddingRight = `${scrollbarWidth}px`;
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+      const navbar = document.getElementById("main-navbar");
+      if (navbar) navbar.style.paddingRight = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+      const navbar = document.getElementById("main-navbar");
+      if (navbar) navbar.style.paddingRight = "";
+    };
   }, [menuOpen]);
 
   const navLinks = [
@@ -110,9 +128,11 @@ export default function Navbar() {
           width: auto;
           object-fit: contain;
           display: block;
-          transition: opacity 0.2s ease;
+          transition: height 0.3s ease, opacity 0.2s ease;
         }
-        
+        .nav-wrapper.scrolled .nav-logo-img {
+          height: 52px;
+        }
 
         .nav-right {
           display: flex; align-items: center; gap: 2rem;
@@ -180,7 +200,10 @@ export default function Navbar() {
           transform: translateX(100%);
           transition: transform 0.45s cubic-bezier(.77,0,.18,1);
           overflow-y: auto;
+          scrollbar-width: none;
+          -ms-overflow-style: none;
         }
+        .sidebar::-webkit-scrollbar { display: none; }
         .sidebar.open { transform: translateX(0); }
 
         .sidebar-close {
@@ -339,7 +362,7 @@ export default function Navbar() {
       </aside>
 
       {/* Navbar */}
-      <nav className={`nav-wrapper${scrolled ? " scrolled" : ""}`}>
+      <nav id="main-navbar" className={`nav-wrapper${scrolled ? " scrolled" : ""}`}>
         <div className="nav-accent-line" />
         <div className="nav-inner">
           <Link href="/" className="nav-logo">
