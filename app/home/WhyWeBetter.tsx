@@ -88,7 +88,11 @@ function Ornament({ className, flip }: { className: string; flip?: boolean }) {
 // ---------------------------------------------------------------------------
 // Inline SVG icons — one per card above
 // ---------------------------------------------------------------------------
-function IconBundle({ className }) {
+interface IconProps {
+  className?: string;
+}
+
+function IconBundle({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <rect x="4" y="9" width="16" height="11" rx="1.5" />
@@ -100,7 +104,7 @@ function IconBundle({ className }) {
   );
 }
 
-function IconVenueHall({ className }) {
+function IconVenueHall({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M4 21V10l8-6 8 6v11" />
@@ -110,7 +114,7 @@ function IconVenueHall({ className }) {
   );
 }
 
-function IconComfort({ className }) {
+function IconComfort({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M5 12V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4" />

@@ -4,7 +4,6 @@ const connectionString =
   process.env.NEXT_PUBLIC_DB_URL || process.env.DATABASE_URL;
 
 declare global {
-  // eslint-disable-next-line no-var
   var pgPool: Pool | undefined;
 }
 
@@ -59,7 +58,7 @@ export async function initDb() {
   }
 }
 
-export async function dbQuery(text: string, params?: any[]) {
+export async function dbQuery(text: string, params?: unknown[]) {
   await initDb();
   return pool.query(text, params);
 }

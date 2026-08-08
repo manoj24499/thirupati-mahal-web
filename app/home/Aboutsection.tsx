@@ -60,9 +60,9 @@ const HALLS = {
 // Main Component
 // ---------------------------------------------------------------------------
 export default function AboutSection() {
-  const [activeTab, setActiveTab] = useState('mainHall');
+  const [activeTab, setActiveTab] = useState<keyof typeof HALLS>('mainHall');
   const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   // Trigger entry animation once section is 20% in view
   useEffect(() => {
@@ -152,7 +152,7 @@ export default function AboutSection() {
                 aria-selected={activeTab === h.id}
                 aria-controls={`panel-${h.id}`}
                 className={`${styles.tab} ${activeTab === h.id ? styles.tabActive : ''}`}
-                onClick={() => setActiveTab(h.id)}
+                onClick={() => setActiveTab(h.id as keyof typeof HALLS)}
               >
                 {h.label}
               </button>
@@ -188,7 +188,7 @@ export default function AboutSection() {
                     <div
                       key={stat.label}
                       className={styles.statCard}
-                      style={{ '--card-color': stat.color }}
+                      style={{ '--card-color': stat.color } as React.CSSProperties}
                     >
                       <span className={styles.statValue}>{stat.value}</span>
                       <span className={styles.statLabel}>{stat.label}</span>
@@ -284,7 +284,11 @@ function Ornament({ className, flip }: { className: string; flip?: boolean }) {
 // ---------------------------------------------------------------------------
 // Inline SVG icons — one per service label above
 // ---------------------------------------------------------------------------
-function IconRings({ className }) {
+interface IconProps {
+  className?: string;
+}
+
+function IconRings({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="8.5" cy="15" r="5" />
@@ -292,7 +296,7 @@ function IconRings({ className }) {
     </svg>
   );
 }
-function IconReception({ className }) {
+function IconReception({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M4 18h16" />
@@ -302,7 +306,7 @@ function IconReception({ className }) {
     </svg>
   );
 }
-function IconEngagementRing({ className }) {
+function IconEngagementRing({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="16" r="5" />
@@ -310,7 +314,7 @@ function IconEngagementRing({ className }) {
     </svg>
   );
 }
-function IconDiya({ className }) {
+function IconDiya({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <ellipse cx="12" cy="16" rx="9" ry="3" />
@@ -319,14 +323,14 @@ function IconDiya({ className }) {
     </svg>
   );
 }
-function IconHeart({ className }) {
+function IconHeart({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M12 20.5s-7.2-4.4-9.7-8.7C.8 8.4 3 5 6.6 5c2 0 3.5 1.4 5.4 3.2C13.9 6.4 15.4 5 17.4 5 21 5 23.2 8.4 21.7 11.8 19.2 16.1 12 20.5 12 20.5z" />
     </svg>
   );
 }
-function IconCake({ className }) {
+function IconCake({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <rect x="3" y="12" width="18" height="8" rx="2" />
@@ -339,7 +343,7 @@ function IconCake({ className }) {
     </svg>
   );
 }
-function IconPacifier({ className }) {
+function IconPacifier({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="9" r="5" />
@@ -349,7 +353,7 @@ function IconPacifier({ className }) {
     </svg>
   );
 }
-function IconNameTag({ className }) {
+function IconNameTag({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M3.5 6h13l4 6-4 6h-13z" />
@@ -357,7 +361,7 @@ function IconNameTag({ className }) {
     </svg>
   );
 }
-function IconBriefcase({ className }) {
+function IconBriefcase({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <rect x="3" y="7" width="18" height="12" rx="2" />
@@ -366,7 +370,7 @@ function IconBriefcase({ className }) {
     </svg>
   );
 }
-function IconPresentation({ className }) {
+function IconPresentation({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <rect x="3" y="4" width="18" height="12" rx="2" />
@@ -376,7 +380,7 @@ function IconPresentation({ className }) {
     </svg>
   );
 }
-function IconGroup({ className }) {
+function IconGroup({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="7" r="3" />
