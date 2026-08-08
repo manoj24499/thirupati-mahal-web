@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 
+const TAGLINE = "WHERE VOWS BEGIN";
+
 export default function Preloader({ onComplete }: { onComplete?: () => void }) {
   const [count, setCount] = useState(0);
   const [phase, setPhase] = useState("loading"); // "loading" | "done" | "exit"
@@ -36,10 +38,22 @@ export default function Preloader({ onComplete }: { onComplete?: () => void }) {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  const stagger = 74 / Math.max(TAGLINE.length, 1);
+  const letters = TAGLINE.split("").map((ch, i) => {
+    const on = count >= 12 + i * stagger;
+    return {
+      ch: ch === " " ? " " : ch,
+      opacity: on ? 1 : 0,
+      transform: on ? "translateY(0)" : "translateY(8px)",
+    };
+  });
+  const frameOn = count > 4;
+  const logoOn = count > 8;
+
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Cormorant+Garamond:wght@300;400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Cormorant+Garamond:wght@300;400;500&display=swap');
 
         .preloader {
           position: fixed;
@@ -50,6 +64,7 @@ export default function Preloader({ onComplete }: { onComplete?: () => void }) {
           flex-direction: column;
           align-items: center;
           justify-content: center;
+          gap: 30px;
           transition: opacity 0.8s cubic-bezier(.77,0,.18,1),
                       transform 0.8s cubic-bezier(.77,0,.18,1);
         }
@@ -60,233 +75,95 @@ export default function Preloader({ onComplete }: { onComplete?: () => void }) {
           pointer-events: none;
         }
 
-        /* ── Image frame ── */
-        .pre-image-wrap {
-          position: relative;
-          width: min(320px, 82vw);
-          overflow: hidden;
-          border-radius: 2px;
-          margin-bottom: 2.8rem;
-          background: #FDEFDE;
-          padding: 14px;
-        }
-
-        /* Reveal mask: slides up as count rises */
-        .pre-image-mask {
+        /* ── Top / bottom hairline frame ── */
+        .pre-frame-top,
+        .pre-frame-bottom {
           position: absolute;
-          inset: 0;
-          background: #FDEFDE;
-          transform-origin: bottom;
-          transition: transform 0.05s linear;
-          z-index: 2;
+          left: 5vw; right: 5vw;
+          height: 1px;
+          background: #C4966A;
+          transition: transform 1.1s cubic-bezier(.77,0,.18,1);
+        }
+        .pre-frame-top { top: 5vh; transform-origin: left; }
+        .pre-frame-bottom { bottom: 5vh; transform-origin: right; }
+
+        /* ── "Welcome to" label ── */
+        .pre-welcome {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 15px;
+          letter-spacing: 0.42em;
+          text-transform: uppercase;
+          color: #B8916A;
+          transition: opacity 0.9s ease;
         }
 
-        .pre-image {
-          width: 100%;
+        /* ── Logo ── */
+        .pre-logo {
+          width: min(180px, 34vw);
           height: auto;
-          object-fit: contain;
           display: block;
           mix-blend-mode: multiply;
+          transition: opacity 1.1s ease;
         }
 
-        /* Thin gold border that draws in */
-        .pre-image-border {
-          position: absolute;
-          inset: 0;
-          z-index: 3;
-          pointer-events: none;
-        }
-        .pre-image-border::before,
-        .pre-image-border::after {
-          content: '';
-          position: absolute;
-          background: #C4966A;
-        }
-        /* Top + Bottom */
-        .pre-image-border::before {
-          top: 0; left: 0; right: 0; height: 1.5px;
-          transform: scaleX(0);
-          transform-origin: left;
-          transition: transform 1.2s cubic-bezier(.77,0,.18,1) 0.2s;
-        }
-        .pre-image-border::after {
-          bottom: 0; left: 0; right: 0; height: 1.5px;
-          transform: scaleX(0);
-          transform-origin: right;
-          transition: transform 1.2s cubic-bezier(.77,0,.18,1) 0.5s;
-        }
-        .pre-image-wrap.reveal .pre-image-border::before,
-        .pre-image-wrap.reveal .pre-image-border::after {
-          transform: scaleX(1);
-        }
-
-        /* Left + Right borders via extra divs */
-        .border-left, .border-right {
-          position: absolute;
-          width: 1.5px;
-          background: #C4966A;
-          z-index: 3;
-          transform: scaleY(0);
-        }
-        .border-left {
-          left: 0; top: 0; bottom: 0;
-          transform-origin: top;
-          transition: transform 1s cubic-bezier(.77,0,.18,1) 0.8s;
-        }
-        .border-right {
-          right: 0; top: 0; bottom: 0;
-          transform-origin: bottom;
-          transition: transform 1s cubic-bezier(.77,0,.18,1) 1s;
-        }
-        .pre-image-wrap.reveal .border-left,
-        .pre-image-wrap.reveal .border-right {
-          transform: scaleY(1);
-        }
-
-        /* ── Text below image ── */
-        .pre-names {
-          font-family: 'Playfair Display', serif;
-          font-size: 25px;
-          font-weight: 500;
-          color: #3B2A1A;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          margin-bottom: 20px;
-          opacity: 0;
-          transform: translateY(10px);
-          transition: opacity 0.7s ease 0.3s, transform 0.7s ease 0.3s;
-        }
-        .pre-names.show { opacity: 1; transform: translateY(0); }
-
-        .pre-date {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 0.78rem;
-          font-weight: 300;
-          color: #C4966A;
-          letter-spacing: 0.3em;
-          text-transform: uppercase;
-          margin-bottom: 2.8rem;
-          opacity: 0;
-          transform: translateY(8px);
-          transition: opacity 0.7s ease 0.5s, transform 0.7s ease 0.5s;
-        }
-        .pre-date.show { opacity: 1; transform: translateY(0); }
-
-        /* ── Progress bar area ── */
-        .pre-progress-wrap {
-          width: min(340px, 78vw);
+        /* ── Letter-by-letter tagline ── */
+        .pre-tagline {
           display: flex;
-          flex-direction: column;
-          gap: 0.6rem;
-        }
-
-        .pre-count-row {
-          display: flex;
-          justify-content: space-between;
-          align-items: baseline;
-        }
-
-        .pre-label {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 0.72rem;
-          font-weight: 400;
-          color: #B8916A;
-          letter-spacing: 0.22em;
+          gap: 0.34em;
+          font-family: 'Playfair Display', serif;
+          font-size: clamp(22px, 3.4vw, 40px);
+          color: #3B2A1A;
           text-transform: uppercase;
         }
-
-        .pre-count {
-          font-family: 'Playfair Display', serif;
-          font-size: 1rem;
-          font-weight: 400;
-          color: #3B2A1A;
-          letter-spacing: 0.06em;
-          font-variant-numeric: tabular-nums;
-          min-width: 3ch;
-          text-align: right;
+        .pre-tagline span {
+          transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
-        /* Track */
-        .pre-bar-track {
-          width: 100%;
+        /* ── Progress row ── */
+        .pre-progress-row {
+          display: flex;
+          align-items: center;
+          gap: 18px;
+        }
+        .pre-progress-line {
+          width: 72px;
           height: 1px;
-          background: rgba(196, 150, 106, 0.2);
-          position: relative;
-          overflow: visible;
+          background: rgba(196, 150, 106, 0.4);
         }
-
-        /* Fill */
-        .pre-bar-fill {
-          position: absolute;
-          left: 0; top: 0; bottom: 0;
-          background: linear-gradient(90deg, #DDB98A 0%, #C4966A 100%);
-          transition: width 0.05s linear;
-        }
-
-        /* Glowing dot at tip */
-        .pre-bar-dot {
-          position: absolute;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          width: 5px; height: 5px;
-          border-radius: 50%;
-          background: #C4966A;
-          box-shadow: 0 0 8px 2px rgba(196,150,106,0.5);
-          transition: left 0.05s linear;
-        }
-
-        /* ── Decorative ornament ── */
-        .pre-ornament {
-          position: absolute;
-          bottom: 2.5rem;
-          left: 50%;
-          transform: translateX(-50%);
+        .pre-progress-pct {
           font-family: 'Cormorant Garamond', serif;
-          font-size: 1.1rem;
-          color: rgba(196,150,106,0.35);
-          letter-spacing: 0.5em;
-          white-space: nowrap;
-          user-select: none;
+          font-size: 13px;
+          letter-spacing: 0.34em;
+          text-transform: uppercase;
+          color: #B8916A;
+          font-variant-numeric: tabular-nums;
         }
       `}</style>
 
       <div className={`preloader${phase === "exit" ? " exit" : ""}`}>
+        <div className="pre-frame-top" style={{ transform: frameOn ? "scaleX(1)" : "scaleX(0)" }} />
+        <div className="pre-frame-bottom" style={{ transform: frameOn ? "scaleX(1)" : "scaleX(0)" }} />
 
-        {/* Image with reveal mask */}
-        <div className={`pre-image-wrap${count > 5 ? " reveal" : ""}`}>
-          <img
-            src="/images/Logo-Tirupati-Mahaal.png"
-            alt="Wedding"
-            className="pre-image"
-          />
-          {/* Mask slides up as loading progresses */}
-          <div
-            className="pre-image-mask"
-            style={{ transform: `scaleY(${1 - count / 100})`, transformOrigin: "top" }}
-          />
-          <div className="pre-image-border" />
-          <div className="border-left" />
-          <div className="border-right" />
+        <span className="pre-welcome" style={{ opacity: logoOn ? 1 : 0 }}>Welcome to</span>
+
+        <img
+          src="/images/Logo-Tirupati-Mahaal.png"
+          alt="Tirupati Mahal"
+          className="pre-logo"
+          style={{ opacity: logoOn ? 1 : 0 }}
+        />
+
+        <div className="pre-tagline">
+          {letters.map((l, i) => (
+            <span key={i} style={{ opacity: l.opacity, transform: l.transform }}>{l.ch}</span>
+          ))}
         </div>
 
-        {/* Names + date */}
-        <p className={`pre-names${count > 10 ? " show" : ""}`}>Tirupati Mahal</p>
-        {/* <p className={`pre-date${count > 20 ? " show" : ""}`}>Est.2026</p> */}
-
-        {/* Progress */}
-        <div className="pre-progress-wrap">
-          <div className="pre-count-row">
-            <span className="pre-label">Loading</span>
-            <span className="pre-count">{count}%</span>
-          </div>
-          <div className="pre-bar-track">
-            <div className="pre-bar-fill" style={{ width: `${count}%` }} />
-            <div className="pre-bar-dot" style={{ left: `${count}%` }} />
-          </div>
+        <div className="pre-progress-row">
+          <span className="pre-progress-line" />
+          <span className="pre-progress-pct">{count}%</span>
+          <span className="pre-progress-line" />
         </div>
-
-        {/* Ornament */}
-        <div className="pre-ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
       </div>
     </>
   );

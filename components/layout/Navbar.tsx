@@ -45,6 +45,9 @@ export default function Navbar() {
     { label: "Venue Availability", href: "/#availability" },
   ];
 
+  const leftNavLinks = navLinks.slice(0, 2);
+  const rightNavLinks = navLinks.slice(2);
+
   const socials = [
     {
       label: "Instagram",
@@ -95,12 +98,15 @@ export default function Navbar() {
           position: fixed;
           top: 0; left: 0; right: 0;
           z-index: 200;
-          background-color: #FDEFDE;
+          background-color: rgba(253,239,222,0.94);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
           font-family: 'Playfair Display', serif;
+          box-shadow: 0 1px 0 rgba(196,150,106,0.35);
           transition: box-shadow 0.3s ease;
         }
         .nav-wrapper.scrolled {
-          box-shadow: 0 2px 24px rgba(180,120,80,0.10);
+          box-shadow: 0 1px 0 rgba(196,150,106,0.35), 0 10px 30px rgba(26,15,7,0.12);
         }
         .nav-accent-line {
           height: 2px;
@@ -111,31 +117,32 @@ export default function Navbar() {
           max-width: 1200px;
           margin: 0 auto;
           padding: 0 2rem;
-          display: flex;
+          display: grid;
+          grid-template-columns: 1fr auto 1fr;
           align-items: center;
-          justify-content: space-between;
-          height: 80px;
+          height: 84px;
           transition: height 0.3s ease;
         }
-        .nav-wrapper.scrolled .nav-inner { height: 66px; }
+        .nav-wrapper.scrolled .nav-inner { height: 68px; }
 
         .nav-logo {
-          display: flex; align-items: center;
-          text-decoration: none; flex-shrink: 0;
+          display: flex; align-items: center; justify-content: center;
+          text-decoration: none;
+          padding: 0 2.6rem;
         }
         .nav-logo-img {
-          height: 70px;
+          height: 66px;
           width: auto;
           object-fit: contain;
           display: block;
           transition: height 0.3s ease, opacity 0.2s ease;
         }
         .nav-wrapper.scrolled .nav-logo-img {
-          height: 52px;
+          height: 50px;
         }
 
         .nav-right {
-          display: flex; align-items: center; gap: 2rem;
+          display: flex; align-items: center; justify-content: flex-end; gap: 2rem;
         }
 
         .nav-links {
@@ -144,42 +151,38 @@ export default function Navbar() {
         }
         .nav-links a {
           font-family: 'Playfair Display', serif;
-          font-size: 0.92rem; font-weight: 400;
+          font-size: 0.78rem; font-weight: 400;
+          text-transform: uppercase;
           color: #6B4F3A; text-decoration: none;
-          letter-spacing: 0.08em;
-          position: relative; padding-bottom: 3px;
-          transition: color 0.2s;
+          letter-spacing: 0.18em; white-space: nowrap;
+          padding: 8px 0;
+          border-bottom: 1px solid transparent;
+          transition: color 0.2s, border-color 0.2s;
         }
-        .nav-links a::after {
-          content: ''; position: absolute;
-          bottom: 0; left: 0; width: 0; height: 1px;
-          background: #C4966A; transition: width 0.3s ease;
-        }
-        .nav-links a:hover { color: #3B2A1A; }
-        .nav-links a:hover::after,
-        .nav-links a.active::after { width: 100%; }
-        .nav-links a.active { color: #3B2A1A; }
+        .nav-links a:hover { color: #3B2A1A; border-bottom-color: #C4966A; }
+        .nav-links a.active { color: #3B2A1A; border-bottom-color: #C4966A; }
 
         .menu-btn {
+          width: 44px; height: 44px;
           display: flex; flex-direction: column;
-          justify-content: center; gap: 5px;
-          cursor: pointer; padding: 6px;
-          background: none; border: none; outline: none;
+          align-items: center; justify-content: center; gap: 5px;
+          cursor: pointer;
+          background: transparent;
+          border: 1px solid rgba(196,150,106,0.55);
+          border-radius: 50%;
+          outline: none;
           flex-shrink: 0;
+          transition: border-color 0.2s, background 0.2s;
+        }
+        .menu-btn:hover {
+          border-color: #C4966A;
+          background: rgba(196,150,106,0.12);
         }
         .menu-btn span {
           display: block; height: 1.5px; background: #6B4F3A;
-          transition: transform 0.35s cubic-bezier(.77,0,.18,1),
-                      opacity 0.25s ease, width 0.3s ease;
-          transform-origin: center;
         }
-        .menu-btn span:nth-child(1) { width: 24px; }
-        .menu-btn span:nth-child(2) { width: 16px; }
-        .menu-btn span:nth-child(3) { width: 20px; }
-        .menu-btn:hover span { width: 24px !important; }
-        .menu-btn.open span:nth-child(1) { width: 24px !important; transform: translateY(6.5px) rotate(45deg); }
-        .menu-btn.open span:nth-child(2) { opacity: 0; width: 0 !important; }
-        .menu-btn.open span:nth-child(3) { width: 24px !important; transform: translateY(-6.5px) rotate(-45deg); }
+        .menu-btn span:nth-child(1) { width: 18px; }
+        .menu-btn span:nth-child(2) { width: 12px; }
 
         .sidebar-backdrop {
           position: fixed; inset: 0; z-index: 300;
@@ -365,13 +368,26 @@ export default function Navbar() {
       <nav id="main-navbar" className={`nav-wrapper${scrolled ? " scrolled" : ""}`}>
         <div className="nav-accent-line" />
         <div className="nav-inner">
+          <ul className="nav-links">
+            {leftNavLinks.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className={pathname === link.href ? "active" : ""}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
           <Link href="/" className="nav-logo">
             <img src="/images/Logo-Tirupati-Mahaal.png" alt="Tirupati Mahaal" className="nav-logo-img" />
           </Link>
 
           <div className="nav-right">
             <ul className="nav-links">
-              {navLinks.map((link) => (
+              {rightNavLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -383,11 +399,11 @@ export default function Navbar() {
               ))}
             </ul>
             <button
-              className={`menu-btn${menuOpen ? " open" : ""}`}
+              className="menu-btn"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle menu"
             >
-              <span /><span /><span />
+              <span /><span />
             </button>
           </div>
         </div>

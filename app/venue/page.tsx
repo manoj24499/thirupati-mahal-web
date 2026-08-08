@@ -309,10 +309,7 @@ function VenueSection() {
             0 0 0 6px rgba(196,150,106,0.15),
             0 0 0 10px rgba(196,150,106,0.07),
             0 8px 48px rgba(59,13,36,0.35);
-          display: flex; flex-direction: column;
-          align-items: center; justify-content: center;
-          text-align: center;
-          padding: 1.4rem;
+          object-fit: contain;
           position: relative;
         }
 
@@ -683,7 +680,10 @@ function VenueSection() {
 
           {/* ── Diagram ── */}
           <div className="vp-diagram" ref={diagramRef}>
-            <svg className="vp-medallion-connectors" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              className="vp-medallion-connectors"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               {connectorPaths.map(
                 (d, i) =>
                   d && (
@@ -698,7 +698,7 @@ function VenueSection() {
                         />
                       </circle>
                     </g>
-                  )
+                  ),
               )}
             </svg>
 
@@ -720,7 +720,12 @@ function VenueSection() {
                 <div className="vp-connector-dot" />
                 <div className="vp-connector-dot big" />
               </div>
-              <div className="vp-loc-card" ref={(el) => { cardRefs.current[0] = el; }}>
+              <div
+                className="vp-loc-card"
+                ref={(el) => {
+                  cardRefs.current[0] = el;
+                }}
+              >
                 <div className="vp-loc-icon">
                   {/* Mountain icon */}
                   <svg viewBox="0 0 24 24">
@@ -738,89 +743,12 @@ function VenueSection() {
 
             {/* Centre medallion */}
             <div className="vp-medallion-wrap">
-              <div className="vp-medallion" ref={medallionRef}>
-                <div className="vp-medallion-crest-wrap">
-                  <svg
-                    viewBox="0 0 100 100"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    stroke="#C4966A"
-                  >
-                    {/* Base plinth */}
-                    <rect
-                      x="22"
-                      y="72"
-                      width="56"
-                      height="4"
-                      fill="#C4966A"
-                      stroke="none"
-                    />
-                    {/* Tier 1 — widest */}
-                    <path d="M27 72 L73 72 L64 58 L36 58 Z" strokeWidth="2" />
-                    {/* Tier 2 */}
-                    <path d="M40 58 L60 58 L54 44 L46 44 Z" strokeWidth="1.8" />
-                    {/* Tier 3 — narrowest */}
-                    <path
-                      d="M46.5 44 L53.5 44 L51 34 L49 34 Z"
-                      strokeWidth="1.6"
-                    />
-                    {/* Finial */}
-                    <line x1="50" y1="34" x2="50" y2="22" strokeWidth="1.6" />
-                    <circle
-                      cx="50"
-                      cy="19"
-                      r="2.6"
-                      fill="#C4966A"
-                      stroke="none"
-                    />
-                    {/* Flanking marks */}
-                    <rect
-                      x="12"
-                      y="68"
-                      width="4"
-                      height="4"
-                      fill="#C4966A"
-                      stroke="none"
-                      transform="rotate(45 14 70)"
-                    />
-                    <rect
-                      x="84"
-                      y="68"
-                      width="4"
-                      height="4"
-                      fill="#C4966A"
-                      stroke="none"
-                      transform="rotate(45 86 70)"
-                    />
-                    <line
-                      x1="18"
-                      y1="70"
-                      x2="30"
-                      y2="70"
-                      strokeWidth="1.2"
-                      opacity="0.7"
-                    />
-                    <line
-                      x1="70"
-                      y1="70"
-                      x2="82"
-                      y2="70"
-                      strokeWidth="1.2"
-                      opacity="0.7"
-                    />
-                  </svg>
-                </div>
-                <p className="vp-medallion-name">
-                  TIRUPATI
-                  <br />
-                  MAHAAL
-                </p>
-                <div className="vp-medallion-ornament">
-                  <Leaf />
-                  <Star />
-                  <Leaf flip />
-                </div>
-              </div>
+              <img
+                className="vp-medallion"
+                ref={medallionRef}
+                src="/images/Logo-Tirupati-Mahaal.png"
+                alt="Tirupati Mahaal"
+              />
             </div>
 
             {/* Right top — Ooty */}
@@ -840,7 +768,12 @@ function VenueSection() {
                 <div className="vp-connector-dot" />
                 <div className="vp-connector-dot" />
               </div>
-              <div className="vp-loc-card" ref={(el) => { cardRefs.current[1] = el; }}>
+              <div
+                className="vp-loc-card"
+                ref={(el) => {
+                  cardRefs.current[1] = el;
+                }}
+              >
                 <div className="vp-loc-icon">
                   {/* Cloud icon */}
                   <svg viewBox="0 0 24 24">
@@ -872,7 +805,12 @@ function VenueSection() {
                 <div className="vp-connector-dot" />
                 <div className="vp-connector-dot big" />
               </div>
-              <div className="vp-loc-card" ref={(el) => { cardRefs.current[2] = el; }}>
+              <div
+                className="vp-loc-card"
+                ref={(el) => {
+                  cardRefs.current[2] = el;
+                }}
+              >
                 <div className="vp-loc-icon">
                   {/* Layered mountain icon */}
                   <svg viewBox="0 0 24 24">
