@@ -18,7 +18,8 @@ export default function Navbar() {
   useEffect(() => {
     if (menuOpen) {
       // Measure scrollbar width before hiding it
-      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      const scrollbarWidth =
+        window.innerWidth - document.documentElement.clientWidth;
       document.body.style.overflow = "hidden";
       document.body.style.paddingRight = `${scrollbarWidth}px`;
       // Also pad the fixed navbar so it doesn't shift
@@ -39,9 +40,9 @@ export default function Navbar() {
   }, [menuOpen]);
 
   const navLinks = [
-    { label: "Home",               href: "/" },
-    { label: "Venue",              href: "/venue" },
-    { label: "Gallery",            href: "/#gallery" },
+    { label: "Home", href: "/" },
+    { label: "Venue", href: "/venue" },
+    { label: "Gallery", href: "/#gallery" },
     { label: "Venue Availability", href: "/#availability" },
   ];
 
@@ -50,10 +51,25 @@ export default function Navbar() {
       label: "Instagram",
       href: "#",
       icon: (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-          <circle cx="12" cy="12" r="4"/>
-          <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+        <svg
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+          <circle cx="12" cy="12" r="4" />
+          <circle
+            cx="17.5"
+            cy="6.5"
+            r="0.5"
+            fill="currentColor"
+            stroke="none"
+          />
         </svg>
       ),
     },
@@ -71,7 +87,7 @@ export default function Navbar() {
       href: "#",
       icon: (
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
         </svg>
       ),
     },
@@ -116,26 +132,53 @@ export default function Navbar() {
           padding: 0 2rem;
           display: flex;
           align-items: center;
-          justify-content: flex-end;
+          justify-content: space-between;
           gap: 2rem;
           height: 84px;
           transition: height 0.3s ease;
         }
         .nav-wrapper.scrolled .nav-inner { height: 68px; }
 
-        .nav-cta {
-          font-family: 'Playfair Display', serif;
-          font-size: 0.72rem; font-weight: 600;
-          text-transform: uppercase; letter-spacing: 0.18em;
-          color: #532744; text-decoration: none;
-          border: 1px solid #C4966A;
-          padding: 0.72rem 1.3rem;
-          white-space: nowrap;
-          transition: background 0.25s, border-color 0.25s, color 0.25s;
+        .nav-brand {
+          display: flex; align-items: center; gap: 14px;
+          text-decoration: none; flex-shrink: 0;
         }
-        .nav-cta:hover {
-          background: rgba(196,150,106,0.14);
-          border-color: #532744;
+        .nav-brand-logo {
+          width: 48px; height: 48px;
+          object-fit: contain;
+          display: block;
+          flex-shrink: 0;
+          transition: width 0.3s ease, height 0.3s ease;
+        }
+        .nav-wrapper.scrolled .nav-brand-logo {
+          width: 38px; height: 38px;
+        }
+        .nav-brand-text {
+          display: flex; flex-direction: column; gap: 5px;
+        }
+        .nav-brand-name {
+          font-family: 'Playfair Display', serif;
+          font-weight: 500; font-size: 17px; line-height: 1;
+          color: #532744; letter-spacing: 0.14em;
+          text-transform: uppercase;
+        }
+        .nav-brand-tagline-row {
+          display: flex; align-items: center; gap: 8px;
+        }
+        .nav-brand-rule {
+          width: 16px; height: 1px; background: #C4966A;
+          flex-shrink: 0;
+        }
+        .nav-brand-tagline {
+          font-family: 'Cormorant Garamond', serif;
+          font-weight: 400; font-size: 10.5px;
+          color: #A97C4C; letter-spacing: 0.26em;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        .nav-right-cluster {
+          display: flex; align-items: center; gap: 2rem;
         }
 
         .nav-divider {
@@ -219,12 +262,28 @@ export default function Navbar() {
 
         .sidebar-tagline {
           font-family: 'Cormorant Garamond', serif;
-          font-size: 0.72rem; font-weight: 400;
+          font-size: 0.72rem; font-weight: 900;
           color: #8C6A50; letter-spacing: 0.28em;
           text-transform: uppercase;
+          margin: 0 0 0.7rem;
+        }
+
+        .sidebar-location {
+          display: flex; align-items: center; gap: 0.45rem;
           margin: 0 0 1.6rem;
           padding-bottom: 1.6rem;
           border-bottom: 1px solid rgba(196,150,106,0.28);
+        }
+        .sidebar-location svg {
+          width: 13px; height: 13px;
+          fill: #9c1c54;
+          flex-shrink: 0;
+        }
+        .sidebar-location span {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 0.72rem; font-weight: 500;
+          color: #532744; letter-spacing: 0.22em;
+          text-transform: uppercase;
         }
 
         .sidebar-nav {
@@ -305,13 +364,29 @@ export default function Navbar() {
       `}</style>
 
       {/* Backdrop */}
-      <div className={`sidebar-backdrop${menuOpen ? " open" : ""}`} onClick={() => setMenuOpen(false)} />
+      <div
+        className={`sidebar-backdrop${menuOpen ? " open" : ""}`}
+        onClick={() => setMenuOpen(false)}
+      />
 
       {/* Sidebar */}
       <aside className={`sidebar${menuOpen ? " open" : ""}`}>
-        <button className="sidebar-close" onClick={() => setMenuOpen(false)} aria-label="Close menu">✕</button>
+        <button
+          className="sidebar-close"
+          onClick={() => setMenuOpen(false)}
+          aria-label="Close menu"
+        >
+          ✕
+        </button>
 
         <p className="sidebar-tagline">Tirupati Mahaal</p>
+
+        <div className="sidebar-location">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C7.58 2 4 5.58 4 10c0 5.25 7.05 11.35 7.35 11.61a1 1 0 001.3 0C13 21.35 20 15.25 20 10c0-4.42-3.58-8-8-8zm0 10.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" />
+          </svg>
+          <span>Udumalpet</span>
+        </div>
 
         <ul className="sidebar-nav">
           {navLinks.map((link) => (
@@ -327,53 +402,70 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <img
-          src="images/two.jpg"
-          alt="Wedding"
-          className="sidebar-image"
-        />
+        <img src="images/two.jpg" alt="Wedding" className="sidebar-image" />
 
-        <p className="sidebar-socials-label">
-          Follow Us
-        </p>
+        <p className="sidebar-socials-label">Follow Us</p>
 
         <ul className="sidebar-socials">
           {socials.map((s) => (
             <li key={s.label}>
-              <a href={s.href} aria-label={s.label}>{s.icon}</a>
+              <a href={s.href} aria-label={s.label}>
+                {s.icon}
+              </a>
             </li>
           ))}
         </ul>
       </aside>
 
       {/* Navbar */}
-      <nav id="main-navbar" className={`nav-wrapper${scrolled ? " scrolled" : ""}`}>
+      <nav
+        id="main-navbar"
+        className={`nav-wrapper${scrolled ? " scrolled" : ""}`}
+      >
         <div className="nav-accent-line" />
         <div className="nav-inner">
-          <ul className="nav-links">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className={pathname === link.href ? "active" : ""}
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <Link href="/" className="nav-brand">
+            <img
+              src="/images/Logo-Tirupati-Mahaal.png"
+              alt="Tirupati Mahaal"
+              className="nav-brand-logo"
+            />
+            <span className="nav-brand-text">
+              <span className="nav-brand-name">Tirupati Mahaal</span>
+              <span className="nav-brand-tagline-row">
+                <span className="nav-brand-rule" />
+                <span className="nav-brand-tagline">
+                  Wedding &amp; Convention Hall
+                </span>
+              </span>
+            </span>
+          </Link>
 
-          <Link href="/#availability" className="nav-cta">Check Dates</Link>
+          <div className="nav-right-cluster">
+            <ul className="nav-links">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className={pathname === link.href ? "active" : ""}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
 
-          <div className="nav-divider" />
+            <div className="nav-divider" />
 
-          <button
-            className="menu-btn"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-          >
-            <span /><span />
-          </button>
+            <button
+              className="menu-btn"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle menu"
+            >
+              <span />
+              <span />
+            </button>
+          </div>
         </div>
       </nav>
     </>

@@ -98,6 +98,7 @@ export default function WhatsAppContact() {
           justify-content: center;
         }
         .loc-label {
+        display:none;
           position: absolute;
           left: calc(100% + 0.5rem);
           font-family: Arial, Helvetica, sans-serif;

@@ -140,7 +140,10 @@ export default function VenueAvailability() {
         {/* Heading */}
         <div className="flex items-center justify-center gap-3.5 flex-wrap mb-1.5">
           <Ornament className="w-9 sm:w-15 h-3.5 flex-shrink-0" />
-          <h2 className="font-serif text-3xl sm:text-[36px] font-bold text-[#2A1A0E] mb-2.5 leading-[1.15] text-center">
+          <h2
+            className="text-3xl sm:text-[36px] font-bold text-[#2A1A0E] mb-2.5 leading-[1.15] text-center"
+            style={{ fontFamily: "'Playfair Display', Georgia, 'Times New Roman', serif" }}
+          >
             Check Venue <span className="text-[#9c1c54]">Availability</span>
           </h2>
           <Ornament className="w-9 sm:w-15 h-3.5 flex-shrink-0" flip />
