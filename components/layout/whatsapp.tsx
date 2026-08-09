@@ -86,26 +86,46 @@ export default function WhatsAppContact() {
           flex-shrink: 0;
         }
 
-        /* ── Location button (sits above WA button) ── */
+        /* ── Location group (label + button, sits above WA button) ── */
+        .loc-group {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.4rem;
+        }
+        .loc-label {
+          font-family: 'Inter', sans-serif;
+          font-size: 0.62rem;
+          font-weight: 600;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          color: #6B4F3A;
+          background: #FDEFDE;
+          padding: 3px 10px;
+          border-radius: 10px;
+          box-shadow: 0 2px 8px rgba(20,10,3,0.14);
+          white-space: nowrap;
+          user-select: none;
+        }
         .loc-btn {
           width: 46px;
           height: 46px;
           border-radius: 50%;
-          background: #C4966A;
+          background: #9c1c54;
           border: none;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 0 4px 20px rgba(196,150,106,0.45);
+          box-shadow: 0 4px 20px rgba(156,28,84,0.45);
           transition: transform 0.25s cubic-bezier(.77,0,.18,1),
                       box-shadow 0.25s ease,
                       background 0.2s;
         }
         .loc-btn:hover {
           transform: scale(1.1);
-          background: #B07F4F;
-          box-shadow: 0 8px 28px rgba(196,150,106,0.55);
+          background: #7c1543;
+          box-shadow: 0 8px 28px rgba(156,28,84,0.55);
         }
         .loc-btn svg {
           width: 22px;
@@ -390,15 +410,18 @@ export default function WhatsAppContact() {
 
             {/* ── Floating buttons ── */}
             <div className="wa-fab">
-                <button
-                    className="loc-btn"
-                    onClick={() => window.open(VENUE_MAPS_URL, "_blank", "noopener,noreferrer")}
-                    aria-label="Open location in Google Maps"
-                >
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2C7.58 2 4 5.58 4 10c0 5.25 7.05 11.35 7.35 11.61a1 1 0 001.3 0C13 21.35 20 15.25 20 10c0-4.42-3.58-8-8-8zm0 10.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" />
-                    </svg>
-                </button>
+                <div className="loc-group">
+                    <span className="loc-label">Udumalpet</span>
+                    <button
+                        className="loc-btn"
+                        onClick={() => window.open(VENUE_MAPS_URL, "_blank", "noopener,noreferrer")}
+                        aria-label="Open location in Google Maps"
+                    >
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C7.58 2 4 5.58 4 10c0 5.25 7.05 11.35 7.35 11.61a1 1 0 001.3 0C13 21.35 20 15.25 20 10c0-4.42-3.58-8-8-8zm0 10.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" />
+                        </svg>
+                    </button>
+                </div>
                 <button className="wa-btn" onClick={() => setPopupOpen(true)} aria-label="Chat on WhatsApp">
                     {/* Official WhatsApp icon */}
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
