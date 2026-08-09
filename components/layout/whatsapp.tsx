@@ -86,26 +86,36 @@ export default function WhatsAppContact() {
           flex-shrink: 0;
         }
 
-        /* ── Location group (label + button, sits above WA button) ── */
+        /* ── Location group (button + vertical label to its right, sits above WA button) ── */
         .loc-group {
+          position: relative;
           display: flex;
-          flex-direction: column;
           align-items: center;
-          gap: 0.4rem;
+          justify-content: center;
         }
         .loc-label {
+          position: absolute;
+          left: calc(100% + 0.5rem);
           font-family: 'Inter', sans-serif;
           font-size: 0.62rem;
           font-weight: 600;
-          letter-spacing: 0.05em;
+          letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: #6B4F3A;
-          background: #FDEFDE;
-          padding: 3px 10px;
-          border-radius: 10px;
-          box-shadow: 0 2px 8px rgba(20,10,3,0.14);
+          color: #fff;
+          text-shadow: 0 1px 4px rgba(20,10,3,0.4);
+          writing-mode: vertical-rl;
+          text-orientation: upright;
           white-space: nowrap;
           user-select: none;
+          opacity: 0;
+          visibility: hidden;
+          transform: translateX(-5px);
+          transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+        }
+        .loc-group:hover .loc-label {
+          opacity: 1;
+          visibility: visible;
+          transform: translateX(0);
         }
         .loc-btn {
           width: 46px;
@@ -411,7 +421,6 @@ export default function WhatsAppContact() {
             {/* ── Floating buttons ── */}
             <div className="wa-fab">
                 <div className="loc-group">
-                    <span className="loc-label">Udumalpet</span>
                     <button
                         className="loc-btn"
                         onClick={() => window.open(VENUE_MAPS_URL, "_blank", "noopener,noreferrer")}
@@ -421,6 +430,7 @@ export default function WhatsAppContact() {
                             <path d="M12 2C7.58 2 4 5.58 4 10c0 5.25 7.05 11.35 7.35 11.61a1 1 0 001.3 0C13 21.35 20 15.25 20 10c0-4.42-3.58-8-8-8zm0 10.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" />
                         </svg>
                     </button>
+                    <span className="loc-label">Udumalpet</span>
                 </div>
                 <button className="wa-btn" onClick={() => setPopupOpen(true)} aria-label="Chat on WhatsApp">
                     {/* Official WhatsApp icon */}
