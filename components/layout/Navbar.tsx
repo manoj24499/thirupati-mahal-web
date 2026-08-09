@@ -45,9 +45,6 @@ export default function Navbar() {
     { label: "Venue Availability", href: "/#availability" },
   ];
 
-  const leftNavLinks = navLinks.slice(0, 2);
-  const rightNavLinks = navLinks.slice(2);
-
   const socials = [
     {
       label: "Instagram",
@@ -117,32 +114,34 @@ export default function Navbar() {
           max-width: 1200px;
           margin: 0 auto;
           padding: 0 2rem;
-          display: grid;
-          grid-template-columns: 1fr auto 1fr;
+          display: flex;
           align-items: center;
+          justify-content: flex-end;
+          gap: 2rem;
           height: 84px;
           transition: height 0.3s ease;
         }
         .nav-wrapper.scrolled .nav-inner { height: 68px; }
 
-        .nav-logo {
-          display: flex; align-items: center; justify-content: center;
-          text-decoration: none;
-          padding: 0 2.6rem;
+        .nav-cta {
+          font-family: 'Playfair Display', serif;
+          font-size: 0.72rem; font-weight: 600;
+          text-transform: uppercase; letter-spacing: 0.18em;
+          color: #532744; text-decoration: none;
+          border: 1px solid #C4966A;
+          padding: 0.72rem 1.3rem;
+          white-space: nowrap;
+          transition: background 0.25s, border-color 0.25s, color 0.25s;
         }
-        .nav-logo-img {
-          height: 66px;
-          width: auto;
-          object-fit: contain;
-          display: block;
-          transition: height 0.3s ease, opacity 0.2s ease;
-        }
-        .nav-wrapper.scrolled .nav-logo-img {
-          height: 50px;
+        .nav-cta:hover {
+          background: rgba(196,150,106,0.14);
+          border-color: #532744;
         }
 
-        .nav-right {
-          display: flex; align-items: center; justify-content: flex-end; gap: 2rem;
+        .nav-divider {
+          width: 1px; height: 26px;
+          background: rgba(196,150,106,0.45);
+          flex-shrink: 0;
         }
 
         .nav-links {
@@ -218,25 +217,14 @@ export default function Navbar() {
         }
         .sidebar-close:hover { color: #1A0F07; transform: rotate(90deg); }
 
-        .sidebar-logo {
-          display: flex; align-items: center; justify-content: center;
-          text-decoration: none; margin-bottom: 0.4rem;
-        }
-        .sidebar-logo-img {
-          height: 100px;
-          width: auto;
-          object-fit: contain;
-          display: block;
-          transition: opacity 0.2s ease;
-        }
-
         .sidebar-tagline {
           font-family: 'Cormorant Garamond', serif;
-          font-size: 0.85rem; font-weight: 300;
-          color: #8C6A50; letter-spacing: 0.12em;
-          margin-bottom: 2.5rem;
-          padding-bottom: 2rem;
-          border-bottom: 1px solid rgba(196,150,106,0.2);
+          font-size: 0.72rem; font-weight: 400;
+          color: #8C6A50; letter-spacing: 0.28em;
+          text-transform: uppercase;
+          margin: 0 0 1.6rem;
+          padding-bottom: 1.6rem;
+          border-bottom: 1px solid rgba(196,150,106,0.28);
         }
 
         .sidebar-nav {
@@ -285,17 +273,13 @@ export default function Navbar() {
           opacity: 0.85; filter: sepia(20%);
         }
 
-        .sidebar-cta {
+        .sidebar-socials-label {
           display: block; text-align: center;
-          font-family: 'Playfair Display', serif;
-          font-size: 0.78rem; font-weight: 600;
-          letter-spacing: 0.18em; text-transform: uppercase;
-          color: #532744;
-          background: transparent;
-          border: 1px solid #532744;
-          padding: 0.85rem 1.5rem;
-          margin-bottom: 1.8rem;
-          cursor: default;
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 0.78rem; font-weight: 400;
+          letter-spacing: 0.28em; text-transform: uppercase;
+          color: #8C6A50;
+          margin: 0 0 0.9rem;
         }
 
         .sidebar-socials {
@@ -327,9 +311,7 @@ export default function Navbar() {
       <aside className={`sidebar${menuOpen ? " open" : ""}`}>
         <button className="sidebar-close" onClick={() => setMenuOpen(false)} aria-label="Close menu">✕</button>
 
-        <Link href="/" className="sidebar-logo" onClick={() => setMenuOpen(false)}>
-          <img src="/images/Logo-Tirupati-Mahaal.png" alt="Tirupati Mahaal" className="sidebar-logo-img" />
-        </Link>
+        <p className="sidebar-tagline">Tirupati Mahaal</p>
 
         <ul className="sidebar-nav">
           {navLinks.map((link) => (
@@ -351,8 +333,8 @@ export default function Navbar() {
           className="sidebar-image"
         />
 
-        <p className="sidebar-cta">
-          Get in Touch
+        <p className="sidebar-socials-label">
+          Follow Us
         </p>
 
         <ul className="sidebar-socials">
@@ -369,7 +351,7 @@ export default function Navbar() {
         <div className="nav-accent-line" />
         <div className="nav-inner">
           <ul className="nav-links">
-            {leftNavLinks.map((link) => (
+            {navLinks.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
@@ -381,31 +363,17 @@ export default function Navbar() {
             ))}
           </ul>
 
-          <Link href="/" className="nav-logo">
-            <img src="/images/Logo-Tirupati-Mahaal.png" alt="Tirupati Mahaal" className="nav-logo-img" />
-          </Link>
+          <Link href="/#availability" className="nav-cta">Check Dates</Link>
 
-          <div className="nav-right">
-            <ul className="nav-links">
-              {rightNavLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className={pathname === link.href ? "active" : ""}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <button
-              className="menu-btn"
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Toggle menu"
-            >
-              <span /><span />
-            </button>
-          </div>
+          <div className="nav-divider" />
+
+          <button
+            className="menu-btn"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span /><span />
+          </button>
         </div>
       </nav>
     </>
