@@ -215,3 +215,8 @@
     width: 40px;
   }
 }
+/* @media (max-width: 450px) {
+  .heading {
+    font-size: 23px;
+  }
+} */

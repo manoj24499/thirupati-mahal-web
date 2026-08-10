@@ -158,7 +158,7 @@ export default function Navbar() {
         }
         .nav-brand-name {
           font-family: 'Playfair Display', serif;
-          font-weight: 500; font-size: 17px; line-height: 1;
+          font-weight: 500; font-size: 20px; line-height: 1;
           color: #532744; letter-spacing: 0.14em;
           text-transform: uppercase;
         }
@@ -209,19 +209,19 @@ export default function Navbar() {
           display: flex; flex-direction: column;
           align-items: center; justify-content: center; gap: 5px;
           cursor: pointer;
-          background: transparent;
-          border: 1px solid rgba(196,150,106,0.55);
+          background: #9c1c5326;
+          border: 1px solid #9c1c54;
           border-radius: 50%;
           outline: none;
           flex-shrink: 0;
           transition: border-color 0.2s, background 0.2s;
         }
         .menu-btn:hover {
-          border-color: #C4966A;
-          background: rgba(196,150,106,0.12);
+          border-color: #9c1c54;
+          background: #9c1c5302;
         }
         .menu-btn span {
-          display: block; height: 1.5px; background: #6B4F3A;
+          display: block; height: 1.5px; background: #9c1c54;
         }
         .menu-btn span:nth-child(1) { width: 18px; }
         .menu-btn span:nth-child(2) { width: 12px; }
@@ -356,11 +356,21 @@ export default function Navbar() {
           transition: background 0.2s, color 0.2s;
         }
         .sidebar-socials a:hover { background: #532744; color: #fff; }
-
-        @media (max-width: 768px) {
+         @media (max-width: 1000px) {
+           .nav-brand-name{font-size:18px;}
+           .nav-brand-tagline {font-size: 9.5px;}
+            .nav-links {gap: 2rem;}
+      }
+        @media (max-width: 900px) {
           .nav-links { display: none; }
           .sidebar { width: 100%; max-width: 100vw; }
         }
+           @media (max-width: 600px) {
+           .nav-brand {gap:10px;}
+           .nav-inner {padding:0px 10px;gap: 1rem;}
+           .nav-brand-name{font-size:16px;}
+           .nav-brand-tagline {font-size: 7.5px;}
+      }
       `}</style>
 
       {/* Backdrop */}

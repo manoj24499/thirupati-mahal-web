@@ -17,7 +17,7 @@ export default function Footer() {
       label: "Instagram",
       href: "#",
       icon: (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
           <circle cx="12" cy="12" r="4" />
           <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
@@ -28,7 +28,7 @@ export default function Footer() {
       label: "Facebook",
       href: "#",
       icon: (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+        <svg width="25" height="25" viewBox="0 0 24 24" fill="currentColor">
           <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
         </svg>
       ),
@@ -90,9 +90,9 @@ export default function Footer() {
 
         .footer-section-label {
           font-family: 'Inter', sans-serif;
-          font-size: 0.68rem;
+          font-size: 15px;
           font-weight: 400;
-          letter-spacing: 0.28em;
+          letter-spacing: 0.20em;
           text-transform: uppercase;
           color: #8C6A50;
           margin-bottom: 0.9rem;
@@ -108,9 +108,9 @@ export default function Footer() {
 
         .footer-contact-email {
           font-family: 'Cormorant Garamond', serif;
-          font-size: 0.9rem;
-          font-weight: 400;
-          color: #C4966A;
+          font-size: 25px;
+          font-weight: 500;
+          color: #532744;
           text-decoration: none;
           letter-spacing: 0.04em;
           margin-bottom: 0.3rem;
@@ -122,9 +122,9 @@ export default function Footer() {
 
         .footer-contact-phone {
           font-family: 'Cormorant Garamond', serif;
-          font-size: 0.9rem;
-          font-weight: 400;
-          color: #6B4F3A;
+          font-size: 25px;
+          font-weight: 500;
+          color: #532744;
           letter-spacing: 0.04em;
           margin-bottom: 1.2rem;
           text-align: center;
@@ -136,13 +136,13 @@ export default function Footer() {
 
         .footer-contact-bio {
           font-family: 'Cormorant Garamond', serif;
-          font-size: 0.88rem;
-          font-weight: 300;
-          color: #8C6A50;
+          font-size: 18px;
+          font-weight: 500;
+          color: #532744;
           line-height: 1.65;
           letter-spacing: 0.02em;
           text-align: center;
-          max-width: 240px;
+          max-width: 300px;
         }
 
         /* ── Centre: Brand ── */
@@ -172,16 +172,17 @@ export default function Footer() {
 
         .footer-logo-text {
           font-family: 'Cormorant Garamond', serif;
-          font-size: 1rem;
-          font-weight: 500;
+          font-size: 20px;
+          font-weight: 600;
           letter-spacing: 0.35em;
           text-transform: uppercase;
-          color: #8C6A50;
+          color: #532744;
           white-space: nowrap;
         }
 
         /* Socials row */
         .footer-socials {
+          
           display: flex;
           align-items: center;
           gap: 1.2rem;
@@ -189,6 +190,7 @@ export default function Footer() {
           margin: 0; padding: 0;
         }
         .footer-socials a {
+        margin-top:15px;
           color: #B8916A;
           text-decoration: none;
           display: flex;
@@ -312,7 +314,7 @@ export default function Footer() {
         }
         .footer-nav a {
           font-family: 'Inter', sans-serif;
-          font-size: 0.65rem;
+          font-size: 14px;
           font-weight: 400;
           letter-spacing: 0.22em;
           text-transform: uppercase;
@@ -344,16 +346,23 @@ export default function Footer() {
             <p className="footer-section-label">Contact</p>
             <div className="footer-divider" />
             <a href="mailto:tirupathimahal@gmail.com" className="footer-contact-email">
-              tirupathimahal@gmail.com
+              tirupatimahaal@gmail.com
             </a>
             <a href="tel:+919842226236" className="footer-contact-phone">
-              98422 26236
+              +91 98422 26236
             </a>
             <p className="footer-contact-bio">
               25/2 Indra Nagar, Dharapuram Road,<br />
               Thungavi, Post, Periakottai,<br />
               Udumalaipettai, Tamil Nadu 642203
             </p>
+            <ul className="footer-socials">
+              {socials.map((s) => (
+                <li key={s.label}>
+                  <a href={s.href} aria-label={s.label}>{s.icon}</a>UD
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* ── Centre: Brand ── */}
@@ -364,13 +373,13 @@ export default function Footer() {
 
             <p className="footer-logo-text">Tirupati Mahal</p>
 
-            <ul className="footer-socials">
+            {/* <ul className="footer-socials">
               {socials.map((s) => (
                 <li key={s.label}>
                   <a href={s.href} aria-label={s.label}>{s.icon}</a>
                 </li>
-              ))}
-            </ul>
+              ))} 
+            </ul> */}
           </div>
 
           {/* ── Right: Find Us (real map image) ── */}

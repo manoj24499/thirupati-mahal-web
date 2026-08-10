@@ -193,7 +193,31 @@ export default function VenueAvailability() {
   while (cells.length % 7 !== 0) cells.push(null);
 
   return (
-    <section
+    <>
+      <style>{`
+        .availability-title{
+        font-size: 45px
+        }
+        @media (max-width:1100px){
+        .availability-title{
+        font-size: 35px
+        }
+        }
+        @media (max-width:900px){
+        .availability-title{
+        font-size: 30px
+        }
+        @media (max-width:600px){
+        .availability-title{
+        font-size: 25px
+        }
+        // @media (max-width:450px){
+        // .availability-title{
+        // font-size: 20px
+        // }
+        }
+      `}</style>
+     <section
       className="relative overflow-hidden py-8 px-4 sm:px-8 pb-16 bg-gradient-to-b from-[#FDEFDE] to-white scroll-mt-[66px]"
       id="availability"
     >
@@ -206,7 +230,7 @@ export default function VenueAvailability() {
         <div className="flex items-center justify-center gap-3.5 flex-wrap mb-1.5">
           <Ornament className="w-9 sm:w-15 h-3.5 flex-shrink-0" />
           <h2
-            className="text-3xl sm:text-[36px] font-bold text-[#2A1A0E] mb-2.5 leading-[1.15] text-center"
+            className="availability-title font-bold text-[#2A1A0E] mb-2.5 leading-[1.15] text-center"
             style={{
               fontFamily:
                 "'Playfair Display', Georgia, 'Times New Roman', serif",
@@ -429,6 +453,7 @@ export default function VenueAvailability() {
           </div>
         </div>
       </div>
-    </section>
-  );
+     </section>
+    </>
+  );  
 }

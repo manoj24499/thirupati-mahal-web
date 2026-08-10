@@ -1,9 +1,9 @@
 "use client";
 
 const stats = [
-  { value: "1,043+", label: "weddings done" },
+  { value: "50+", label: "weddings done" },
   { value: "4.8/5", label: "google rating" },
-  { value: "28,363+", label: "venue partners" },
+  // { value: "28,363+", label: "venue partners" },
 ];
 
 export default function Hero() {
@@ -279,9 +279,13 @@ export default function Hero() {
           .hero-cta {
             font-size: 14px;
             padding: 0.6rem 2rem;
-            width: 300px;
+            width: 275px;
             height: 55px; 
           }
+            .hero-bottom{
+            gap:6rem;
+      }
+              
         }
           
         @media (max-width: 700px) {

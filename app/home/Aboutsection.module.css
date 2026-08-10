@@ -501,7 +501,7 @@
 /* Mobile */
 @media (max-width: 640px) {
   .section {
-    padding: 56px 16px;
+    padding: 30px 16px 20px 16px;
   }
 
   .imageCol {
@@ -580,3 +580,8 @@
     justify-content: center;
   }
 }
+/* @media (max-width: 450px) {
+  .sectionTitle {
+    font-size: 20px;
+  }
+} */
