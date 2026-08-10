@@ -7,7 +7,6 @@ const stats = [
 ];
 
 export default function Hero() {
-
   return (
     <>
       <style>{`
@@ -129,7 +128,7 @@ export default function Hero() {
         .hero-right {
           display: flex;
           flex-direction: column;
-          align-items: flex-start;
+          align-items: center;
           gap: 1.2rem;
           flex-shrink: 0;
         }
@@ -335,15 +334,8 @@ export default function Hero() {
       `}</style>
 
       <section className="hero">
-
         {/* Video Background */}
-        <video
-          className="hero-video"
-          autoPlay
-          loop
-          muted
-          playsInline
-        >
+        <video className="hero-video" autoPlay loop muted playsInline>
           <source src="/videos/banner-video.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
@@ -353,18 +345,18 @@ export default function Hero() {
 
         {/* Bottom content */}
         <div className="hero-content">
-
           {/* Top divider line */}
           <div className="hero-top-line" />
 
           <div className="hero-bottom">
-
             {/* Left: headline */}
             <div className="hero-headline hero-animate">
               <p className="hero-headline-top">Crafting Memorable</p>
               <p className="hero-headline-main">
                 Weddings
-                <span className="hero-sparkle">✦<br />✦</span>
+                <span className="hero-sparkle">
+                  ✦<br />✦
+                </span>
               </p>
             </div>
 
@@ -380,25 +372,44 @@ export default function Hero() {
               </div>
               <a href="/#availability" className="hero-cta">
                 Start my wedding planning
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </a>
             </div>
-
           </div>
         </div>
 
         {/* Scroll chevron */}
         <div className="hero-scroll">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <path d="M6 9l6 6 6-6" />
           </svg>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <path d="M6 9l6 6 6-6" />
           </svg>
         </div>
-
       </section>
     </>
   );

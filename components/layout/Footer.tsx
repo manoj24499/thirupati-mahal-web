@@ -15,18 +15,33 @@ export default function Footer() {
   const socials = [
     {
       label: "Instagram",
-      href: "#",
+      href: "https://www.instagram.com/tirupati_mahaal?igsh=ODl0ZzhzbWJlOHo5&utm_source=qr",
       icon: (
-        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          width="25"
+          height="25"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
           <circle cx="12" cy="12" r="4" />
-          <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
+          <circle
+            cx="17.5"
+            cy="6.5"
+            r="0.5"
+            fill="currentColor"
+            stroke="none"
+          />
         </svg>
       ),
     },
     {
       label: "Facebook",
-      href: "#",
+      href: "https://www.facebook.com/share/1Ekbw21KUZ/?mibextid=wwXIfr",
       icon: (
         <svg width="25" height="25" viewBox="0 0 24 24" fill="currentColor">
           <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
@@ -95,7 +110,11 @@ export default function Footer() {
           letter-spacing: 0.20em;
           text-transform: uppercase;
           color: #8C6A50;
+          margin-top: 1.2rem;
           margin-bottom: 0.9rem;
+        }
+        .footer-section-label:first-child {
+          margin-top: 0;
         }
 
         .footer-divider {
@@ -180,9 +199,38 @@ export default function Footer() {
           white-space: nowrap;
         }
 
+        .footer-location {
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
+        }
+        .footer-location svg {
+          width: 13px;
+          height: 13px;
+          fill: #9c1c54;
+          flex-shrink: 0;
+        }
+        .footer-location span {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 0.78rem;
+          font-weight: 900;
+          color: #8C6A50;
+          letter-spacing: 0.20em;
+          text-transform: uppercase;
+        }
+
         /* Socials row */
+        .footer-socials-wrapper {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-top: 3.2rem;
+        }
+        .footer-socials-wrapper .footer-section-label {
+          margin: 0;
+        }
+
         .footer-socials {
-          
           display: flex;
           align-items: center;
           gap: 1.2rem;
@@ -190,7 +238,6 @@ export default function Footer() {
           margin: 0; padding: 0;
         }
         .footer-socials a {
-        margin-top:15px;
           color: #B8916A;
           text-decoration: none;
           display: flex;
@@ -340,38 +387,63 @@ export default function Footer() {
         <div className="footer-accent" />
 
         <div className="footer-main">
-
           {/* ── Left: Contact ── */}
           <div className="footer-col-left">
             <p className="footer-section-label">Contact</p>
             <div className="footer-divider" />
-            <a href="mailto:tirupathimahal@gmail.com" className="footer-contact-email">
+            <a
+              href="mailto:tirupathimahal@gmail.com"
+              className="footer-contact-email"
+            >
               tirupatimahaal@gmail.com
             </a>
             <a href="tel:+919842226236" className="footer-contact-phone">
               +91 98422 26236
             </a>
             <p className="footer-contact-bio">
-              25/2 Indra Nagar, Dharapuram Road,<br />
-              Thungavi, Post, Periakottai,<br />
+              25/2 Indra Nagar, Dharapuram Road,
+              <br />
+              Thungavi, Post, Periakottai,
+              <br />
               Udumalaipettai, Tamil Nadu 642203
             </p>
-            <ul className="footer-socials">
-              {socials.map((s) => (
-                <li key={s.label}>
-                  <a href={s.href} aria-label={s.label}>{s.icon}</a>UD
-                </li>
-              ))}
-            </ul>
+            <div className="footer-socials-wrapper">
+              <p className="footer-section-label">Follow Us:</p>
+              <ul className="footer-socials">
+                {socials.map((s) => (
+                  <li key={s.label}>
+                    <a
+                      href={s.href}
+                      aria-label={s.label}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {s.icon}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* ── Centre: Brand ── */}
           <div className="footer-brand">
             <div className="footer-logo-icon">
-              <img src="/images/Logo-Tirupati-Mahaal.png" alt="Tirupati Mahal" className="footer-logo-img" />
+              <img
+                src="/images/Logo-Tirupati-Mahaal.png"
+                alt="Tirupati Mahal"
+                className="footer-logo-img"
+              />
             </div>
 
-            <p className="footer-logo-text">Tirupati Mahal</p>
+            <p className="footer-logo-text">Tirupati Mahaal</p>
+
+            <div className="footer-location">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C7.58 2 4 5.58 4 10c0 5.25 7.05 11.35 7.35 11.61a1 1 0 001.3 0C13 21.35 20 15.25 20 10c0-4.42-3.58-8-8-8zm0 10.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" />
+              </svg>
+              <span>Udumalpet</span>
+            </div>
 
             {/* <ul className="footer-socials">
               {socials.map((s) => (
@@ -401,11 +473,12 @@ export default function Footer() {
                   className="footer-map-img"
                 />
                 <span className="footer-map-ping" />
-                <span className="footer-map-hover"><span>View on Google Maps</span></span>
+                <span className="footer-map-hover">
+                  <span>View on Google Maps</span>
+                </span>
               </span>
             </a>
           </div>
-
         </div>
 
         {/* ── Bottom nav ── */}

@@ -49,7 +49,7 @@ export default function Navbar() {
   const socials = [
     {
       label: "Instagram",
-      href: "#",
+      href: "https://www.instagram.com/tirupati_mahaal?igsh=ODl0ZzhzbWJlOHo5&utm_source=qr",
       icon: (
         <svg
           width="15"
@@ -84,7 +84,7 @@ export default function Navbar() {
     // },
     {
       label: "Facebook",
-      href: "#",
+      href: "https://www.facebook.com/share/1Ekbw21KUZ/?mibextid=wwXIfr",
       icon: (
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
           <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
@@ -127,7 +127,7 @@ export default function Navbar() {
           opacity: 0.7;
         }
         .nav-inner {
-          max-width: 1200px;
+          // max-width: 1200px;
           margin: 0 auto;
           padding: 0 2rem;
           display: flex;
@@ -184,6 +184,49 @@ export default function Navbar() {
         .nav-divider {
           width: 1px; height: 26px;
           background: rgba(196,150,106,0.45);
+          flex-shrink: 0;
+        }
+
+        .nav-phone-group {
+          display: flex; align-items: center; gap: 2rem;
+        }
+
+        .nav-phone {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 18px; font-weight: 800;
+          letter-spacing: 0.1em;
+          color: #8C6A50;
+          text-decoration: none;
+          white-space: nowrap;
+          transition: color 0.2s;
+        }
+        .nav-phone:hover { color: #3B2A1A; }
+
+        .sidebar-contact-label {
+          display: block; text-align: center;
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 20px; font-weight: 900;
+          letter-spacing: 0.28em; text-transform: uppercase;
+          color: #8C6A50;
+          margin: 0 0 0.6rem;
+        }
+
+        .sidebar-phone {
+          display: flex; align-items: center; justify-content: center; gap: 0.45rem;
+          margin: 0 0 1.6rem;
+          padding-bottom: 1.6rem;
+          border-bottom: 1px solid rgba(196,150,106,0.28);
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 20px; font-weight: 600;
+          letter-spacing: 0.1em;
+          color: #532744;
+          text-decoration: none;
+          transition: color 0.2s;
+        }
+        .sidebar-phone:hover { color: #9c1c54; }
+        .sidebar-phone svg {
+          width: 13px; height: 13px;
+          fill: #9c1c54;
           flex-shrink: 0;
         }
 
@@ -260,28 +303,32 @@ export default function Navbar() {
         }
         .sidebar-close:hover { color: #1A0F07; transform: rotate(90deg); }
 
-        .sidebar-tagline {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 0.72rem; font-weight: 900;
-          color: #8C6A50; letter-spacing: 0.28em;
-          text-transform: uppercase;
-          margin: 0 0 0.7rem;
+        .sidebar-logo-link {
+        display: flex; justify-content: center;
+          margin: 0 0 0.9rem;
+          text-decoration: none;
+        }
+        .sidebar-logo-img {
+          height: 110px;
+          width: auto;
+          object-fit: contain;
+          display: block;
         }
 
         .sidebar-location {
-          display: flex; align-items: center; gap: 0.45rem;
+          display: flex; justify-content: center; align-items: center; gap: 0.45rem;
           margin: 0 0 1.6rem;
           padding-bottom: 1.6rem;
           border-bottom: 1px solid rgba(196,150,106,0.28);
         }
         .sidebar-location svg {
-          width: 13px; height: 13px;
+          width: 25px; height: 25px;
           fill: #9c1c54;
           flex-shrink: 0;
         }
         .sidebar-location span {
           font-family: 'Cormorant Garamond', serif;
-          font-size: 0.72rem; font-weight: 500;
+          font-size: 20px; font-weight: 900;
           color: #532744; letter-spacing: 0.22em;
           text-transform: uppercase;
         }
@@ -335,7 +382,7 @@ export default function Navbar() {
         .sidebar-socials-label {
           display: block; text-align: center;
           font-family: 'Cormorant Garamond', serif;
-          font-size: 0.78rem; font-weight: 400;
+          font-size: 18px; font-weight: 900;
           letter-spacing: 0.28em; text-transform: uppercase;
           color: #8C6A50;
           margin: 0 0 0.9rem;
@@ -356,6 +403,11 @@ export default function Navbar() {
           transition: background 0.2s, color 0.2s;
         }
         .sidebar-socials a:hover { background: #532744; color: #fff; }
+
+        @media (max-width: 1100px) {
+          .nav-phone-group { display: none; }
+        }
+
          @media (max-width: 1000px) {
            .nav-brand-name{font-size:18px;}
            .nav-brand-tagline {font-size: 9.5px;}
@@ -389,7 +441,17 @@ export default function Navbar() {
           ✕
         </button>
 
-        <p className="sidebar-tagline">Tirupati Mahaal</p>
+        <Link
+          href="/"
+          className="sidebar-logo-link"
+          onClick={() => setMenuOpen(false)}
+        >
+          <img
+            src="/images/Logo-Tirupati-Mahaal.png"
+            alt="Tirupati Mahaal"
+            className="sidebar-logo-img"
+          />
+        </Link>
 
         <div className="sidebar-location">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -397,6 +459,14 @@ export default function Navbar() {
           </svg>
           <span>Udumalpet</span>
         </div>
+
+        <p className="sidebar-contact-label">Contact Us</p>
+        <a href="tel:+919842226236" className="sidebar-phone">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2z" />
+          </svg>
+          98422 26236
+        </a>
 
         <ul className="sidebar-nav">
           {navLinks.map((link) => (
@@ -419,7 +489,12 @@ export default function Navbar() {
         <ul className="sidebar-socials">
           {socials.map((s) => (
             <li key={s.label}>
-              <a href={s.href} aria-label={s.label}>
+              <a
+                href={s.href}
+                aria-label={s.label}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {s.icon}
               </a>
             </li>
@@ -465,7 +540,15 @@ export default function Navbar() {
               ))}
             </ul>
 
-            <div className="nav-divider" />
+            <div className="nav-phone-group">
+              <div className="nav-divider" />
+
+              <a href="tel:+919842226236" className="nav-phone">
+                98422 26236
+              </a>
+
+              <div className="nav-divider" />
+            </div>
 
             <button
               className="menu-btn"
