@@ -231,7 +231,7 @@ export default function Footer() {
           line-height: 1.65;
           letter-spacing: 0.02em;
           text-align: center;
-          max-width: 300px;
+          max-width: 350px;
           margin: 0;
           padding: 14px 18px;
           border-top: 1px solid rgba(196,150,106,0.35);
@@ -364,10 +364,10 @@ export default function Footer() {
           transition: color 0.2s, transform 0.2s, background 0.2s, border-color 0.2s;
         }
         .footer-socials a:hover {
-          color: #3B2A1A;
+          color: #9c1c54;
           transform: translateY(-2px);
-          background: rgba(196,150,106,0.14);
-          border-color: #C4966A;
+          background: rgba(196, 150, 106, 0.05);
+          border-color: #9c1c54;
         }
 
         /* ── Right: Find Us (map) ── */

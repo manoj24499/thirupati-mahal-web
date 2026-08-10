@@ -138,6 +138,13 @@ export default function Preloader({ onComplete }: { onComplete?: () => void }) {
           color: #B8916A;
           font-variant-numeric: tabular-nums;
         }
+          @media (max-width:600px){
+           .pre-tagline{
+           font-size: clamp(15px, 3.4vw, 30px);
+          }
+           }
+          
+          
       `}</style>
 
       <div className={`preloader${phase === "exit" ? " exit" : ""}`}>
