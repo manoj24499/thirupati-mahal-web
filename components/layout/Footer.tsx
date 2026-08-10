@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 
 // Google Maps location for Tirupati Mahaal
@@ -74,24 +75,63 @@ export default function Footer() {
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400&display=swap');
 
         .footer {
+          position: relative;
           background: #FDEFDE;
+          background-image: radial-gradient(120% 90% at 50% 0%, rgba(196,150,106,0.16) 0%, rgba(196,150,106,0) 62%);
           border-top: 1px solid rgba(196, 150, 106, 0.15);
+          overflow: hidden;
         }
 
         /* ── Top divider line ── */
         .footer-accent {
+          height: 3px;
+          background: linear-gradient(90deg, transparent 0%, #DDB98A 18%, #C4966A 50%, #DDB98A 82%, transparent 100%);
+          opacity: 0.55;
+        }
+
+        /* ── Ornamental flourish row ── */
+        .footer-flourish {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 14px;
+          padding: 26px 40px 0;
+        }
+        .footer-flourish-line {
+          flex: 1;
+          max-width: 360px;
           height: 1px;
-          background: linear-gradient(90deg, transparent 0%, #DDB98A 30%, #C4966A 50%, #DDB98A 70%, transparent 100%);
-          opacity: 0.5;
+        }
+        .footer-flourish-line.left {
+          background: linear-gradient(90deg, transparent, rgba(196,150,106,0.6));
+        }
+        .footer-flourish-line.right {
+          background: linear-gradient(90deg, rgba(196,150,106,0.6), transparent);
+        }
+        .footer-flourish-ornament {
+          width: 82px;
+          height: 14px;
+          flex-shrink: 0;
+        }
+
+        @keyframes footerRingSpin {
+          to { transform: rotate(360deg); }
+        }
+
+        /* ── Vertical column dividers ── */
+        .footer-vdivider {
+          width: 1px;
+          align-self: stretch;
+          background: linear-gradient(180deg, transparent, rgba(196,150,106,0.45) 22%, rgba(196,150,106,0.45) 78%, transparent);
         }
 
         /* ── Main footer grid ── */
         .footer-main {
           margin: 0 auto;
-          padding: 2.5rem 2.5rem 2.5rem;
+          padding: 2.2rem 2.5rem 2.5rem;
           display: grid;
-          grid-template-columns: 1fr auto 1fr;
-          gap: 3rem;
+          grid-template-columns: minmax(330px, 1fr) 1px auto 1px minmax(330px, 1fr);
+          gap: 2.4rem;
           align-items: start;
         }
 
@@ -104,6 +144,10 @@ export default function Footer() {
         }
 
         .footer-section-label {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
           font-family: 'Inter', sans-serif;
           font-size: 15px;
           font-weight: 400;
@@ -115,6 +159,14 @@ export default function Footer() {
         }
         .footer-section-label:first-child {
           margin-top: 0;
+        }
+        .footer-label-gem {
+          display: block;
+          width: 6px;
+          height: 6px;
+          background: #C4966A;
+          transform: rotate(45deg);
+          flex-shrink: 0;
         }
 
         .footer-divider {
@@ -143,15 +195,33 @@ export default function Footer() {
           font-family: 'Cormorant Garamond', serif;
           font-size: 25px;
           font-weight: 500;
-          color: #532744;
-          letter-spacing: 0.04em;
-          margin-bottom: 1.2rem;
+          color: #FDEFDE;
+          letter-spacing: 0.06em;
+          margin-bottom: 1.4rem;
           text-align: center;
           text-decoration: none;
-          display: block;
-          transition: color 0.2s;
+          white-space: nowrap;
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          background: #9c1c54;
+          border: 1px solid #9c1c54;
+          border-radius: 999px;
+          padding: 9px 26px;
+          box-shadow: 0 8px 20px rgba(156,28,84,0.22);
+          transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
         }
-        .footer-contact-phone:hover { color: #3B2A1A; }
+        .footer-contact-phone:hover {
+          background: #7d123f;
+          border-color: #7d123f;
+          transform: translateY(-2px);
+          box-shadow: 0 12px 26px rgba(156,28,84,0.3);
+        }
+        .footer-contact-phone svg {
+          width: 18px;
+          height: 18px;
+          flex-shrink: 0;
+        }
 
         .footer-contact-bio {
           font-family: 'Cormorant Garamond', serif;
@@ -162,6 +232,10 @@ export default function Footer() {
           letter-spacing: 0.02em;
           text-align: center;
           max-width: 300px;
+          margin: 0;
+          padding: 14px 18px;
+          border-top: 1px solid rgba(196,150,106,0.35);
+          border-bottom: 1px solid rgba(196,150,106,0.35);
         }
 
         /* ── Centre: Brand ── */
@@ -175,18 +249,33 @@ export default function Footer() {
 
         /* Logo */
         .footer-logo-icon {
+          position: relative;
           display: flex;
-          flex-direction: column;
           align-items: center;
-          gap: 0.1rem;
+          justify-content: center;
+          width: 150px;
+          height: 150px;
+        }
+        .footer-logo-ring-spin {
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          border: 1px dashed rgba(196,150,106,0.55);
+          animation: footerRingSpin 46s linear infinite;
+        }
+        .footer-logo-ring-inner {
+          position: absolute;
+          inset: 11px;
+          border-radius: 50%;
+          border: 1px solid rgba(196,150,106,0.7);
+          background: radial-gradient(circle at 50% 35%, rgba(255,255,255,0.85), rgba(253,239,222,0) 70%);
         }
         .footer-logo-img {
+          position: relative;
           height: 80px;
           width: auto;
           object-fit: contain;
           display: block;
-          s
-          
         }
 
         .footer-logo-text {
@@ -197,6 +286,31 @@ export default function Footer() {
           text-transform: uppercase;
           color: #532744;
           white-space: nowrap;
+          margin: 0;
+        }
+
+        .footer-brand-rule {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .footer-brand-rule span:first-child,
+        .footer-brand-rule span:last-child {
+          width: 54px;
+          height: 1px;
+        }
+        .footer-brand-rule span:first-child {
+          background: linear-gradient(90deg, transparent, #C4966A);
+        }
+        .footer-brand-rule span:last-child {
+          background: linear-gradient(90deg, #C4966A, transparent);
+        }
+        .footer-brand-rule-gem {
+          width: 5px;
+          height: 5px;
+          background: #C4966A;
+          transform: rotate(45deg);
+          flex-shrink: 0;
         }
 
         .footer-location {
@@ -223,8 +337,8 @@ export default function Footer() {
         .footer-socials-wrapper {
           display: flex;
           align-items: center;
-          gap: 10px;
-          margin-top: 3.2rem;
+          gap: 12px;
+          margin-top: 2.4rem;
         }
         .footer-socials-wrapper .footer-section-label {
           margin: 0;
@@ -233,21 +347,27 @@ export default function Footer() {
         .footer-socials {
           display: flex;
           align-items: center;
-          gap: 1.2rem;
+          gap: 0.9rem;
           list-style: none;
           margin: 0; padding: 0;
         }
         .footer-socials a {
+          width: 44px;
+          height: 44px;
+          border: 1px solid rgba(196,150,106,0.5);
+          border-radius: 50%;
           color: #B8916A;
           text-decoration: none;
           display: flex;
           align-items: center;
           justify-content: center;
-          transition: color 0.2s, transform 0.2s;
+          transition: color 0.2s, transform 0.2s, background 0.2s, border-color 0.2s;
         }
         .footer-socials a:hover {
           color: #3B2A1A;
           transform: translateY(-2px);
+          background: rgba(196,150,106,0.14);
+          border-color: #C4966A;
         }
 
         /* ── Right: Find Us (map) ── */
@@ -345,8 +465,11 @@ export default function Footer() {
         }
 
         /* ── Bottom nav bar ── */
+        .footer-bottom-band {
+          border-top: 1px solid rgba(196, 150, 106, 0.25);
+          background: linear-gradient(180deg, rgba(247,223,193,0.45), rgba(247,223,193,0.85));
+        }
         .footer-bottom {
-          border-top: 1px solid rgba(196, 150, 106, 0.12);
           padding: 1.4rem 2.5rem;
           max-width: 1100px;
           margin: 0 auto;
@@ -355,9 +478,18 @@ export default function Footer() {
         .footer-nav {
           display: flex;
           justify-content: center;
-          gap: 2.5rem;
+          align-items: center;
+          gap: 1.6rem;
           list-style: none;
           margin: 0; padding: 0;
+        }
+        .footer-nav-gem {
+          width: 5px;
+          height: 5px;
+          background: #C4966A;
+          opacity: 0.6;
+          transform: rotate(45deg);
+          flex-shrink: 0;
         }
         .footer-nav a {
           font-family: 'Inter', sans-serif;
@@ -367,9 +499,11 @@ export default function Footer() {
           text-transform: uppercase;
           color: #8C6A50;
           text-decoration: none;
-          transition: color 0.2s;
+          padding-bottom: 4px;
+          border-bottom: 1px solid transparent;
+          transition: color 0.2s, border-color 0.2s;
         }
-        .footer-nav a:hover { color: #3B2A1A; }
+        .footer-nav a:hover { color: #3B2A1A; border-color: #C4966A; }
 
         /* ── Responsive ── */
         @media (max-width: 768px) {
@@ -379,17 +513,44 @@ export default function Footer() {
             gap: 2.5rem;
             text-align: center;
           }
-          .footer-nav { gap: 1.4rem; flex-wrap: wrap; }
+          .footer-vdivider { display: none; }
+          .footer-flourish { padding: 20px 16px 0; gap: 8px; }
+          .footer-flourish-ornament { width: 60px; }
+          .footer-nav { gap: 1rem; flex-wrap: wrap; }
           .footer-map-link { max-width: 380px; margin: 0 auto; }
         }
       `}</style>
       <footer className="footer">
         <div className="footer-accent" />
 
+        {/* ── Ornamental flourish ── */}
+        <div aria-hidden="true" className="footer-flourish">
+          <span className="footer-flourish-line left" />
+          <svg viewBox="0 0 120 16" className="footer-flourish-ornament">
+            <line x1="0" y1="8" x2="104" y2="8" stroke="#C4966A" strokeWidth="1.2" />
+            <rect x="20" y="4" width="8" height="8" fill="#C4966A" transform="rotate(45 24 8)" />
+            <rect x="58" y="4" width="8" height="8" fill="#C4966A" transform="rotate(45 62 8)" />
+            <rect x="94" y="2" width="12" height="12" fill="#C4966A" transform="rotate(45 100 8)" />
+            <circle cx="113" cy="8" r="2.2" fill="#C4966A" />
+          </svg>
+          <svg viewBox="0 0 120 16" className="footer-flourish-ornament" style={{ transform: "scaleX(-1)" }}>
+            <line x1="0" y1="8" x2="104" y2="8" stroke="#C4966A" strokeWidth="1.2" />
+            <rect x="20" y="4" width="8" height="8" fill="#C4966A" transform="rotate(45 24 8)" />
+            <rect x="58" y="4" width="8" height="8" fill="#C4966A" transform="rotate(45 62 8)" />
+            <rect x="94" y="2" width="12" height="12" fill="#C4966A" transform="rotate(45 100 8)" />
+            <circle cx="113" cy="8" r="2.2" fill="#C4966A" />
+          </svg>
+          <span className="footer-flourish-line right" />
+        </div>
+
         <div className="footer-main">
           {/* ── Left: Contact ── */}
           <div className="footer-col-left">
-            <p className="footer-section-label">Contact</p>
+            <p className="footer-section-label">
+              <span aria-hidden="true" className="footer-label-gem" />
+              Contact
+              <span aria-hidden="true" className="footer-label-gem" />
+            </p>
             <div className="footer-divider" />
             <a
               href="mailto:tirupathimahal@gmail.com"
@@ -398,6 +559,9 @@ export default function Footer() {
               tirupatimahaal@gmail.com
             </a>
             <a href="tel:+919842226236" className="footer-contact-phone">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
               +91 98422 26236
             </a>
             <p className="footer-contact-bio">
@@ -426,9 +590,13 @@ export default function Footer() {
             </div>
           </div>
 
+          <div aria-hidden="true" className="footer-vdivider" />
+
           {/* ── Centre: Brand ── */}
           <div className="footer-brand">
             <div className="footer-logo-icon">
+              <span aria-hidden="true" className="footer-logo-ring-spin" />
+              <span aria-hidden="true" className="footer-logo-ring-inner" />
               <img
                 src="/images/Logo-Tirupati-Mahaal.png"
                 alt="Tirupati Mahal"
@@ -438,25 +606,29 @@ export default function Footer() {
 
             <p className="footer-logo-text">Tirupati Mahaal</p>
 
+            <div aria-hidden="true" className="footer-brand-rule">
+              <span />
+              <span className="footer-brand-rule-gem" />
+              <span />
+            </div>
+
             <div className="footer-location">
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 2C7.58 2 4 5.58 4 10c0 5.25 7.05 11.35 7.35 11.61a1 1 0 001.3 0C13 21.35 20 15.25 20 10c0-4.42-3.58-8-8-8zm0 10.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" />
               </svg>
               <span>Udumalpet</span>
             </div>
-
-            {/* <ul className="footer-socials">
-              {socials.map((s) => (
-                <li key={s.label}>
-                  <a href={s.href} aria-label={s.label}>{s.icon}</a>
-                </li>
-              ))} 
-            </ul> */}
           </div>
+
+          <div aria-hidden="true" className="footer-vdivider" />
 
           {/* ── Right: Find Us (real map image) ── */}
           <div className="footer-col-right">
-            <p className="footer-section-label">Find Us</p>
+            <p className="footer-section-label">
+              <span aria-hidden="true" className="footer-label-gem" />
+              Find Us
+              <span aria-hidden="true" className="footer-label-gem" />
+            </p>
             <div className="footer-divider" />
 
             <a
@@ -482,14 +654,21 @@ export default function Footer() {
         </div>
 
         {/* ── Bottom nav ── */}
-        <div className="footer-bottom">
-          <ul className="footer-nav">
-            {navLinks.map((l) => (
-              <li key={l.href}>
-                <Link href={l.href}>{l.label}</Link>
-              </li>
-            ))}
-          </ul>
+        <div className="footer-bottom-band">
+          <div className="footer-bottom">
+            <ul className="footer-nav">
+              {navLinks.map((l, i) => (
+                <Fragment key={l.href}>
+                  {i > 0 && (
+                    <li aria-hidden="true" className="footer-nav-gem" />
+                  )}
+                  <li>
+                    <Link href={l.href}>{l.label}</Link>
+                  </li>
+                </Fragment>
+              ))}
+            </ul>
+          </div>
         </div>
       </footer>
     </>

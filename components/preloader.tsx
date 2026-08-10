@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-const TAGLINE = "WHERE VOWS BEGIN";
+const TAGLINE = "WHERE MEMORIES BEGIN";
 
 export default function Preloader({ onComplete }: { onComplete?: () => void }) {
   const [count, setCount] = useState(0);
@@ -141,10 +141,18 @@ export default function Preloader({ onComplete }: { onComplete?: () => void }) {
       `}</style>
 
       <div className={`preloader${phase === "exit" ? " exit" : ""}`}>
-        <div className="pre-frame-top" style={{ transform: frameOn ? "scaleX(1)" : "scaleX(0)" }} />
-        <div className="pre-frame-bottom" style={{ transform: frameOn ? "scaleX(1)" : "scaleX(0)" }} />
+        <div
+          className="pre-frame-top"
+          style={{ transform: frameOn ? "scaleX(1)" : "scaleX(0)" }}
+        />
+        <div
+          className="pre-frame-bottom"
+          style={{ transform: frameOn ? "scaleX(1)" : "scaleX(0)" }}
+        />
 
-        <span className="pre-welcome" style={{ opacity: logoOn ? 1 : 0 }}>Welcome to</span>
+        <span className="pre-welcome" style={{ opacity: logoOn ? 1 : 0 }}>
+          Welcome to
+        </span>
 
         <img
           src="/images/Logo-Tirupati-Mahaal.png"
@@ -155,7 +163,12 @@ export default function Preloader({ onComplete }: { onComplete?: () => void }) {
 
         <div className="pre-tagline">
           {letters.map((l, i) => (
-            <span key={i} style={{ opacity: l.opacity, transform: l.transform }}>{l.ch}</span>
+            <span
+              key={i}
+              style={{ opacity: l.opacity, transform: l.transform }}
+            >
+              {l.ch}
+            </span>
           ))}
         </div>
 

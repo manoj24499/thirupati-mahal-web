@@ -193,14 +193,24 @@ export default function Navbar() {
 
         .nav-phone {
           font-family: 'Cormorant Garamond', serif;
-          font-size: 18px; font-weight: 800;
-          letter-spacing: 0.1em;
-          color: #8C6A50;
+          font-size: 15px; font-weight: 700;
+          letter-spacing: 0.06em;
+          color: #FDEFDE;
           text-decoration: none;
           white-space: nowrap;
-          transition: color 0.2s;
+          background: #9c1c54;
+          border: 1px solid #9c1c54;
+          border-radius: 999px;
+          padding: 7px 18px;
+          box-shadow: 0 4px 14px rgba(156,28,84,0.28);
+          transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s, border-color 0.2s;
         }
-        .nav-phone:hover { color: #3B2A1A; }
+        .nav-phone:hover {
+          background: #7d123f;
+          border-color: #7d123f;
+          transform: translateY(-1px);
+          box-shadow: 0 6px 18px rgba(156,28,84,0.35);
+        }
 
         .sidebar-contact-label {
           display: block; text-align: center;
@@ -212,21 +222,31 @@ export default function Navbar() {
         }
 
         .sidebar-phone {
-          display: flex; align-items: center; justify-content: center; gap: 0.45rem;
+          display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+          align-self: center;
           margin: 0 0 1.6rem;
-          padding-bottom: 1.6rem;
-          border-bottom: 1px solid rgba(196,150,106,0.28);
           font-family: 'Cormorant Garamond', serif;
-          font-size: 20px; font-weight: 600;
-          letter-spacing: 0.1em;
-          color: #532744;
+          font-size: 18px; font-weight: 600;
+          letter-spacing: 0.06em;
+          color: #FDEFDE;
           text-decoration: none;
-          transition: color 0.2s;
+          white-space: nowrap;
+          background: #9c1c54;
+          border: 1px solid #9c1c54;
+          border-radius: 999px;
+          padding: 8px 22px;
+          box-shadow: 0 4px 14px rgba(156,28,84,0.28);
+          transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s, border-color 0.2s;
         }
-        .sidebar-phone:hover { color: #9c1c54; }
+        .sidebar-phone:hover {
+          background: #7d123f;
+          border-color: #7d123f;
+          transform: translateY(-1px);
+          box-shadow: 0 6px 18px rgba(156,28,84,0.35);
+        }
         .sidebar-phone svg {
-          width: 13px; height: 13px;
-          fill: #9c1c54;
+          width: 15px; height: 15px;
+          fill: #FDEFDE;
           flex-shrink: 0;
         }
 
