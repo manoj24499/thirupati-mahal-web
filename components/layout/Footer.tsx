@@ -184,7 +184,7 @@ export default function Footer() {
           color: #532744;
           text-decoration: none;
           letter-spacing: 0.04em;
-          margin-bottom: 0.3rem;
+          margin-bottom: 1.2rem;
           display: block;
           transition: color 0.2s;
           text-align: center;
@@ -505,8 +505,13 @@ export default function Footer() {
         }
         .footer-nav a:hover { color: #3B2A1A; border-color: #C4966A; }
 
-        /* ── Responsive ── */
-        @media (max-width: 768px) {
+        /* ── Responsive ──
+           The 5-column grid (minmax(330px,1fr) 1px auto 1px minmax(330px,1fr))
+           needs ~1180px to fit without overlap, so it has to switch to a
+           stacked single column well before the usual 768px "mobile" cutoff —
+           otherwise tablets and small laptops fall in a gap where the grid
+           silently overflows and gets clipped by .footer's overflow:hidden. */
+        @media (max-width: 1180px) {
           .footer-main {
             grid-template-columns: 1fr;
             padding: 3rem 1.8rem 2rem;
@@ -518,6 +523,18 @@ export default function Footer() {
           .footer-flourish-ornament { width: 60px; }
           .footer-nav { gap: 1rem; flex-wrap: wrap; }
           .footer-map-link { max-width: 380px; margin: 0 auto; }
+        }
+
+        @media (max-width: 480px) {
+          .footer-logo-icon { width: 120px; height: 120px; }
+          .footer-logo-ring-inner { inset: 9px; }
+          .footer-logo-img { height: 64px; }
+          .footer-logo-text { font-size: 17px; letter-spacing: 0.28em; }
+          .footer-contact-email { font-size: 21px; }
+          .footer-contact-phone { font-size: 19px; padding: 8px 18px; }
+          .footer-contact-bio { font-size: 16px; }
+          .footer-nav { gap: 0.7rem; }
+          .footer-nav a { font-size: 12px; letter-spacing: 0.16em; }
         }
       `}</style>
       <footer className="footer">
@@ -557,12 +574,6 @@ export default function Footer() {
               className="footer-contact-email"
             >
               tirupatimahaal@gmail.com
-            </a>
-            <a href="tel:+919842226236" className="footer-contact-phone">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
-              </svg>
-              +91 98422 26236
             </a>
             <p className="footer-contact-bio">
               25/2 Indra Nagar, Dharapuram Road,
@@ -618,6 +629,13 @@ export default function Footer() {
               </svg>
               <span>Udumalpet</span>
             </div>
+
+            <a href="tel:+919842226236" className="footer-contact-phone">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+              +91 98422 26236
+            </a>
           </div>
 
           <div aria-hidden="true" className="footer-vdivider" />

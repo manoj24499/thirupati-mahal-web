@@ -192,6 +192,7 @@ export default function Navbar() {
         }
 
         .nav-phone {
+          display: inline-flex; align-items: center; gap: 8px;
           font-family: 'Cormorant Garamond', serif;
           font-size: 15px; font-weight: 700;
           letter-spacing: 0.06em;
@@ -210,6 +211,22 @@ export default function Navbar() {
           border-color: #7d123f;
           transform: translateY(-1px);
           box-shadow: 0 6px 18px rgba(156,28,84,0.35);
+        }
+        .nav-phone-icon {
+          width: 15px; height: 15px;
+          flex-shrink: 0;
+          transform-origin: 50% 10%;
+          animation: navPhoneRing 2.6s ease-in-out infinite;
+        }
+        @keyframes navPhoneRing {
+          0%, 8%, 100% { transform: rotate(0deg); }
+          1% { transform: rotate(-20deg); }
+          2% { transform: rotate(18deg); }
+          3% { transform: rotate(-16deg); }
+          4% { transform: rotate(12deg); }
+          5% { transform: rotate(-8deg); }
+          6% { transform: rotate(5deg); }
+          7% { transform: rotate(0deg); }
         }
 
         .sidebar-contact-label {
@@ -435,7 +452,18 @@ export default function Navbar() {
       }
         @media (max-width: 900px) {
           .nav-links { display: none; }
-          .sidebar { width: 100%; max-width: 100vw; }
+          .sidebar { width: 100%; max-width: 100vw; padding: 2.2rem 1.8rem 1.8rem; }
+          .sidebar-nav a { font-size: 1.3rem; }
+        }
+
+        @media (max-width: 480px) {
+          .sidebar { padding: 1.8rem 1.4rem 1.4rem; }
+          .sidebar-logo-img { height: 84px; }
+          .sidebar-nav a { font-size: 1.1rem; letter-spacing: 0.02em; }
+          .sidebar-phone { font-size: 15px; padding: 7px 16px; }
+          .sidebar-contact-label,
+          .sidebar-socials-label { font-size: 0.66rem; letter-spacing: 0.2em; }
+          .sidebar-location span { font-size: 0.68rem; }
         }
            @media (max-width: 600px) {
            .nav-brand {gap:10px;}
@@ -564,6 +592,17 @@ export default function Navbar() {
               <div className="nav-divider" />
 
               <a href="tel:+919842226236" className="nav-phone">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="nav-phone-icon"
+                >
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
                 98422 26236
               </a>
 
