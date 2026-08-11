@@ -530,7 +530,7 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <img src="images/two.jpg" alt="Wedding" className="sidebar-image" />
+        <img src="images/two.JPG" alt="Wedding" className="sidebar-image" />
 
         <p className="sidebar-socials-label">Follow Us</p>
 
